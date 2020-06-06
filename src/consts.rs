@@ -116,8 +116,6 @@ lazy_static! {
 
 pub const NUM_DIRECTIONS: usize = 8;
 
-// FIXME: usize is the appropriate type for the below?
-
 // WIN_LENGTH is the length of a winning sequence.
 // Some things implicitly assume a win length of 5, for example, threat pattern definitions.
 // Don't change WIN_LENGTH without making all other relevant changes everywhere else in the project.
@@ -125,7 +123,6 @@ pub const WIN_LENGTH: usize = 5;
 
 // If defcon is x, then game will be over in x moves if no action is taken. 0 is game over.
 // Effectively, the maximum distance away from winning.
-
 pub const MAX_DEFCON: usize = WIN_LENGTH;
 
 // Max defcon for immediate threat.
