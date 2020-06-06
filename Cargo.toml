@@ -6,6 +6,7 @@ authors = ["Jayakiran Akurathi <Jayakiran.Akurathi@gmail.com>"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+lazy_static = "*"
 
 [profile.test]
 opt-level = 3
