@@ -7,6 +7,8 @@ authors = ["Jayakiran Akurathi <Jayakiran.Akurathi@gmail.com>"]
 
 [dependencies]
 lazy_static = "*"
+num = "*"
+ndarray = "*"
 
 [profile.test]
 opt-level = 3
