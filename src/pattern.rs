@@ -2,87 +2,116 @@
 
 use ndarray::prelude::*;
 use consts::{GEN_ELEMS, EMPTY, MAX_DEFCON, OWN, WALL_ENEMY, NOT_OWN, GEN_ELEMS_TO_NAMES, MDFIT};
-// use geometry::{point_set_on_line};
+use geometry::point_set_on_line;
+use pattern_search::{search_board, search_point, search_point_own,
+                     search_board_next_sq, search_point_next_sq,
+                     search_point_own_next_sq, one_step_from_straight_threat,
+                     degree, defcon_from_degree};
 
-// from pattern_search import (search_board, search_point, search_point_own,
-//                             search_board_next_sq, search_point_next_sq,
-//                             search_point_own_next_sq, one_step_from_straight_threat,
-//                             degree, defcon_from_degree)
+struct Pattern {
+    pattern: Array1<u8>,
+    critical_sqs: Array1<i8>,
+    own_sqs: Array1<i8>,
+    name: String,
+    index: i8,
+    empty_sqs: Array1<i8>,
+    defcon: i8,
+    immediate: bool,
+}
+
+impl Pattern {
+    pub fn new(pattern: Array1<u8>, critical_sqs: Array1<i8>, name: String) -> Self {
+        for elem in pattern.iter() {
+            assert!(GEN_ELEMS.iter().any(|&x| x == *elem));
+            assert!(*elem == OWN || (*elem & OWN == 0));
+        }
+
+        // FIXME: port below code.
+        // critical_sqs.sort()
+        // critical_sqs_uniq = list(set(critical_sqs))
+        // critical_sqs_uniq.sort()
+        // assert critical_sqs == critical_sqs_uniq
+
+        let length = pattern.len();
+        for sq in critical_sqs.iter() {
+            assert!( (0 <= *sq && *sq < (length as i8)) && pattern[*sq as usize] == EMPTY);
+        }
+
+        assert!(name.len() > 0);
+
+        let mut oe_start = false;
+        let mut oe_end = false;
+        for v in pattern.iter() {
+            if *v == OWN || *v == EMPTY {
+                if !oe_start {
+                    oe_start = true;
+                }
+
+                assert!(!oe_end);
+            } else {
+                if oe_start && !oe_end {
+                    oe_end = true;
+                }
+            }
+        }
+
+        let mut own_sqs: Vec<i8> = Vec::new();
+        for (i, v) in pattern.iter().enumerate() {
+            if *v == OWN {
+                own_sqs.push(i as i8);
+            }
+        }
+
+        let mut other_empty_sqs: Vec<i8> = Vec::new();
+        for (i, v) in pattern.iter().enumerate() {
+            if *v == EMPTY && !critical_sqs.iter().any(|&x| x == (i as i8)) {
+                other_empty_sqs.push(i as i8);
+            }
+        }
+
+        let mut empty_sqs: Vec<i8> = Vec::new();
+        for v in critical_sqs.iter() {
+            empty_sqs.push(*v);
+        }
+        for v in other_empty_sqs.iter() {
+            empty_sqs.push(*v);
+        }
+
+        let defcon = defcon_from_degree(degree(&pattern));
+
+        let immediate = if defcon < 2 { true } else { one_step_from_straight_threat(&pattern) };
+
+        // FIXME: port below code.
+        // # Checks on data fields.
+        // assert self.pattern.ndim == 1
+        // assert self.pattern.size > 0
+        // assert self.critical_sqs.ndim == 1
+        // assert self.own_sqs.ndim == 1
+        // assert self.empty_sqs.ndim == 1
+        // assert self.defcon in DEFCON_RANGE
+
+        // FIXME: port below code.
+        // # Check on empty_sqs that they need to be useful.
+        // curr_degree = degree(self.pattern)
+        // for esq in self.empty_sqs:
+        //     next_pattern = np.array(self.pattern, dtype=np.byte)
+        //     next_pattern[esq] = OWN
+        //     assert degree(next_pattern) == curr_degree + 1
+
+        Self {
+            pattern: pattern,
+            critical_sqs: critical_sqs,
+            own_sqs: Array1::from(own_sqs),
+            name: name,
+            index: -1,
+            empty_sqs: Array1::from(empty_sqs),
+            defcon: defcon,
+            immediate: immediate,
+        }
+    }
+}
 
 
-// class Pattern:
-//     """Pattern: Used to represent threat patterns."""
-
-//     def __init__(self,
-//                  pattern,
-//                  critical_sqs,
-//                  name):
-//         # Make sure pattern has valid elements.
-//         for elem in pattern:
-//             assert elem in GEN_ELEMS
-//             assert elem == OWN or elem & OWN == 0
-
-//         # Critical Squares are the places where if the oppenent plays,
-//         # then the threat is mitigated.
-//         # Checks on critical_sqs.
-//         critical_sqs.sort()
-//         critical_sqs_uniq = list(set(critical_sqs))
-//         critical_sqs_uniq.sort()
-//         assert critical_sqs == critical_sqs_uniq
-//         allowed = range(len(pattern))
-//         for sq in critical_sqs:
-//             # sq must be EMPTY for it to be critical.
-//             assert sq in allowed and pattern[sq] == EMPTY
-
-//         # Check size of name.
-//         assert len(name) > 0
-
-//         # Check that any OWN or EMPTY squares in the pattern are contiguous,
-//         # i.e., OWN/EMPTY is not interrupted by any other kind of square.
-//         # This is what a normal/useful pattern would like.
-//         oe_start = False
-//         oe_end = False
-//         for v in pattern:
-//             if v in (OWN, EMPTY):
-//                 if not oe_start:
-//                     oe_start = True
-
-//                 if oe_end:
-//                     raise Exception("Non-contiguous OWN/EMPTY squares!")
-//             else:
-//                 if oe_start and not oe_end:
-//                     oe_end = True
-
-//         self.pattern = np.array(pattern, dtype=np.byte)
-//         self.critical_sqs = np.array(critical_sqs, dtype=np.byte)
-//         self.own_sqs = np.array([i for i, v in enumerate(pattern) if v == OWN], dtype=np.byte)
-//         self.name = name
-//         self.index = -1  # Initialize index to -1.
-
-//         # Add entry for empty_sqs. critical_sqs appear first.
-//         other_empty_sqs = [i for i, v in enumerate(pattern) if v == EMPTY and i not in critical_sqs]
-//         self.empty_sqs = np.array(critical_sqs + other_empty_sqs, dtype=np.byte)
-
-//         # Add defcon.
-//         self.defcon = defcon_from_degree(degree(self.pattern))
-
-//         # Add "immediate" flag.
-//         self.immediate = True if self.defcon < 2 else one_step_from_straight_threat(self.pattern)
-
-//         # Checks on data fields.
-//         assert self.pattern.ndim == 1
-//         assert self.pattern.size > 0
-//         assert self.critical_sqs.ndim == 1
-//         assert self.own_sqs.ndim == 1
-//         assert self.empty_sqs.ndim == 1
-//         assert self.defcon in DEFCON_RANGE
-
-//         # Check on empty_sqs that they need to be useful.
-//         curr_degree = degree(self.pattern)
-//         for esq in self.empty_sqs:
-//             next_pattern = np.array(self.pattern, dtype=np.byte)
-//             next_pattern[esq] = OWN
-//             assert degree(next_pattern) == curr_degree + 1
 
 //     def __repr__(self):
 //         desc_list = [GEN_ELEMS_TO_NAMES[x] for x in self.pattern]

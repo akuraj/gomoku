@@ -115,11 +115,11 @@ pub fn slope_intercept(start: Point, end: Point) -> (i8, i8, i8) {
 pub fn point_idx_on_line(point: Point, line: (i8, i8, i8)) -> i8 {
     let (x, y) = point;
 
-    assert!(line.0 * point.1 == line.1 * point.0 + line.2);
+    assert!(line.0 * y == line.1 * x + line.2);
 
     if line.0 != 0 {
-        return point.0;
+        return x;
     } else {
-        return point.1;
+        return y;
     }
 }
