@@ -7,18 +7,13 @@ pub mod consts;
 pub mod geometry;
 pub mod pattern_search;
 pub mod pattern;
+pub mod board;
 
-use ndarray::prelude::*;
-use pattern_search::get_pattern;
-use consts::OWN;
-use pattern::{PATTERNS, PATTERNS_BY_DEFCON, PATTERNS_BY_NAME, PATTERNS_I, PATTERNS_NI,
-              PATTERNS_BY_PRI};
-
-use std::collections::HashSet;
+use board::{get_board, new_board, algebraic_to_point};
 
 fn main() {
-    println!("{:?}", *PATTERNS_BY_PRI);
-    // for p in PATTERNS_NI.iter() {
-    //     println!("{}", *p);
-    // }
+    let x = ["a4", "b6"];
+    let y = ["a5", "b7"];
+
+    println!("{:?}", get_board(&x, &y));
 }
