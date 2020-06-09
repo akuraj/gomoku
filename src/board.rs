@@ -123,23 +123,16 @@ pub fn board_to_str(board: &Array2<u8>) -> String {
     return board_repr;
 }
 
+pub fn set_sq(board: &mut Array2<u8>, color: u8, point: Point) {
+    assert!(color == BLACK || color == BLACK);
+    let p = (point.0 as usize, point.1 as usize);
+    assert_eq!(board[p], EMPTY);
+    board[p] = color;
+}
 
-
-
-
-// @njit
-// def set_sq(board, color, point):
-//     """Sets given square on board to given color."""
-
-//     assert color in COLORS
-//     assert board[point] == EMPTY
-//     board[point] = color
-
-
-// @njit
-// def clear_sq(board, color, point):
-//     """Clears given square on board of given color."""
-
-//     assert color in COLORS
-//     assert board[point] == color
-//     board[point] = EMPTY
+pub fn clear_sq(board: &mut Array2<u8>, color: u8, point: Point) {
+    assert!(color == BLACK || color == BLACK);
+    let p = (point.0 as usize, point.1 as usize);
+    assert_eq!(board[p], color);
+    board[p] = EMPTY;
+}
