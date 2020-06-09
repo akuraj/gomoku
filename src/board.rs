@@ -33,10 +33,15 @@ pub fn point_to_algebraic(x: Point) -> String {
 }
 
 pub fn algebraic_to_point(x: &str) -> Point {
-    // FIXME!!!!!
     let c: Vec<char> = x.chars().collect();
     let col_idx = col_chr_to_idx(c[0]) as i8;
-    let row_idx = row_num_to_idx((c[1]).to_digit(RADIX).unwrap() as usize) as i8;
+    let n = c.len();
+    let mut num_str = String::new();
+    for i in 1..n {
+        num_str.push(c[i]);
+    }
+    let row_num: usize = (&num_str).parse().unwrap();
+    let row_idx = row_num_to_idx(row_num) as i8;
     return (row_idx, col_idx);
 }
 
