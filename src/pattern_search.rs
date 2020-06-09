@@ -334,81 +334,79 @@ pub fn search_point_own_next_sq(board: &Array2<u8>, gen_pattern: &Array1<u8>, co
     return next_sq_match_pairs;
 }
 
-// @njit
-// def apply_pattern(board, pattern, point, d):
-//     """Apply given pattern at given point in given direction.
+pub fn apply_pattern(board: &mut Array2<u8>, pattern: &Array1<u8>, point: Point, d: usize) -> bool {
+    let (x, y) = point;
 
-//     Returns True if application was succesful.
-//     Else, returns False.
-//     If application fails then board is unchanged.
+    let side = board.shape()[0];
+    let length = pattern.len();
 
-//     We only check that the length fits at that point.
-//     We will apply a non-standard element as it is,
-//     including overwriting a wall with any element whatsoever.
+    let (row_inc, col_inc) = increments(d as i8);
 
-//     Useful for testing purposes.
-//     """
+    let mut can_apply = true;
+    for k in 0..length {
+        let (i, j) = (idx(x, row_inc, k) as usize, idx(y, col_inc, k) as usize);
+        if !(0 <= i && i < side) || !(0 <= j && j < side) {
+            can_apply = false;
+            break;
+        }
+    }
 
-//     (x, y) = point
+    if can_apply {
+        for k in 0..length {
+            board[(idx(x, row_inc, k) as usize, idx(y, col_inc, k) as usize)] = pattern[k];
+        }
+    }
 
-//     side = board.shape[0]
-//     length = pattern.size
+    return can_apply;
+}
 
-//     (row_inc, col_inc) = increments(d)
+pub fn matches_are_subset(x: &Vec<Match>, y: &Vec<Match>) -> bool {
+    for a_ref in x.iter() {
+        let a = *a_ref;
+        let mut found = false;
+        for b_ref in y.iter() {
+            let b = *b_ref;
+            if a == b || (a.0 == b.1 && a.1 == b.0) {
+                found = true;
+                break;
+            }
+        }
 
-//     can_apply = True
-//     for k in range(length):
-//         (i, j) = (x + row_inc * k, y + col_inc * k)
-//         if i not in range(side) or j not in range(side):
-//             can_apply = False
-//             break
+        if !found {
+            return false;
+        }
+    }
 
-//     if can_apply:
-//         for k in range(length):
-//             # NOTE: If it's a non-standard element, we just apply it as is.
-//             board[x + row_inc * k, y + col_inc * k] = pattern[k]
+    return true;
+}
 
-//     return can_apply
+pub fn matches_are_equal(x: &Vec<Match>, y: &Vec<Match>) -> bool {
+    return matches_are_subset(x, y) && matches_are_subset(y, x);
+}
 
+pub fn next_sq_matches_are_subset(x: &Vec<NSQMatch>, y: &Vec<NSQMatch>) -> bool {
+    for a_ref in x.iter() {
+        let a = *a_ref;
+        let mut found = false;
+        for b_ref in y.iter() {
+            let b = *b_ref;
+            if a.0 == b.0 && (a.1 == b.1 || ((a.1).0 == (b.1).1 && (a.1).1 == (b.1).0)) {
+                found = true;
+                break;
+            }
+        }
 
-// @njit
-// def matches_are_subset(x, y):
-//     """Check if x is a subset of y."""
+        if !found {
+            return false;
+        }
+    }
 
-//     for a in x:
-//         for b in y:
-//             if a in (b, b[::-1]):
-//                 break
-//         else:
-//             return False
+    return true;
+}
 
-//     return True
-
-
-// @njit
-// def matches_are_equal(x, y):
-//     # pylint: disable=W1114
-//     return matches_are_subset(x, y) and matches_are_subset(y, x)
-
-
-// @njit
-// def next_sq_matches_are_subset(x, y):
-//     """Check if x is a subset of y."""
-
-//     for a in x:
-//         for b in y:
-//             if a[0] == b[0] and a[1] in (b[1], b[1][::-1]):
-//                 break
-//         else:
-//             return False
-
-//     return True
-
-
-// @njit
-// def next_sq_matches_are_equal(x, y):
-//     # pylint: disable=W1114
-//     return next_sq_matches_are_subset(x, y) and next_sq_matches_are_subset(y, x)
+pub fn next_sq_matches_are_equal(x: &Vec<NSQMatch>, y: &Vec<NSQMatch>) -> bool {
+    return next_sq_matches_are_subset(x, y) && next_sq_matches_are_subset(y, x);
+}
 
 pub fn degree(gen_pattern: &Array1<u8>) -> i8 {
     let n = gen_pattern.len();
