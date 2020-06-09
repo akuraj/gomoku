@@ -2,11 +2,11 @@
 
 use ndarray::prelude::*;
 use consts::{GEN_ELEMS, EMPTY, MAX_DEFCON, OWN, WALL_ENEMY, NOT_OWN, GEN_ELEMS_TO_NAMES, MDFIT};
-use geometry::point_set_on_line;
+use geometry::{point_set_on_line, Point};
 use pattern_search::{search_board, search_point, search_point_own,
                      search_board_next_sq, search_point_next_sq,
                      search_point_own_next_sq, one_step_from_straight_threat,
-                     degree, defcon_from_degree};
+                     degree, defcon_from_degree, Match, NSQMatch};
 use std::fmt;
 use std::collections::HashSet;
 use std::collections::HashMap;
@@ -309,19 +309,22 @@ lazy_static! {
     };
 }
 
-// # *** PATTERN SEARCH FUNCTIONS ***
+#[derive(Clone,Debug)]
+pub struct Threat {
+    m: Match,
+    pidx: i8,
+    defcon: i8,
+    critical_sqs: HashSet<Point>,
+}
 
-
-// def threat_item(match, pattern):
-//     """Threat: the where and the what."""
-
-//     return {"match": match,
-//             "pidx": pattern.index,
-//             "defcon": pattern.defcon,
-//             "critical_sqs": point_set_on_line(match[0],
-//                                               match[1],
-//                                               pattern.critical_sqs)}
-
+pub fn threat_item(m: Match, pattern: &Pattern) -> Threat {
+    return Threat {
+        m: m,
+        pidx: pattern.index,
+        defcon: pattern.defcon,
+        critical_sqs: point_set_on_line(m.0, m.1, &pattern.critical_sqs),
+    };
+}
 
 // def search_all_board(board, color, pri):
 //     return [threat_item(match, p)
