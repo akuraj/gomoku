@@ -235,6 +235,9 @@ lazy_static! {
         let num_names = patterns.iter().map(|&x| String::from(&x.name)).collect::<HashSet<String>>().len();
         assert_eq!(num_names, patterns.len());
 
+        let max_defcon_imm = patterns.iter().fold(i8::MIN, |a, b| if b.immediate { a.max(b.defcon) } else { a });
+        assert_eq!(max_defcon_imm, MDFIT);
+
         return patterns;
     };
 
@@ -265,22 +268,31 @@ lazy_static! {
 
         return m;
     };
+
+    pub static ref PATTERNS_I: Vec<&'static Pattern> = {
+        let mut patterns: Vec<&'static Pattern> = Vec::new();
+
+        for p in PATTERNS.iter() {
+            if p.immediate {
+                patterns.push(p);
+            }
+        }
+
+        return patterns;
+    };
+
+    pub static ref PATTERNS_NI: Vec<&'static Pattern> = {
+        let mut patterns: Vec<&'static Pattern> = Vec::new();
+
+        for p in PATTERNS.iter() {
+            if !p.immediate {
+                patterns.push(p);
+            }
+        }
+
+        return patterns;
+    };
 }
-
-// PATTERNS_BY_NAME = dict()
-// for p in PATTERNS:
-//     assert p.name not in PATTERNS_BY_NAME
-//     PATTERNS_BY_NAME[p.name] = p
-
-// # Immediate/High Priority PATTERNS.
-// PATTERNS_I = [x for x in PATTERNS if x.immediate]
-
-// # Low Priority PATTERNS.
-// PATTERNS_NI = [x for x in PATTERNS if not x.immediate]
-
-// # Check against MDFIT.
-// assert MDFIT == max([p.defcon for p in PATTERNS if p.immediate])
-
 
 // # *** THREAT PRIORITY ENUM ***
 
