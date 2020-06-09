@@ -7,7 +7,9 @@ use pattern_search::{search_board, search_point, search_point_own,
                      search_board_next_sq, search_point_next_sq,
                      search_point_own_next_sq, one_step_from_straight_threat,
                      degree, defcon_from_degree};
+use std::fmt;
 
+#[derive(Clone,Debug)]
 struct Pattern {
     pattern: Array1<u8>,
     critical_sqs: Array1<i8>,
@@ -111,29 +113,27 @@ impl Pattern {
     }
 }
 
+impl fmt::Display for Pattern {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let mut output = String::new();
 
+        output.push_str("pattern: ");
+        for x in self.pattern.iter() {
+            output.push_str(GEN_ELEMS_TO_NAMES[x]);
+            output.push(' ');
+        }
+        output.push('\n');
+        output.push_str(&format!("defcon: {}\n", self.defcon));
+        output.push_str(&format!("immediate: {}\n", self.immediate));
+        output.push_str(&format!("critical_sqs: {}\n", self.critical_sqs));
+        output.push_str(&format!("own_sqs: {}\n", self.own_sqs));
+        output.push_str(&format!("empty_sqs: {}\n", self.empty_sqs));
+        output.push_str(&format!("name: {}\n", self.name));
+        output.push_str(&format!("index: {}\n", self.index));
 
-//     def __repr__(self):
-//         desc_list = [GEN_ELEMS_TO_NAMES[x] for x in self.pattern]
-//         return ("pattern: {0}\n"
-//                 "defcon: {1}\n"
-//                 "immediate: {2}\n"
-//                 "critical_sqs: {3}\n"
-//                 "own_sqs: {4}\n"
-//                 "empty_sqs: {5}\n"
-//                 "name: {6}\n"
-//                 "index: {7}\n").format(str(desc_list),
-//                                        str(self.defcon),
-//                                        str(self.immediate),
-//                                        str(self.critical_sqs),
-//                                        str(self.own_sqs),
-//                                        str(self.empty_sqs),
-//                                        str(self.name),
-//                                        str(self.index))
-
-//     def __str__(self):
-//         return repr(self)
-
+        write!(f, "{}", output)
+    }
+}
 
 // # *** PATTERN CONSTS ***
 
