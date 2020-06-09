@@ -8,6 +8,7 @@ use pattern_search::{search_board, search_point, search_point_own,
                      search_point_own_next_sq, one_step_from_straight_threat,
                      degree, defcon_from_degree};
 use std::fmt;
+use std::collections::HashMap;
 
 #[derive(Clone,Debug)]
 pub struct Pattern {
@@ -234,14 +235,22 @@ lazy_static! {
     };
 
     pub static ref NUM_PTNS: usize = PATTERNS.len();
-}
 
-// PATTERNS_BY_DEFCON = dict()
-// for p in PATTERNS:
-//     if p.defcon in PATTERNS_BY_DEFCON:
-//         PATTERNS_BY_DEFCON[p.defcon].append(p)
-//     else:
-//         PATTERNS_BY_DEFCON[p.defcon] = [p]
+    pub static ref PATTERNS_BY_DEFCON: HashMap<i8, Vec<&'static Pattern>> = {
+        let mut m: HashMap<i8, Vec<&'static Pattern>> = HashMap::new();
+
+        for p in PATTERNS.iter() {
+            if m.contains_key(&p.defcon) {
+                m.get_mut(&p.defcon).unwrap().push(p);
+            } else {
+                m.insert(p.defcon, Vec::<&'static Pattern>::new());
+                m.get_mut(&p.defcon).unwrap().push(p);
+            }
+        }
+
+        return m;
+    };
+}
 
 // PATTERNS_BY_NAME = dict()
 // for p in PATTERNS:

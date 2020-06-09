@@ -11,10 +11,12 @@ pub mod pattern;
 use ndarray::prelude::*;
 use pattern_search::get_pattern;
 use consts::OWN;
-use pattern::PATTERNS;
+use pattern::{PATTERNS, PATTERNS_BY_DEFCON};
 
 fn main() {
     for x in PATTERNS.iter() {
         println!("{}", x);
     }
+
+    println!("{:?}", *PATTERNS_BY_DEFCON);
 }
