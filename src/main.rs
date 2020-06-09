@@ -11,8 +11,10 @@ pub mod pattern;
 use ndarray::prelude::*;
 use pattern_search::get_pattern;
 use consts::OWN;
-use pattern::P_WIN;
+use pattern::PATTERNS;
 
 fn main() {
-    println!("{}", *P_WIN);
+    for x in PATTERNS.iter() {
+        println!("{}", x);
+    }
 }

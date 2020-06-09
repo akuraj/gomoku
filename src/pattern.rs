@@ -140,36 +140,101 @@ lazy_static! {
                                                  Array1::from(Vec::<i8>::from([])),
                                                  String::from("P_WIN"),
                                                  0);
+
+    pub static ref P_4_ST: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([EMPTY, OWN, OWN, OWN, OWN, EMPTY])),
+                                                  Array1::from(Vec::<i8>::from([])),
+                                                  String::from("P_4_ST"),
+                                                  1);
+
+    pub static ref P_4_A: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([WALL_ENEMY, OWN, OWN, OWN, OWN, EMPTY])),
+                                                 Array1::from(Vec::<i8>::from([5])),
+                                                 String::from("P_4_A"),
+                                                 2);
+
+    pub static ref P_4_B: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([NOT_OWN, OWN, OWN, OWN, EMPTY, OWN])),
+                                                 Array1::from(Vec::<i8>::from([4])),
+                                                 String::from("P_4_B"),
+                                                 3);
+
+    pub static ref P_4_C: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([NOT_OWN, OWN, OWN, EMPTY, OWN, OWN, NOT_OWN])),
+                                                 Array1::from(Vec::<i8>::from([3])),
+                                                 String::from("P_4_C"),
+                                                 4);
+
+    pub static ref P_3_ST: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([EMPTY, EMPTY, OWN, OWN, OWN, EMPTY, EMPTY])),
+                                                  Array1::from(Vec::<i8>::from([1, 5])),
+                                                  String::from("P_3_ST"),
+                                                  5);
+
+    pub static ref P_3_A: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([WALL_ENEMY, EMPTY, OWN, OWN, OWN, EMPTY, EMPTY])),
+                                                 Array1::from(Vec::<i8>::from([1, 5, 6])),
+                                                 String::from("P_3_A"),
+                                                 6);
+
+    pub static ref P_3_B: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([EMPTY, OWN, OWN, EMPTY, OWN, EMPTY])),
+                                                 Array1::from(Vec::<i8>::from([0, 3, 5])),
+                                                 String::from("P_3_B"),
+                                                 7);
+
+    pub static ref P_3_C: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([WALL_ENEMY, OWN, OWN, OWN, EMPTY, EMPTY])),
+                                                 Array1::from(Vec::<i8>::from([4, 5])),
+                                                 String::from("P_3_C"),
+                                                 8);
+
+    pub static ref P_3_D: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([WALL_ENEMY, OWN, OWN, EMPTY, OWN, EMPTY])),
+                                                 Array1::from(Vec::<i8>::from([3, 5])),
+                                                 String::from("P_3_D"),
+                                                 9);
+
+    pub static ref P_3_E: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([WALL_ENEMY, OWN, EMPTY, OWN, OWN, EMPTY])),
+                                                 Array1::from(Vec::<i8>::from([2, 5])),
+                                                 String::from("P_3_E"),
+                                                 10);
+
+    pub static ref P_3_F: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([WALL_ENEMY, EMPTY, OWN, OWN, OWN, EMPTY, WALL_ENEMY])),
+                                                 Array1::from(Vec::<i8>::from([1, 5])),
+                                                 String::from("P_3_F"),
+                                                 11);
+
+    pub static ref P_3_G: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([NOT_OWN, OWN, OWN, EMPTY, EMPTY, OWN])),
+                                                 Array1::from(Vec::<i8>::from([3, 4])),
+                                                 String::from("P_3_G"),
+                                                 12);
+
+    pub static ref P_3_H: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([NOT_OWN, OWN, EMPTY, OWN, EMPTY, OWN, NOT_OWN])),
+                                                 Array1::from(Vec::<i8>::from([2, 4])),
+                                                 String::from("P_3_H"),
+                                                 13);
+
+    pub static ref P_2_A: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([EMPTY, EMPTY, OWN, OWN, EMPTY, EMPTY])),
+                                                 Array1::from(Vec::<i8>::from([0, 1, 4, 5])),
+                                                 String::from("P_2_A"),
+                                                 14);
+
+    pub static ref P_2_B: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([EMPTY, EMPTY, OWN, EMPTY, OWN, EMPTY, EMPTY])),
+                                                 Array1::from(Vec::<i8>::from([0, 1, 3, 5, 6])),
+                                                 String::from("P_2_B"),
+                                                 15);
+
+    pub static ref P_2_C: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([EMPTY, OWN, EMPTY, EMPTY, OWN, EMPTY])),
+                                                 Array1::from(Vec::<i8>::from([0, 2, 3, 5])),
+                                                 String::from("P_2_C"),
+                                                 16);
+
+    pub static ref PATTERNS: [&'static Pattern; 17] = {
+        let patterns: [&'static Pattern; 17] = [&(*P_WIN), &(*P_4_ST), &(*P_4_A), &(*P_4_B), &(*P_4_C), &(*P_3_ST), &(*P_3_A), &(*P_3_B),
+                                                &(*P_3_C), &(*P_3_D), &(*P_3_E), &(*P_3_F), &(*P_3_G), &(*P_3_H),
+                                                &(*P_2_A), &(*P_2_B), &(*P_2_C)];
+
+        for (i, p) in patterns.iter().enumerate() {
+            assert_eq!(i as i8, p.index);
+        }
+
+        return patterns;
+    };
+
+    pub static ref NUM_PTNS: usize = PATTERNS.len();
 }
-
-// # Threat patterns (including low priority threats).
-// P_4_ST = Pattern([EMPTY, OWN, OWN, OWN, OWN, EMPTY], [], "P_4_ST")
-// P_4_A = Pattern([WALL_ENEMY, OWN, OWN, OWN, OWN, EMPTY], [5], "P_4_A")
-// P_4_B = Pattern([NOT_OWN, OWN, OWN, OWN, EMPTY, OWN], [4], "P_4_B")
-// P_4_C = Pattern([NOT_OWN, OWN, OWN, EMPTY, OWN, OWN, NOT_OWN], [3], "P_4_C")
-// P_3_ST = Pattern([EMPTY, EMPTY, OWN, OWN, OWN, EMPTY, EMPTY], [1, 5], "P_3_ST")
-// P_3_A = Pattern([WALL_ENEMY, EMPTY, OWN, OWN, OWN, EMPTY, EMPTY], [1, 5, 6], "P_3_A")
-// P_3_B = Pattern([EMPTY, OWN, OWN, EMPTY, OWN, EMPTY], [0, 3, 5], "P_3_B")
-// P_3_C = Pattern([WALL_ENEMY, OWN, OWN, OWN, EMPTY, EMPTY], [4, 5], "P_3_C")
-// P_3_D = Pattern([WALL_ENEMY, OWN, OWN, EMPTY, OWN, EMPTY], [3, 5], "P_3_D")
-// P_3_E = Pattern([WALL_ENEMY, OWN, EMPTY, OWN, OWN, EMPTY], [2, 5], "P_3_E")
-// P_3_F = Pattern([WALL_ENEMY, EMPTY, OWN, OWN, OWN, EMPTY, WALL_ENEMY], [1, 5], "P_3_F")
-// P_3_G = Pattern([NOT_OWN, OWN, OWN, EMPTY, EMPTY, OWN], [3, 4], "P_3_G")
-// P_3_H = Pattern([NOT_OWN, OWN, EMPTY, OWN, EMPTY, OWN, NOT_OWN], [2, 4], "P_3_H")
-// P_2_A = Pattern([EMPTY, EMPTY, OWN, OWN, EMPTY, EMPTY], [0, 1, 4, 5], "P_2_A")
-// P_2_B = Pattern([EMPTY, EMPTY, OWN, EMPTY, OWN, EMPTY, EMPTY], [0, 1, 3, 5, 6], "P_2_B")
-// P_2_C = Pattern([EMPTY, OWN, EMPTY, EMPTY, OWN, EMPTY], [0, 2, 3, 5], "P_2_C")
-
-// # NOTE: Put all the patterns defined above in this list.
-// PATTERNS = [P_WIN, P_4_ST, P_4_A, P_4_B, P_4_C, P_3_ST, P_3_A, P_3_B,
-//             P_3_C, P_3_D, P_3_E, P_3_F, P_3_G, P_3_H,
-//             P_2_A, P_2_B, P_2_C]
-
-// # Setting indices of PATTERNS.
-// for i, p in enumerate(PATTERNS):
-//     p.index = i
-
-// NUM_PTNS = len(PATTERNS)
 
 // PATTERNS_BY_DEFCON = dict()
 // for p in PATTERNS:
