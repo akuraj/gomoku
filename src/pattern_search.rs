@@ -28,21 +28,23 @@ pub fn dedupe_matches(matches: &mut Vec<Match>) {
     let mut i: usize = 0;
     let mut n = matches.len();
 
-    while i < n - 1 {
-        let a = matches[i];
-        let mut j = i + 1;
+    if n > 0 {
+        while i < n - 1 {
+            let a = matches[i];
+            let mut j = i + 1;
 
-        while j < n {
-            let b = matches[j];
-            if b == a || (b.0 == a.1 && b.1 == a.0) {
-                matches.remove(j);
-                n -= 1;
-            } else {
-                j += 1;
+            while j < n {
+                let b = matches[j];
+                if b == a || (b.0 == a.1 && b.1 == a.0) {
+                    matches.remove(j);
+                    n -= 1;
+                } else {
+                    j += 1;
+                }
             }
-        }
 
-        i += 1;
+            i += 1;
+        }
     }
 }
 
@@ -169,21 +171,23 @@ pub fn dedupe_next_sq_match_pairs(pairs: &mut Vec<NSQMatch>) {
     let mut i: usize = 0;
     let mut n = pairs.len();
 
-    while i < n - 1 {
-        let a = pairs[i];
-        let mut j = i + 1;
+    if n > 0 {
+        while i < n - 1 {
+            let a = pairs[i];
+            let mut j = i + 1;
 
-        while j < n {
-            let b = pairs[j];
-            if (a.0 == b.0) && (a.1 == b.1 || ((a.1).0 == (b.1).1 && (a.1).1 == (b.1).0)) {
-                pairs.remove(j);
-                n -= 1;
-            } else {
-                j += 1;
+            while j < n {
+                let b = pairs[j];
+                if (a.0 == b.0) && (a.1 == b.1 || ((a.1).0 == (b.1).1 && (a.1).1 == (b.1).0)) {
+                    pairs.remove(j);
+                    n -= 1;
+                } else {
+                    j += 1;
+                }
             }
-        }
 
-        i += 1;
+            i += 1;
+        }
     }
 }
 

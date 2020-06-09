@@ -33,6 +33,7 @@ pub fn point_to_algebraic(x: Point) -> String {
 }
 
 pub fn algebraic_to_point(x: &str) -> Point {
+    // FIXME!!!!!
     let c: Vec<char> = x.chars().collect();
     let col_idx = col_chr_to_idx(c[0]) as i8;
     let row_idx = row_num_to_idx((c[1]).to_digit(RADIX).unwrap() as usize) as i8;
@@ -124,14 +125,14 @@ pub fn board_to_str(board: &Array2<u8>) -> String {
 }
 
 pub fn set_sq(board: &mut Array2<u8>, color: u8, point: Point) {
-    assert!(color == BLACK || color == BLACK);
+    assert!(color == BLACK || color == WHITE);
     let p = (point.0 as usize, point.1 as usize);
     assert_eq!(board[p], EMPTY);
     board[p] = color;
 }
 
 pub fn clear_sq(board: &mut Array2<u8>, color: u8, point: Point) {
-    assert!(color == BLACK || color == BLACK);
+    assert!(color == BLACK || color == WHITE);
     let p = (point.0 as usize, point.1 as usize);
     assert_eq!(board[p], color);
     board[p] = EMPTY;

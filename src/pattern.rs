@@ -13,14 +13,14 @@ use std::collections::HashMap;
 
 #[derive(Clone,Debug)]
 pub struct Pattern {
-    pattern: Array1<u8>,
-    critical_sqs: Array1<i8>,
-    own_sqs: Array1<i8>,
-    name: String,
-    index: i8,
-    empty_sqs: Array1<i8>,
-    defcon: i8,
-    immediate: bool,
+    pub pattern: Array1<u8>,
+    pub critical_sqs: Array1<i8>,
+    pub own_sqs: Array1<i8>,
+    pub name: String,
+    pub index: i8,
+    pub empty_sqs: Array1<i8>,
+    pub defcon: i8,
+    pub immediate: bool,
 }
 
 impl Pattern {
@@ -311,10 +311,10 @@ lazy_static! {
 
 #[derive(Clone,Debug)]
 pub struct Threat {
-    m: Match,
-    pidx: i8,
-    defcon: i8,
-    critical_sqs: HashSet<Point>,
+    pub m: Match,
+    pub pidx: i8,
+    pub defcon: i8,
+    pub critical_sqs: HashSet<Point>,
 }
 
 pub fn threat_item(m: Match, pattern: &Pattern) -> Threat {

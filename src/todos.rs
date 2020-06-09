@@ -3,6 +3,7 @@
 // FIXME: usize is the appropriate type for WIN_LENGTH, MAX_DEFCON, MDFIT?
 // FIXME: isize, usize and other stuff inside geometry fns?
 //        Use more appropriate data types that take up less space like i8 or u8?
+// FIXME: Replace if-else-if with match!
 
 // TODO: Add function documentation. Just copy from Python impl.
 // TODO: Add checks on size of board and patterns by having max value in consts.

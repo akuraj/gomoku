@@ -8,14 +8,18 @@ pub mod geometry;
 pub mod pattern_search;
 pub mod pattern;
 pub mod board;
+pub mod state;
 
-use board::{get_board, new_board, algebraic_to_point, board_to_str};
+use consts::BLACK;
+use state::get_state;
+use board::algebraic_to_point;
 
 fn main() {
-    let x = ["a4", "b6"];
-    let y = ["a5", "b7"];
+    let s = get_state(&["i10"],//&["j5", "j6", "i10", "i11"],
+                      &[],
+                      BLACK,
+                      false );
 
-    let board = get_board(&x, &y);
-
-    println!("{}", board_to_str(&board));
+    println!("{}", s);
+    // println!("{}", algebraic_to_point("j5"));
 }
