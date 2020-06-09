@@ -8,6 +8,7 @@ use pattern_search::{search_board, search_point, search_point_own,
                      search_point_own_next_sq, one_step_from_straight_threat,
                      degree, defcon_from_degree};
 use std::fmt;
+use std::collections::HashSet;
 use std::collections::HashMap;
 
 #[derive(Clone,Debug)]
@@ -231,6 +232,9 @@ lazy_static! {
             assert_eq!(i as i8, p.index);
         }
 
+        let num_names = patterns.iter().map(|&x| String::from(&x.name)).collect::<HashSet<String>>().len();
+        assert_eq!(num_names, patterns.len());
+
         return patterns;
     };
 
@@ -246,6 +250,17 @@ lazy_static! {
                 m.insert(p.defcon, Vec::<&'static Pattern>::new());
                 m.get_mut(&p.defcon).unwrap().push(p);
             }
+        }
+
+        return m;
+    };
+
+    pub static ref PATTERNS_BY_NAME: HashMap<String, &'static Pattern> = {
+        let mut m: HashMap<String, &'static Pattern> = HashMap::new();
+
+        for p in PATTERNS.iter() {
+            assert!(!m.contains_key(&p.name));
+            m.insert(String::from(&p.name), p);
         }
 
         return m;
