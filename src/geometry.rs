@@ -1,6 +1,11 @@
 //! Functions related to the geometry of the problem.
 
-use std::cmp::min;
+use std::cmp::{min, max};
+use num::{signum, abs};
+use ndarray::prelude::*;
+use std::collections::HashSet;
+
+pub type Point = (i8, i8);
 
 pub fn increment(d: i8) -> i8 {
     if d % 4 == 0 {
@@ -54,84 +59,67 @@ pub fn index_bounds_incl(side: i8, length: i8, x: i8, y: i8, row_inc: i8, col_in
     return (-min(back, length - 1), min(front, length) - (length - 1));
 }
 
-// def point_is_on_line(point, start, end, segment_only):
-//     dx1 = point[0] - start[0]
-//     dy1 = point[1] - start[1]
-//     dx2 = point[0] - end[0]
-//     dy2 = point[1] - end[1]
-//     return dx1 * dy2 == dx2 * dy1 and (not segment_only or (dx1 * dx2 <= 0 and dy1 * dy2 <= 0))
+pub fn point_is_on_line(point: Point, start: Point, end: Point, segment_only: bool) -> bool {
+    let dx1 = point.0 - start.0;
+    let dy1 = point.1 - start.1;
+    let dx2 = point.0 - end.0;
+    let dy2 = point.1 - end.1;
 
-// @njit
-// def point_on_line(start, end, i):
-//     """For lines along one of the 8 directions, returns the i'th point from start."""
+    return (dx1 * dy2 == dx2 * dy1) && (!segment_only || (dx1 * dx2 <= 0 && dy1 * dy2 <= 0));
+}
 
-//     dx = end[0] - start[0]
-//     dy = end[1] - start[1]
-//     assert dx * dy == 0 or abs(dx) == abs(dy)
-//     return (start[0] + signum(dx) * i, start[1] + signum(dy) * i)
+pub fn point_on_line(start: Point, end: Point, i: i8) -> Point {
+    let dx = end.0 - start.0;
+    let dy = end.1 - start.1;
+    assert!(dx * dy == 0 || abs(dx) == abs(dy));
 
+    return (start.1 + signum(dx) * i, start.1 + signum(dy) * i);
+}
 
-// @njit
-// def is_normal_line(start, end):
-//     """A line along one of the 8 directions is a normal line."""
+pub fn is_normal_line(start: Point, end: Point) -> bool {
+    let adx = abs(end.0 - start.0);
+    let ady = abs(end.1 - start.1);
+    return (adx * ady == 0 || adx == ady) && (adx + ady > 0);
+}
 
-//     adx = abs(end[0] - start[0])
-//     ady = abs(end[1] - start[1])
-//     return (adx * ady == 0 or adx == ady) and adx + ady > 0
+pub fn chebyshev_distance(start: Point, end: Point) -> i8 {
+    let adx = abs(end.0 - start.0);
+    let ady = abs(end.1 - start.1);
+    return max(adx, ady);
+}
 
+pub fn point_set_on_line(start: Point, end: Point, idxs: &Array1<i8>) -> HashSet<Point> {
+    let mut point_set: HashSet<Point> = HashSet::new();
 
-// @njit
-// def chebyshev_distance(start, end):
-//     adx = abs(end[0] - start[0])
-//     ady = abs(end[1] - start[1])
-//     return max(adx, ady)
+    for idx in idxs.iter() {
+        point_set.insert(point_on_line(start, end, *idx));
+    }
 
+    return point_set;
+}
 
-// @njit
-// def point_set_on_line(start, end, idxs):
-//     """ Set of points, as specified by idxs, on the line spanning start and end.
+pub fn slope_intercept(start: Point, end: Point) -> (i8, i8, i8) {
+    assert!(is_normal_line(start, end));
 
-//     See point_on_line for more info.
-//     """
+    let dx = end.0 - start.0;
+    let dy = end.1 - start.1;
 
-//     # pylint: disable=R1718
+    if dx == 0 {
+        return (0, 1, -start.0);
+    } else {
+        let slope = signum(dx) * signum(dy);
+        return (1, slope, start.1 - slope * start.0);
+    }
+}
 
-//     return set([point_on_line(start, end, i) for i in idxs])
+pub fn point_idx_on_line(point: Point, line: (i8, i8, i8)) -> i8 {
+    let (x, y) = point;
 
+    assert!(line.0 * point.1 == line.1 * point.0 + line.2);
 
-// @njit
-// def slope_intercept(start, end):
-//     """Modified slope intercept form.
-
-//     Returns (a, b, c), where,
-
-//     a * y = b * x + c
-
-//     Normalized such that a is 1 if line is not vertical,
-//     and in the case of a vertical line, (a, b) = (0, 1).
-//     """
-
-//     assert is_normal_line(start, end)
-
-//     dx = end[0] - start[0]
-//     dy = end[1] - start[1]
-
-//     if dx == 0:
-//         return (0, 1, -start[0])
-//     else:
-//         slope = signum(dx) * signum(dy)
-//         return (1, slope, start[1] - slope * start[0])
-
-
-// @njit
-// def point_idx_on_line(point, line):
-//     """Unique identifier for a point on a given line.
-
-//     (x, y) = point
-
-//     Check the that point is on the given line,
-//     and return x if line is not vertical, and y otherwise.
-//     """
-
-//     assert line[0] * point[1] == line[1] * point[0] + line[2]
-//     return point[0] if line[0] else point[1]
+    if line.0 != 0 {
+        return point.0;
+    } else {
+        return point.1;
+    }
+}

@@ -2,10 +2,9 @@
 
 use ndarray::prelude::*;
 use consts::{BLACK, WHITE, EMPTY, STONE, NUM_DIRECTIONS, WIN_LENGTH, OWN, MAX_DEFCON};
-use geometry::{increments, index_bounds, index_bounds_incl};
+use geometry::{Point, increments, index_bounds, index_bounds_incl};
 use std::cmp::max;
 
-pub type Point = (i8, i8);
 pub type Match = (Point, Point);
 pub type NSQMatch = (Point, Match);
 
