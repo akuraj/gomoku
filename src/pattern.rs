@@ -10,7 +10,7 @@ use pattern_search::{search_board, search_point, search_point_own,
 use std::fmt;
 
 #[derive(Clone,Debug)]
-struct Pattern {
+pub struct Pattern {
     pattern: Array1<u8>,
     critical_sqs: Array1<i8>,
     own_sqs: Array1<i8>,
@@ -22,7 +22,7 @@ struct Pattern {
 }
 
 impl Pattern {
-    pub fn new(pattern: Array1<u8>, critical_sqs: Array1<i8>, name: String) -> Self {
+    pub fn new(pattern: Array1<u8>, critical_sqs: Array1<i8>, name: String, index: i8) -> Self {
         for elem in pattern.iter() {
             assert!(GEN_ELEMS.iter().any(|&x| x == *elem));
             assert!(*elem == OWN || (*elem & OWN == 0));
@@ -105,7 +105,7 @@ impl Pattern {
             critical_sqs: critical_sqs,
             own_sqs: Array1::from(own_sqs),
             name: name,
-            index: -1,
+            index: index,
             empty_sqs: Array1::from(empty_sqs),
             defcon: defcon,
             immediate: immediate,
@@ -116,7 +116,7 @@ impl Pattern {
 impl fmt::Display for Pattern {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let mut output = String::new();
-
+        output.push('\n');
         output.push_str("pattern: ");
         for x in self.pattern.iter() {
             output.push_str(GEN_ELEMS_TO_NAMES[x]);
@@ -135,10 +135,12 @@ impl fmt::Display for Pattern {
     }
 }
 
-// # *** PATTERN CONSTS ***
-
-// # Win pattern.
-// P_WIN = Pattern([OWN, OWN, OWN, OWN, OWN], [], "P_WIN")
+lazy_static! {
+    pub static ref P_WIN: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([OWN, OWN, OWN, OWN, OWN])),
+                                                 Array1::from(Vec::<i8>::from([])),
+                                                 String::from("P_WIN"),
+                                                 0);
+}
 
 // # Threat patterns (including low priority threats).
 // P_4_ST = Pattern([EMPTY, OWN, OWN, OWN, OWN, EMPTY], [], "P_4_ST")

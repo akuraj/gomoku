@@ -10,8 +10,9 @@ pub mod pattern;
 
 use ndarray::prelude::*;
 use pattern_search::get_pattern;
-use consts::{GEN_ELEMS, OWN};
+use consts::OWN;
+use pattern::P_WIN;
 
 fn main() {
-    println!("{:?}", GEN_ELEMS.iter().any(|&x| x == 77));
+    println!("{}", *P_WIN);
 }
