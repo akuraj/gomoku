@@ -326,34 +326,74 @@ pub fn threat_item(m: Match, pattern: &Pattern) -> Threat {
     };
 }
 
-// def search_all_board(board, color, pri):
-//     return [threat_item(match, p)
-//             for p in PATTERNS_BY_PRI[pri]
-//             for match in search_board(board, p.pattern, color)]
+pub fn search_all_board(board: &Array2<u8>, color: u8, pri: ThreatPri) -> Vec<Threat> {
+    let mut threats: Vec<Threat> = Vec::new();
 
+    for p in PATTERNS_BY_PRI[&pri] {
+        for m in search_board(board, &p.pattern, color) {
+            threats.push(threat_item(m, p));
+        }
+    }
 
-// def search_all_point(board, color, point, pri):
-//     return [threat_item(match, p)
-//             for p in PATTERNS_BY_PRI[pri]
-//             for match in search_point(board, p.pattern, color, point)]
+    return threats;
+}
 
+pub fn search_all_point(board: &Array2<u8>, color: u8, point: Point, pri: ThreatPri) -> Vec<Threat> {
+    let mut threats: Vec<Threat> = Vec::new();
 
-// def search_all_point_own(board, color, point, pri):
-//     return [threat_item(match, p)
-//             for p in PATTERNS_BY_PRI[pri]
-//             for match in search_point_own(board, p.pattern, color, point, p.own_sqs)]
+    for p in PATTERNS_BY_PRI[&pri] {
+        for m in search_point(board, &p.pattern, color, point) {
+            threats.push(threat_item(m, p));
+        }
+    }
 
+    return threats;
+}
 
-// def search_all_board_get_next_sqs(board, color, pri):
-//     return {x[0] for p in PATTERNS_BY_PRI[pri]
-//             for x in search_board_next_sq(board, p.pattern, color)}
+pub fn search_all_point_own(board: &Array2<u8>, color: u8, point: Point, pri: ThreatPri) -> Vec<Threat> {
+    let mut threats: Vec<Threat> = Vec::new();
 
+    for p in PATTERNS_BY_PRI[&pri] {
+        for m in search_point_own(board, &p.pattern, color, point, &p.own_sqs) {
+            threats.push(threat_item(m, p));
+        }
+    }
 
-// def search_all_point_get_next_sqs(board, color, point, pri):
-//     return {x[0] for p in PATTERNS_BY_PRI[pri]
-//             for x in search_point_next_sq(board, p.pattern, color, point)}
+    return threats;
+}
 
+pub fn search_all_board_get_next_sqs(board: &Array2<u8>, color: u8, pri: ThreatPri) -> HashSet<Point> {
+    let mut nsqs: HashSet<Point> = HashSet::new();
 
-// def search_all_point_own_get_next_sqs(board, color, point, pri):
-//     return {x[0] for p in PATTERNS_BY_PRI[pri]
-//             for x in search_point_own_next_sq(board, p.pattern, color, point, p.own_sqs)}
+    for p in PATTERNS_BY_PRI[&pri] {
+        for x in search_board_next_sq(board, &p.pattern, color) {
+            nsqs.insert(x.0);
+        }
+    }
+
+    return nsqs;
+}
+
+pub fn search_all_point_get_next_sqs(board: &Array2<u8>, color: u8, point: Point, pri: ThreatPri) -> HashSet<Point> {
+    let mut nsqs: HashSet<Point> = HashSet::new();
+
+    for p in PATTERNS_BY_PRI[&pri] {
+        for x in search_point_next_sq(board, &p.pattern, color, point) {
+            nsqs.insert(x.0);
+        }
+    }
+
+    return nsqs;
+}
+
+pub fn search_all_point_own_get_next_sqs(board: &Array2<u8>, color: u8, point: Point, pri: ThreatPri) -> HashSet<Point> {
+    let mut nsqs: HashSet<Point> = HashSet::new();
+
+    for p in PATTERNS_BY_PRI[&pri] {
+        for x in search_point_own_next_sq(board, &p.pattern, color, point, &p.own_sqs) {
+            nsqs.insert(x.0);
+        }
+    }
+
+    return nsqs;
+}
