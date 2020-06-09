@@ -137,6 +137,13 @@ impl fmt::Display for Pattern {
     }
 }
 
+#[derive(Copy,Clone,Debug,PartialEq,Eq,Hash)]
+pub enum ThreatPri {
+    ALL,
+    IMMEDIATE,
+    NON_IMMEDIATE,
+}
+
 lazy_static! {
     pub static ref P_WIN: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([OWN, OWN, OWN, OWN, OWN])),
                                                  Array1::from(Vec::<i8>::from([])),
@@ -223,7 +230,7 @@ lazy_static! {
                                                  String::from("P_2_C"),
                                                  16);
 
-    pub static ref PATTERNS: [&'static Pattern; 17] = {
+    pub static ref PATTERNS: Vec<&'static Pattern> = {
         let patterns: [&'static Pattern; 17] = [&(*P_WIN), &(*P_4_ST), &(*P_4_A), &(*P_4_B), &(*P_4_C), &(*P_3_ST), &(*P_3_A), &(*P_3_B),
                                                 &(*P_3_C), &(*P_3_D), &(*P_3_E), &(*P_3_F), &(*P_3_G), &(*P_3_H),
                                                 &(*P_2_A), &(*P_2_B), &(*P_2_C)];
@@ -238,7 +245,7 @@ lazy_static! {
         let max_defcon_imm = patterns.iter().fold(i8::MIN, |a, b| if b.immediate { a.max(b.defcon) } else { a });
         assert_eq!(max_defcon_imm, MDFIT);
 
-        return patterns;
+        return Vec::from(patterns);
     };
 
     pub static ref NUM_PTNS: usize = PATTERNS.len();
@@ -292,25 +299,15 @@ lazy_static! {
 
         return patterns;
     };
+
+    pub static ref PATTERNS_BY_PRI: HashMap<ThreatPri, &'static Vec<&'static Pattern>> = {
+        let mut m: HashMap<ThreatPri, &'static Vec<&'static Pattern>> = HashMap::new();
+        m.insert(ThreatPri::ALL, &PATTERNS);
+        m.insert(ThreatPri::IMMEDIATE, &PATTERNS_I);
+        m.insert(ThreatPri::NON_IMMEDIATE, &PATTERNS_NI);
+        return m;
+    };
 }
-
-// # *** THREAT PRIORITY ENUM ***
-
-
-// @unique
-// class ThreatPri(IntEnum):
-//     """Enum to represent the priority of a Threat."""
-
-//     ALL = auto()
-//     IMMEDIATE = auto()
-//     NON_IMMEDIATE = auto()
-
-
-// PATTERNS_BY_PRI = dict()
-// PATTERNS_BY_PRI[ThreatPri.ALL] = PATTERNS
-// PATTERNS_BY_PRI[ThreatPri.IMMEDIATE] = PATTERNS_I
-// PATTERNS_BY_PRI[ThreatPri.NON_IMMEDIATE] = PATTERNS_NI
-
 
 // # *** PATTERN SEARCH FUNCTIONS ***
 

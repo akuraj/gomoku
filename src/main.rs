@@ -11,12 +11,14 @@ pub mod pattern;
 use ndarray::prelude::*;
 use pattern_search::get_pattern;
 use consts::OWN;
-use pattern::{PATTERNS, PATTERNS_BY_DEFCON, PATTERNS_BY_NAME, PATTERNS_I, PATTERNS_NI};
+use pattern::{PATTERNS, PATTERNS_BY_DEFCON, PATTERNS_BY_NAME, PATTERNS_I, PATTERNS_NI,
+              PATTERNS_BY_PRI};
 
 use std::collections::HashSet;
 
 fn main() {
-    for p in PATTERNS_NI.iter() {
-        println!("{}", *p);
-    }
+    println!("{:?}", *PATTERNS_BY_PRI);
+    // for p in PATTERNS_NI.iter() {
+    //     println!("{}", *p);
+    // }
 }
