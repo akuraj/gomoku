@@ -58,8 +58,8 @@ fn main() {
     }
     println!("Time taken: {} seconds", ( start.elapsed().as_nanos() as f32 ) / 1e9);
 
-    let node = tss_board(&mut s.board, s.turn);
-    let win_vars = potential_win_variations(&node);
-    println!("{}", win_vars.len());
-    animate_variation(&mut s.board, s.turn, &win_vars[0]);
+    // let node = tss_board(&mut s.board, s.turn);
+    // let win_vars = potential_win_variations(&node);
+    // println!("{}", win_vars.len());
+    // animate_variation(&mut s.board, s.turn, &win_vars[0]);
 }
