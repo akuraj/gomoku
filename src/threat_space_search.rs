@@ -1,6 +1,6 @@
 // from time import sleep
 use ndarray::prelude::*;
-use consts::{STONE, MAX_DEFCON};
+use consts::{STONE, MAX_DEFCON, ANIMATION_TIMESTEP_SECS};
 use board::{set_sq, clear_sq, board_to_str};
 use pattern::{ThreatPri, search_all_board, search_all_point_own,
               search_all_board_get_next_sqs,
@@ -8,8 +8,8 @@ use pattern::{ThreatPri, search_all_board, search_all_point_own,
 use geometry::Point;
 use pattern::Threat;
 use std::collections::HashSet;
-
-// ANIMATION_TIMESTEP = 2
+use std::time::Duration;
+use std::thread;
 
 // @unique
 // class SearchStatus(IntEnum):
@@ -175,21 +175,31 @@ pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, HashSet<Po
     return variations;
 }
 
-// def animate_variation(board, color, variation):
-//     print(board_to_str(board))
-//     sleep(ANIMATION_TIMESTEP)
+pub fn animate_variation(board: &mut Array2<u8>, color: u8, variation: &Vec<(Point, HashSet<Point>)>) {
+    let sleep_duration = Duration::from_secs(ANIMATION_TIMESTEP_SECS);
 
-//     for item in variation:
-//         set_sq(board, color, item[0])
+    println!("{}", board_to_str(board));
+    thread::sleep(sleep_duration);
 
-//         for csq in item[1]:
-//             set_sq(board, color ^ STONE, csq)
+    for item in variation.iter() {
+        set_sq(board, color, item.0);
 
-//         print(board_to_str(board))
-//         sleep(ANIMATION_TIMESTEP)
+        println!("{}", board_to_str(board));
+        thread::sleep(sleep_duration);
 
-//     for item in variation:
-//         clear_sq(board, color, item[0])
+        for csq in item.1.iter() {
+            set_sq(board, color ^ STONE, *csq);
+        }
 
-//         for csq in item[1]:
-//             clear_sq(board, color ^ STONE, csq)
+        println!("{}", board_to_str(board));
+        thread::sleep(sleep_duration);
+    }
+
+    for item in variation.iter() {
+        clear_sq(board, color, item.0);
+
+        for csq in item.1.iter() {
+            clear_sq(board, color ^ STONE, *csq);
+        }
+    }
+}

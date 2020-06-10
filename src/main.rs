@@ -16,7 +16,7 @@ use consts::BLACK;
 use state::get_state;
 use testing::test_search_fns;
 use std::time::Instant;
-use threat_space_search::tss_board;
+use threat_space_search::{tss_board, potential_win_variations, animate_variation};
 
 fn main() {
     // let s = get_state(&["a1", "a2", "a3", "a13", "a14", "a15", "b1", "b15", "c1", "c15",
@@ -57,4 +57,9 @@ fn main() {
         tss_board(&mut s.board, s.turn);
     }
     println!("Time taken: {} seconds", ( start.elapsed().as_nanos() as f32 ) / 1e9);
+
+    let node = tss_board(&mut s.board, s.turn);
+    let win_vars = potential_win_variations(&node);
+    println!("{}", win_vars.len());
+    animate_variation(&mut s.board, s.turn, &win_vars[0]);
 }

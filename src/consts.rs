@@ -129,3 +129,5 @@ pub const MAX_DEFCON: usize = WIN_LENGTH;
 pub const MDFIT: usize = 2;
 
 pub const RADIX: u32 = 36;
+
+pub const ANIMATION_TIMESTEP_SECS: u64 = 2;
