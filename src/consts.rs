@@ -126,6 +126,6 @@ pub const WIN_LENGTH: usize = 5;
 pub const MAX_DEFCON: usize = WIN_LENGTH;
 
 // Max defcon for immediate threat.
-pub const MDFIT: i8 = 2;
+pub const MDFIT: usize = 2;
 
 pub const RADIX: u32 = 36;

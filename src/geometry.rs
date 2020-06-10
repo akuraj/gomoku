@@ -5,9 +5,9 @@ use num::{signum, abs};
 use ndarray::prelude::*;
 use std::collections::HashSet;
 
-pub type Point = (i8, i8);
+pub type Point = (isize, isize);
 
-pub fn increment(d: i8) -> i8 {
+pub fn increment(d: isize) -> isize {
     if d % 4 == 0 {
         return 0;
     } else if d % 8 < 4 {
@@ -17,11 +17,11 @@ pub fn increment(d: i8) -> i8 {
     }
 }
 
-pub fn increments(d: i8) -> (i8, i8) {
+pub fn increments(d: isize) -> (isize, isize) {
     return (increment(d), increment(d + 2));
 }
 
-pub fn index_bounds(side: i8, length: i8, increment: i8) -> (i8, i8) {
+pub fn index_bounds(side: isize, length: isize, increment: isize) -> (isize, isize) {
     if length <= side {
         match increment {
             -1 => return (length - 1, side),
@@ -34,7 +34,7 @@ pub fn index_bounds(side: i8, length: i8, increment: i8) -> (i8, i8) {
     }
 }
 
-pub fn index_bounds_incl(side: i8, length: i8, x: i8, y: i8, row_inc: i8, col_inc: i8) -> (i8, i8) {
+pub fn index_bounds_incl(side: isize, length: isize, x: isize, y: isize, row_inc: isize, col_inc: isize) -> (isize, isize) {
     let mut row_b = side;
     let mut row_f = side;
     match row_inc {
@@ -68,7 +68,7 @@ pub fn point_is_on_line(point: Point, start: Point, end: Point, segment_only: bo
     return (dx1 * dy2 == dx2 * dy1) && (!segment_only || (dx1 * dx2 <= 0 && dy1 * dy2 <= 0));
 }
 
-pub fn point_on_line(start: Point, end: Point, i: i8) -> Point {
+pub fn point_on_line(start: Point, end: Point, i: isize) -> Point {
     let dx = end.0 - start.0;
     let dy = end.1 - start.1;
     assert!(dx * dy == 0 || abs(dx) == abs(dy));
@@ -82,13 +82,13 @@ pub fn is_normal_line(start: Point, end: Point) -> bool {
     return (adx * ady == 0 || adx == ady) && (adx + ady > 0);
 }
 
-pub fn chebyshev_distance(start: Point, end: Point) -> i8 {
+pub fn chebyshev_distance(start: Point, end: Point) -> isize {
     let adx = abs(end.0 - start.0);
     let ady = abs(end.1 - start.1);
     return max(adx, ady);
 }
 
-pub fn point_set_on_line(start: Point, end: Point, idxs: &Array1<i8>) -> HashSet<Point> {
+pub fn point_set_on_line(start: Point, end: Point, idxs: &Array1<isize>) -> HashSet<Point> {
     let mut point_set: HashSet<Point> = HashSet::new();
 
     for idx in idxs.iter() {
@@ -98,7 +98,7 @@ pub fn point_set_on_line(start: Point, end: Point, idxs: &Array1<i8>) -> HashSet
     return point_set;
 }
 
-pub fn slope_intercept(start: Point, end: Point) -> (i8, i8, i8) {
+pub fn slope_intercept(start: Point, end: Point) -> (isize, isize, isize) {
     assert!(is_normal_line(start, end));
 
     let dx = end.0 - start.0;
@@ -112,7 +112,7 @@ pub fn slope_intercept(start: Point, end: Point) -> (i8, i8, i8) {
     }
 }
 
-pub fn point_idx_on_line(point: Point, line: (i8, i8, i8)) -> i8 {
+pub fn point_idx_on_line(point: Point, line: (isize, isize, isize)) -> isize {
     let (x, y) = point;
 
     assert!(line.0 * y == line.1 * x + line.2);

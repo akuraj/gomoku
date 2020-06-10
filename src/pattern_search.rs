@@ -49,8 +49,8 @@ pub fn dedupe_matches(matches: &mut Vec<Match>) {
 }
 
 #[inline(always)]
-pub fn idx(start: i8, increment: i8, steps: usize) -> i8 {
-    return start + increment * (steps as i8);
+pub fn idx(start: isize, increment: isize, steps: usize) -> isize {
+    return start + increment * (steps as isize);
 }
 
 pub fn search_board(board: &Array2<u8>, gen_pattern: &Array1<u8>, color: u8) -> Vec<Match> {
@@ -60,9 +60,9 @@ pub fn search_board(board: &Array2<u8>, gen_pattern: &Array1<u8>, color: u8) -> 
 
     let mut matches: Vec<Match> = Vec::new();
     for d in 0..NUM_DIRECTIONS {
-        let (row_inc, col_inc) = increments(d as i8);
-        let (row_min, row_max) = index_bounds(side as i8, length as i8, row_inc);
-        let (col_min, col_max) = index_bounds(side as i8, length as i8, col_inc);
+        let (row_inc, col_inc) = increments(d as isize);
+        let (row_min, row_max) = index_bounds(side as isize, length as isize, row_inc);
+        let (col_min, col_max) = index_bounds(side as isize, length as isize, col_inc);
 
         for i in row_min..row_max {
             for j in col_min..col_max {
@@ -98,8 +98,8 @@ pub fn search_point(board: &Array2<u8>, gen_pattern: &Array1<u8>, color: u8,
 
     let mut matches: Vec<Match> = Vec::new();
     for d in 0..NUM_DIRECTIONS {
-        let (row_inc, col_inc) = increments(d as i8);
-        let (s_min, s_max) = index_bounds_incl(side as i8, length as i8, x, y, row_inc, col_inc);
+        let (row_inc, col_inc) = increments(d as isize);
+        let (s_min, s_max) = index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
 
         for h in s_min..s_max {
             let (i, j) = (x + row_inc * h, y + col_inc * h);
@@ -126,7 +126,7 @@ pub fn search_point(board: &Array2<u8>, gen_pattern: &Array1<u8>, color: u8,
 }
 
 pub fn search_point_own(board: &Array2<u8>, gen_pattern: &Array1<u8>, color: u8,
-                        point: Point, own_sqs: &Array1<i8>) -> Vec<Match> {
+                        point: Point, own_sqs: &Array1<isize>) -> Vec<Match> {
     let (x, y) = point;
 
     let side = board.shape()[0];
@@ -137,8 +137,8 @@ pub fn search_point_own(board: &Array2<u8>, gen_pattern: &Array1<u8>, color: u8,
 
     if board[(x as usize, y as usize)] == color {
         for d in 0..NUM_DIRECTIONS {
-            let (row_inc, col_inc) = increments(d as i8);
-            let (s_min, s_max) = index_bounds_incl(side as i8, length as i8, x, y, row_inc, col_inc);
+            let (row_inc, col_inc) = increments(d as isize);
+            let (s_min, s_max) = index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
 
             for own_sq in own_sqs.iter() {
                 if s_min <= (-*own_sq) && (-*own_sq) < s_max {
@@ -198,14 +198,14 @@ pub fn search_board_next_sq(board: &Array2<u8>, gen_pattern: &Array1<u8>, color:
 
     let mut next_sq_match_pairs: Vec<NSQMatch> = Vec::new();
     for d in 0..NUM_DIRECTIONS {
-        let (row_inc, col_inc) = increments(d as i8);
-        let (row_min, row_max) = index_bounds(side as i8, length as i8, row_inc);
-        let (col_min, col_max) = index_bounds(side as i8, length as i8, col_inc);
+        let (row_inc, col_inc) = increments(d as isize);
+        let (row_min, row_max) = index_bounds(side as isize, length as isize, row_inc);
+        let (col_min, col_max) = index_bounds(side as isize, length as isize, col_inc);
 
         for i in row_min..row_max {
             for j in col_min..col_max {
                 let mut found_next_sq = false;
-                let mut k_next_sq: i8 = -1;
+                let mut k_next_sq: isize = -1;
                 let mut found = true;
 
                 for k in 0..length {
@@ -215,7 +215,7 @@ pub fn search_board_next_sq(board: &Array2<u8>, gen_pattern: &Array1<u8>, color:
                     if p_val & b_val == 0 {
                         if !found_next_sq && p_val == color && b_val == EMPTY {
                             found_next_sq = true;
-                            k_next_sq = k as i8;
+                            k_next_sq = k as isize;
                         } else {
                             found = false;
                             break;
@@ -247,14 +247,14 @@ pub fn search_point_next_sq(board: &Array2<u8>, gen_pattern: &Array1<u8>, color:
 
     let mut next_sq_match_pairs: Vec<NSQMatch> = Vec::new();
     for d in 0..NUM_DIRECTIONS {
-        let (row_inc, col_inc) = increments(d as i8);
-        let (s_min, s_max) = index_bounds_incl(side as i8, length as i8, x, y, row_inc, col_inc);
+        let (row_inc, col_inc) = increments(d as isize);
+        let (s_min, s_max) = index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
 
         for h in s_min..s_max {
             let (i, j) = (x + row_inc * h, y + col_inc * h);
 
             let mut found_next_sq = false;
-            let mut k_next_sq: i8 = -1;
+            let mut k_next_sq: isize = -1;
             let mut found = true;
 
             for k in 0..length {
@@ -264,7 +264,7 @@ pub fn search_point_next_sq(board: &Array2<u8>, gen_pattern: &Array1<u8>, color:
                 if p_val & b_val == 0 {
                     if !found_next_sq && p_val == color && b_val == EMPTY {
                         found_next_sq = true;
-                        k_next_sq = k as i8;
+                        k_next_sq = k as isize;
                     } else {
                         found = false;
                         break;
@@ -286,7 +286,7 @@ pub fn search_point_next_sq(board: &Array2<u8>, gen_pattern: &Array1<u8>, color:
 }
 
 pub fn search_point_own_next_sq(board: &Array2<u8>, gen_pattern: &Array1<u8>, color: u8,
-                                point: Point, own_sqs: &Array1<i8>) -> Vec<NSQMatch> {
+                                point: Point, own_sqs: &Array1<isize>) -> Vec<NSQMatch> {
     let (x, y) = point;
 
     let side = board.shape()[0];
@@ -297,15 +297,15 @@ pub fn search_point_own_next_sq(board: &Array2<u8>, gen_pattern: &Array1<u8>, co
 
     if board[(x as usize, y as usize)] == color {
         for d in 0..NUM_DIRECTIONS {
-            let (row_inc, col_inc) = increments(d as i8);
-            let (s_min, s_max) = index_bounds_incl(side as i8, length as i8, x, y, row_inc, col_inc);
+            let (row_inc, col_inc) = increments(d as isize);
+            let (s_min, s_max) = index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
 
             for own_sq in own_sqs.iter() {
                 if s_min <= (-*own_sq) && (-*own_sq) < s_max {
                     let (i, j) = (x - row_inc * (*own_sq), y - col_inc * (*own_sq));
 
                     let mut found_next_sq = false;
-                    let mut k_next_sq: i8 = -1;
+                    let mut k_next_sq: isize = -1;
                     let mut found = true;
 
                     for k in 0..length {
@@ -315,7 +315,7 @@ pub fn search_point_own_next_sq(board: &Array2<u8>, gen_pattern: &Array1<u8>, co
                         if p_val & b_val == 0 {
                             if !found_next_sq && p_val == color && b_val == EMPTY {
                                 found_next_sq = true;
-                                k_next_sq = k as i8;
+                                k_next_sq = k as isize;
                             } else {
                                 found = false;
                                 break;
@@ -344,7 +344,7 @@ pub fn apply_pattern(board: &mut Array2<u8>, pattern: &Array1<u8>, point: Point,
     let side = board.shape()[0];
     let length = pattern.len();
 
-    let (row_inc, col_inc) = increments(d as i8);
+    let (row_inc, col_inc) = increments(d as isize);
 
     let mut can_apply = true;
     for k in 0..length {
@@ -412,12 +412,12 @@ pub fn next_sq_matches_are_equal(x: &Vec<NSQMatch>, y: &Vec<NSQMatch>) -> bool {
     return next_sq_matches_are_subset(x, y) && next_sq_matches_are_subset(y, x);
 }
 
-pub fn degree(gen_pattern: &Array1<u8>) -> i8 {
+pub fn degree(gen_pattern: &Array1<u8>) -> usize {
     let n = gen_pattern.len();
-    let mut max_owns: i8 = 0;
+    let mut max_owns: usize = 0;
 
     for i in 0..(n - WIN_LENGTH + 1) {
-        let mut owns: i8 = 0;
+        let mut owns: usize = 0;
         let mut found = true;
 
         for j in 0..WIN_LENGTH {
@@ -441,8 +441,8 @@ pub fn degree(gen_pattern: &Array1<u8>) -> i8 {
     return max_owns;
 }
 
-pub fn defcon_from_degree(d: i8) -> i8 {
-    return MAX_DEFCON as i8 - d;
+pub fn defcon_from_degree(d: usize) -> usize {
+    return MAX_DEFCON - d;
 }
 
 pub fn one_step_from_straight_threat(gen_pattern: &Array1<u8>) -> bool {

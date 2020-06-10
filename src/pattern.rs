@@ -14,17 +14,17 @@ use std::collections::HashMap;
 #[derive(Clone,Debug)]
 pub struct Pattern {
     pub pattern: Array1<u8>,
-    pub critical_sqs: Array1<i8>,
-    pub own_sqs: Array1<i8>,
+    pub critical_sqs: Array1<isize>,
+    pub own_sqs: Array1<isize>,
     pub name: String,
-    pub index: i8,
-    pub empty_sqs: Array1<i8>,
-    pub defcon: i8,
+    pub index: isize,
+    pub empty_sqs: Array1<isize>,
+    pub defcon: usize,
     pub immediate: bool,
 }
 
 impl Pattern {
-    pub fn new(pattern: Array1<u8>, critical_sqs: Array1<i8>, name: String, index: i8) -> Self {
+    pub fn new(pattern: Array1<u8>, critical_sqs: Array1<isize>, name: String, index: isize) -> Self {
         for elem in pattern.iter() {
             assert!(GEN_ELEMS.iter().any(|&x| x == *elem));
             assert!(*elem == OWN || (*elem & OWN == 0));
@@ -38,7 +38,7 @@ impl Pattern {
 
         let length = pattern.len();
         for sq in critical_sqs.iter() {
-            assert!( (0 <= *sq && *sq < (length as i8)) && pattern[*sq as usize] == EMPTY);
+            assert!( (0 <= *sq && *sq < (length as isize)) && pattern[*sq as usize] == EMPTY);
         }
 
         assert!(name.len() > 0);
@@ -59,21 +59,21 @@ impl Pattern {
             }
         }
 
-        let mut own_sqs: Vec<i8> = Vec::new();
+        let mut own_sqs: Vec<isize> = Vec::new();
         for (i, v) in pattern.iter().enumerate() {
             if *v == OWN {
-                own_sqs.push(i as i8);
+                own_sqs.push(i as isize);
             }
         }
 
-        let mut other_empty_sqs: Vec<i8> = Vec::new();
+        let mut other_empty_sqs: Vec<isize> = Vec::new();
         for (i, v) in pattern.iter().enumerate() {
-            if *v == EMPTY && !critical_sqs.iter().any(|&x| x == (i as i8)) {
-                other_empty_sqs.push(i as i8);
+            if *v == EMPTY && !critical_sqs.iter().any(|&x| x == (i as isize)) {
+                other_empty_sqs.push(i as isize);
             }
         }
 
-        let mut empty_sqs: Vec<i8> = Vec::new();
+        let mut empty_sqs: Vec<isize> = Vec::new();
         for v in critical_sqs.iter() {
             empty_sqs.push(*v);
         }
@@ -146,87 +146,87 @@ pub enum ThreatPri {
 
 lazy_static! {
     pub static ref P_WIN: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([OWN, OWN, OWN, OWN, OWN])),
-                                                 Array1::from(Vec::<i8>::from([])),
+                                                 Array1::from(Vec::<isize>::from([])),
                                                  String::from("P_WIN"),
                                                  0);
 
     pub static ref P_4_ST: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([EMPTY, OWN, OWN, OWN, OWN, EMPTY])),
-                                                  Array1::from(Vec::<i8>::from([])),
+                                                  Array1::from(Vec::<isize>::from([])),
                                                   String::from("P_4_ST"),
                                                   1);
 
     pub static ref P_4_A: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([WALL_ENEMY, OWN, OWN, OWN, OWN, EMPTY])),
-                                                 Array1::from(Vec::<i8>::from([5])),
+                                                 Array1::from(Vec::<isize>::from([5])),
                                                  String::from("P_4_A"),
                                                  2);
 
     pub static ref P_4_B: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([NOT_OWN, OWN, OWN, OWN, EMPTY, OWN])),
-                                                 Array1::from(Vec::<i8>::from([4])),
+                                                 Array1::from(Vec::<isize>::from([4])),
                                                  String::from("P_4_B"),
                                                  3);
 
     pub static ref P_4_C: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([NOT_OWN, OWN, OWN, EMPTY, OWN, OWN, NOT_OWN])),
-                                                 Array1::from(Vec::<i8>::from([3])),
+                                                 Array1::from(Vec::<isize>::from([3])),
                                                  String::from("P_4_C"),
                                                  4);
 
     pub static ref P_3_ST: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([EMPTY, EMPTY, OWN, OWN, OWN, EMPTY, EMPTY])),
-                                                  Array1::from(Vec::<i8>::from([1, 5])),
+                                                  Array1::from(Vec::<isize>::from([1, 5])),
                                                   String::from("P_3_ST"),
                                                   5);
 
     pub static ref P_3_A: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([WALL_ENEMY, EMPTY, OWN, OWN, OWN, EMPTY, EMPTY])),
-                                                 Array1::from(Vec::<i8>::from([1, 5, 6])),
+                                                 Array1::from(Vec::<isize>::from([1, 5, 6])),
                                                  String::from("P_3_A"),
                                                  6);
 
     pub static ref P_3_B: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([EMPTY, OWN, OWN, EMPTY, OWN, EMPTY])),
-                                                 Array1::from(Vec::<i8>::from([0, 3, 5])),
+                                                 Array1::from(Vec::<isize>::from([0, 3, 5])),
                                                  String::from("P_3_B"),
                                                  7);
 
     pub static ref P_3_C: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([WALL_ENEMY, OWN, OWN, OWN, EMPTY, EMPTY])),
-                                                 Array1::from(Vec::<i8>::from([4, 5])),
+                                                 Array1::from(Vec::<isize>::from([4, 5])),
                                                  String::from("P_3_C"),
                                                  8);
 
     pub static ref P_3_D: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([WALL_ENEMY, OWN, OWN, EMPTY, OWN, EMPTY])),
-                                                 Array1::from(Vec::<i8>::from([3, 5])),
+                                                 Array1::from(Vec::<isize>::from([3, 5])),
                                                  String::from("P_3_D"),
                                                  9);
 
     pub static ref P_3_E: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([WALL_ENEMY, OWN, EMPTY, OWN, OWN, EMPTY])),
-                                                 Array1::from(Vec::<i8>::from([2, 5])),
+                                                 Array1::from(Vec::<isize>::from([2, 5])),
                                                  String::from("P_3_E"),
                                                  10);
 
     pub static ref P_3_F: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([WALL_ENEMY, EMPTY, OWN, OWN, OWN, EMPTY, WALL_ENEMY])),
-                                                 Array1::from(Vec::<i8>::from([1, 5])),
+                                                 Array1::from(Vec::<isize>::from([1, 5])),
                                                  String::from("P_3_F"),
                                                  11);
 
     pub static ref P_3_G: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([NOT_OWN, OWN, OWN, EMPTY, EMPTY, OWN])),
-                                                 Array1::from(Vec::<i8>::from([3, 4])),
+                                                 Array1::from(Vec::<isize>::from([3, 4])),
                                                  String::from("P_3_G"),
                                                  12);
 
     pub static ref P_3_H: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([NOT_OWN, OWN, EMPTY, OWN, EMPTY, OWN, NOT_OWN])),
-                                                 Array1::from(Vec::<i8>::from([2, 4])),
+                                                 Array1::from(Vec::<isize>::from([2, 4])),
                                                  String::from("P_3_H"),
                                                  13);
 
     pub static ref P_2_A: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([EMPTY, EMPTY, OWN, OWN, EMPTY, EMPTY])),
-                                                 Array1::from(Vec::<i8>::from([0, 1, 4, 5])),
+                                                 Array1::from(Vec::<isize>::from([0, 1, 4, 5])),
                                                  String::from("P_2_A"),
                                                  14);
 
     pub static ref P_2_B: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([EMPTY, EMPTY, OWN, EMPTY, OWN, EMPTY, EMPTY])),
-                                                 Array1::from(Vec::<i8>::from([0, 1, 3, 5, 6])),
+                                                 Array1::from(Vec::<isize>::from([0, 1, 3, 5, 6])),
                                                  String::from("P_2_B"),
                                                  15);
 
     pub static ref P_2_C: Pattern = Pattern::new(Array1::from(Vec::<u8>::from([EMPTY, OWN, EMPTY, EMPTY, OWN, EMPTY])),
-                                                 Array1::from(Vec::<i8>::from([0, 2, 3, 5])),
+                                                 Array1::from(Vec::<isize>::from([0, 2, 3, 5])),
                                                  String::from("P_2_C"),
                                                  16);
 
@@ -236,13 +236,13 @@ lazy_static! {
                                                 &(*P_2_A), &(*P_2_B), &(*P_2_C)];
 
         for (i, p) in patterns.iter().enumerate() {
-            assert_eq!(i as i8, p.index);
+            assert_eq!(i as isize, p.index);
         }
 
         let num_names = patterns.iter().map(|&x| String::from(&x.name)).collect::<HashSet<String>>().len();
         assert_eq!(num_names, patterns.len());
 
-        let max_defcon_imm = patterns.iter().fold(i8::MIN, |a, b| if b.immediate { a.max(b.defcon) } else { a });
+        let max_defcon_imm = patterns.iter().fold(usize::MIN, |a, b| if b.immediate { a.max(b.defcon) } else { a });
         assert_eq!(max_defcon_imm, MDFIT);
 
         return Vec::from(patterns);
@@ -250,8 +250,8 @@ lazy_static! {
 
     pub static ref NUM_PTNS: usize = PATTERNS.len();
 
-    pub static ref PATTERNS_BY_DEFCON: HashMap<i8, Vec<&'static Pattern>> = {
-        let mut m: HashMap<i8, Vec<&'static Pattern>> = HashMap::new();
+    pub static ref PATTERNS_BY_DEFCON: HashMap<usize, Vec<&'static Pattern>> = {
+        let mut m: HashMap<usize, Vec<&'static Pattern>> = HashMap::new();
 
         for p in PATTERNS.iter() {
             if m.contains_key(&p.defcon) {
@@ -312,8 +312,8 @@ lazy_static! {
 #[derive(Clone,Debug)]
 pub struct Threat {
     pub m: Match,
-    pub pidx: i8,
-    pub defcon: i8,
+    pub pidx: isize,
+    pub defcon: usize,
     pub critical_sqs: HashSet<Point>,
 }
 
