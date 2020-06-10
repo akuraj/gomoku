@@ -14,6 +14,7 @@ pub mod testing;
 use consts::BLACK;
 use state::get_state;
 use testing::test_search_fns;
+use std::time::Instant;
 
 fn main() {
     // let s = get_state(&["a1", "a2", "a3", "a13", "a14", "a15", "b1", "b15", "c1", "c15",
@@ -46,4 +47,8 @@ fn main() {
     // println!("{}", s);
 
     test_search_fns();
+
+    let start = Instant::now();
+    test_search_fns();
+    println!("Time taken: {} seconds", ( start.elapsed().as_nanos() as f32 ) / 1e9);
 }
