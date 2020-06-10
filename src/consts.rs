@@ -105,7 +105,7 @@ lazy_static! {
         m.insert(NOT_OWN, "NOT_OWN");
         m.insert(WALL_ENEMY, "WALL_ENEMY");
 
-        // Make sure all ACT_ELEMS are represented and corresponding names are unique.
+        // Make sure all GEN_ELEMS are represented and corresponding names are unique.
         assert_eq!(m.keys().cloned().collect::<HashSet<u8>>(),
                    GEN_ELEMS.iter().cloned().collect::<HashSet<u8>>());
         assert_eq!(m.values().cloned().collect::<HashSet<&str>>().len(), GEN_ELEMS.len());
