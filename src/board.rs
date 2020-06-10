@@ -88,7 +88,7 @@ pub fn board_to_str(board: &Array2<u8>) -> String {
     for i in 0..shape[0] {
         let mut num_str = String::from("  ");
         if 1 <= i && i <= SIDE_LEN_ACT {
-            num_str = i.to_string();
+            num_str = row_idx_to_num(i).to_string();
             match num_str.len() {
                 2 => {},
                 1 => {
