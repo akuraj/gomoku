@@ -191,8 +191,10 @@ pub fn animate_variation(board: &mut Array2<u8>, color: u8, variation: &Vec<(Poi
             set_sq(board, color ^ STONE, *csq);
         }
 
-        println!("{}", board_to_str(board));
-        thread::sleep(sleep_duration);
+        if item.1.len() > 0 {
+            println!("{}", board_to_str(board));
+            thread::sleep(sleep_duration);
+        }
     }
 
     for item in variation.iter() {
