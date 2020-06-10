@@ -18,7 +18,7 @@ pub const WALL: u8 = 1 << 3;
 pub const ACT_ELEMS: [u8; 4] = [EMPTY, BLACK, WHITE, WALL];
 pub const NUM_ACT_ELEMS: usize = ACT_ELEMS.len();
 
-pub const COLORS: (u8, u8) = (BLACK, WHITE);
+pub const COLORS: [u8; 2] = [BLACK, WHITE];
 
 pub const BLACK_CIRCLE: char = '●';
 pub const WHITE_CIRCLE: char = '○';
