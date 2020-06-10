@@ -73,7 +73,7 @@ pub fn point_on_line(start: Point, end: Point, i: isize) -> Point {
     let dy = end.1 - start.1;
     assert!(dx * dy == 0 || abs(dx) == abs(dy));
 
-    return (start.1 + signum(dx) * i, start.1 + signum(dy) * i);
+    return (start.0 + signum(dx) * i, start.1 + signum(dy) * i);
 }
 
 pub fn is_normal_line(start: Point, end: Point) -> bool {
