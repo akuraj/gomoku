@@ -1,8 +1,10 @@
-use consts::{SIDE_LEN_ACT, SIDE_LEN, EMPTY, WALL, BLACK, WHITE, COLORS,
-             ACT_ELEMS_TO_CHRS, SPL_ELEM_CHR, RADIX};
-use std::char;
+use consts::{
+    ACT_ELEMS_TO_CHRS, BLACK, COLORS, EMPTY, RADIX, SIDE_LEN, SIDE_LEN_ACT, SPL_ELEM_CHR, WALL,
+    WHITE,
+};
 use geometry::Point;
 use ndarray::prelude::*;
+use std::char;
 use std::collections::HashSet;
 
 pub fn row_idx_to_num(x: usize) -> usize {
@@ -59,8 +61,14 @@ pub fn new_board() -> Array2<u8> {
 }
 
 pub fn get_board(blacks: &[&str], whites: &[&str]) -> Array2<u8> {
-    let blacks_set = blacks.iter().map(|&x| String::from(x)).collect::<HashSet<String>>();
-    let whites_set = whites.iter().map(|&x| String::from(x)).collect::<HashSet<String>>();
+    let blacks_set = blacks
+        .iter()
+        .map(|&x| String::from(x))
+        .collect::<HashSet<String>>();
+    let whites_set = whites
+        .iter()
+        .map(|&x| String::from(x))
+        .collect::<HashSet<String>>();
     let common: HashSet<String> = blacks_set.intersection(&whites_set).cloned().collect();
     assert!(common.len() == 0);
 
@@ -90,12 +98,12 @@ pub fn board_to_str(board: &Array2<u8>) -> String {
         if 1 <= i && i <= SIDE_LEN_ACT {
             num_str = row_idx_to_num(i).to_string();
             match num_str.len() {
-                2 => {},
+                2 => {}
                 1 => {
                     let temp_str = String::from(&num_str);
                     num_str = String::from(" ");
                     num_str.push_str(&temp_str);
-                },
+                }
                 _ => panic!("Invalid index: {}", i),
             }
         }
