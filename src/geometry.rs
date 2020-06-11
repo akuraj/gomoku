@@ -1,8 +1,8 @@
 //! Functions related to the geometry of the problem.
 
-use std::cmp::{min, max};
-use num::{signum, abs};
 use ndarray::prelude::*;
+use num::{abs, signum};
+use std::cmp::{max, min};
 use std::collections::HashSet;
 
 pub type Point = (isize, isize);
@@ -11,7 +11,7 @@ pub fn increment(d: isize) -> isize {
     if d % 4 == 0 {
         return 0;
     } else if d % 8 < 4 {
-        return 1
+        return 1;
     } else {
         return -1;
     }
@@ -34,22 +34,41 @@ pub fn index_bounds(side: isize, length: isize, increment: isize) -> (isize, isi
     }
 }
 
-pub fn index_bounds_incl(side: isize, length: isize, x: isize, y: isize, row_inc: isize, col_inc: isize) -> (isize, isize) {
+pub fn index_bounds_incl(
+    side: isize,
+    length: isize,
+    x: isize,
+    y: isize,
+    row_inc: isize,
+    col_inc: isize,
+) -> (isize, isize) {
     let mut row_b = side;
     let mut row_f = side;
     match row_inc {
-        -1 => {row_f = x + 1; row_b = side - row_f;},
-        0 => {},
-        1 => {row_b = x; row_f = side - row_b;},
+        -1 => {
+            row_f = x + 1;
+            row_b = side - row_f;
+        }
+        0 => {}
+        1 => {
+            row_b = x;
+            row_f = side - row_b;
+        }
         _ => panic!("Invalid row_inc!"),
     }
 
     let mut col_b = side;
     let mut col_f = side;
     match col_inc {
-        -1 => {col_f = y + 1; col_b = side - col_f;},
-        0 => {},
-        1 => {col_b = y; col_f = side - col_b;},
+        -1 => {
+            col_f = y + 1;
+            col_b = side - col_f;
+        }
+        0 => {}
+        1 => {
+            col_b = y;
+            col_f = side - col_b;
+        }
         _ => panic!("Invalid col_inc!"),
     }
 
