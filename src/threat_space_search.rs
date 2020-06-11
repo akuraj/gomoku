@@ -1,15 +1,16 @@
 // from time import sleep
+use crate::board::{board_to_str, clear_sq, set_sq};
+use crate::consts::{ANIMATION_TIMESTEP_SECS, MAX_DEFCON, STONE};
+use crate::geometry::Point;
+use crate::pattern::Threat;
+use crate::pattern::{
+    search_all_board, search_all_board_get_next_sqs, search_all_point_own,
+    search_all_point_own_get_next_sqs, ThreatPri,
+};
 use ndarray::prelude::*;
-use consts::{STONE, MAX_DEFCON, ANIMATION_TIMESTEP_SECS};
-use board::{set_sq, clear_sq, board_to_str};
-use pattern::{ThreatPri, search_all_board, search_all_point_own,
-              search_all_board_get_next_sqs,
-              search_all_point_own_get_next_sqs};
-use geometry::Point;
-use pattern::Threat;
 use std::collections::HashSet;
-use std::time::Duration;
 use std::thread;
+use std::time::Duration;
 
 // @unique
 // class SearchStatus(IntEnum):
@@ -20,7 +21,7 @@ use std::thread;
 //     WIN = auto()
 //     LOSS = auto()
 
-#[derive(Clone,Debug)]
+#[derive(Clone, Debug)]
 pub struct SearchNode {
     pub next_sq: Option<Point>,
     pub threats: Vec<Threat>,
@@ -30,10 +31,15 @@ pub struct SearchNode {
 }
 
 impl SearchNode {
-    pub fn new(next_sq: Option<Point>, threats: Vec<Threat>, critical_sqs: Option<HashSet<Point>>,
-               potential_win: bool, children: Vec<SearchNode>) -> Self {
-//     # # Only keep potentially winning children.
-//     # children = [x for x in children if x["potential_win"]]
+    pub fn new(
+        next_sq: Option<Point>,
+        threats: Vec<Threat>,
+        critical_sqs: Option<HashSet<Point>>,
+        potential_win: bool,
+        children: Vec<SearchNode>,
+    ) -> Self {
+        //     # # Only keep potentially winning children.
+        //     # children = [x for x in children if x["potential_win"]]
 
         Self {
             next_sq: next_sq,
@@ -54,7 +60,10 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
         // FIXME: Reduce?
         let mut csqs_temp: HashSet<Point> = threats[0].critical_sqs.iter().cloned().collect();
         for i in 1..num_threats {
-            csqs_temp = csqs_temp.intersection(&threats[i].critical_sqs).cloned().collect::<HashSet<Point>>();
+            csqs_temp = csqs_temp
+                .intersection(&threats[i].critical_sqs)
+                .cloned()
+                .collect::<HashSet<Point>>();
         }
         csqs_temp
     } else {
@@ -67,14 +76,17 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
     for csq in critical_sqs.iter() {
         set_sq(board, color ^ STONE, *csq);
 
-        let threats_csq = search_all_point_own(board, color ^ STONE,
-                                               *csq, ThreatPri::IMMEDIATE);
+        let threats_csq = search_all_point_own(board, color ^ STONE, *csq, ThreatPri::IMMEDIATE);
         let num_threats_csq = threats_csq.len();
         let critical_sqs_csq: HashSet<Point> = if num_threats_csq > 0 {
             // FIXME: Reduce?
-            let mut csqs_temp: HashSet<Point> = threats_csq[0].critical_sqs.iter().cloned().collect();
+            let mut csqs_temp: HashSet<Point> =
+                threats_csq[0].critical_sqs.iter().cloned().collect();
             for i in 1..num_threats_csq {
-                csqs_temp = csqs_temp.intersection(&threats_csq[i].critical_sqs).cloned().collect::<HashSet<Point>>();
+                csqs_temp = csqs_temp
+                    .intersection(&threats_csq[i].critical_sqs)
+                    .cloned()
+                    .collect::<HashSet<Point>>();
             }
             csqs_temp
         } else {
@@ -88,7 +100,13 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
         if potential_win_csq {
             potential_win = false;
             clear_sq(board, color, next_sq);
-            return SearchNode::new(Some(next_sq), threats, Some(critical_sqs), potential_win, children);
+            return SearchNode::new(
+                Some(next_sq),
+                threats,
+                Some(critical_sqs),
+                potential_win,
+                children,
+            );
         }
     }
 
@@ -102,8 +120,12 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
         potential_win = children.iter().any(|x| x.potential_win);
 
         if !potential_win {
-            let nsqs_other = search_all_point_own_get_next_sqs(board, color, next_sq, ThreatPri::NON_IMMEDIATE);
-            let children_other: Vec<SearchNode> = nsqs_other.iter().map(|x| tss_next_sq(board, color, *x)).collect();
+            let nsqs_other =
+                search_all_point_own_get_next_sqs(board, color, next_sq, ThreatPri::NON_IMMEDIATE);
+            let children_other: Vec<SearchNode> = nsqs_other
+                .iter()
+                .map(|x| tss_next_sq(board, color, *x))
+                .collect();
             potential_win = children_other.iter().any(|x| x.potential_win);
             children.extend(children_other);
         }
@@ -114,7 +136,13 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
     }
 
     clear_sq(board, color, next_sq);
-    return SearchNode::new(Some(next_sq), threats, Some(critical_sqs), potential_win, children);
+    return SearchNode::new(
+        Some(next_sq),
+        threats,
+        Some(critical_sqs),
+        potential_win,
+        children,
+    );
 }
 
 // # # TODO: Change name of fn.
@@ -175,7 +203,11 @@ pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, HashSet<Po
     return variations;
 }
 
-pub fn animate_variation(board: &mut Array2<u8>, color: u8, variation: &Vec<(Point, HashSet<Point>)>) {
+pub fn animate_variation(
+    board: &mut Array2<u8>,
+    color: u8,
+    variation: &Vec<(Point, HashSet<Point>)>,
+) {
     let sleep_duration = Duration::from_secs(ANIMATION_TIMESTEP_SECS);
 
     println!("{}", board_to_str(board));

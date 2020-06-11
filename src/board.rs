@@ -1,8 +1,8 @@
-use consts::{
+use crate::consts::{
     ACT_ELEMS_TO_CHRS, BLACK, COLORS, EMPTY, RADIX, SIDE_LEN, SIDE_LEN_ACT, SPL_ELEM_CHR, WALL,
     WHITE,
 };
-use geometry::Point;
+use crate::geometry::Point;
 use ndarray::prelude::*;
 use std::char;
 use std::collections::HashSet;

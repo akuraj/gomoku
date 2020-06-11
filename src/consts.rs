@@ -1,5 +1,6 @@
 //! Defines required constants that will be used in this project.
 
+use lazy_static::lazy_static;
 use std::char;
 use std::collections::HashMap;
 use std::collections::HashSet;
