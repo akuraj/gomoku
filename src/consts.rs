@@ -87,8 +87,9 @@ pub const NOT_STONE: u8 = ANY ^ STONE;
 pub const NOT_OWN: u8 = ANY ^ OWN;
 pub const WALL_ENEMY: u8 = WALL | ENEMY;
 
-pub const GEN_ELEMS: [u8; 11] = [EMPTY, WALL, OWN, ENEMY, STONE, ANY, NOT_EMPTY, NOT_WALL,
-                                 NOT_STONE, NOT_OWN, WALL_ENEMY];
+pub const GEN_ELEMS: [u8; 11] = [
+    EMPTY, WALL, OWN, ENEMY, STONE, ANY, NOT_EMPTY, NOT_WALL, NOT_STONE, NOT_OWN, WALL_ENEMY,
+];
 
 lazy_static! {
     pub static ref GEN_ELEMS_TO_NAMES: HashMap<u8, &'static str> = {
