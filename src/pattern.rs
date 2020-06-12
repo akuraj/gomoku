@@ -315,7 +315,7 @@ lazy_static! {
         let mut m: HashMap<usize, Vec<&'static Pattern>> = HashMap::new();
 
         for p in PATTERNS.iter() {
-            m.entry(p.defcon).or_insert(Vec::<&'static Pattern>::new()).push(p);
+            m.entry(p.defcon).or_insert_with(Vec::<&'static Pattern>::new).push(p);
         }
 
         m

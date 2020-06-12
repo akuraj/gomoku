@@ -17,7 +17,6 @@ pub const WHITE: u8 = 1 << 2;
 pub const WALL: u8 = 1 << 3;
 
 pub const ACT_ELEMS: [u8; 4] = [EMPTY, BLACK, WHITE, WALL];
-pub const NUM_ACT_ELEMS: usize = ACT_ELEMS.len();
 
 pub const COLORS: [u8; 2] = [BLACK, WHITE];
 
@@ -37,10 +36,9 @@ pub const SPL_ELEM_CHR: char = '!';
 lazy_static! {
     pub static ref ACT_ELEMS_TO_CHRS: HashMap<u8, char> = {
         // Checks on ACT_ELEMS.
-        for i in 0..NUM_ACT_ELEMS {
-            for j in (i + 1)..NUM_ACT_ELEMS {
-                assert!(ACT_ELEMS[i] != ACT_ELEMS[j]);
-                assert!(ACT_ELEMS[i] & ACT_ELEMS[j] == 0);
+        for (i, a) in ACT_ELEMS.iter().enumerate() {
+            for b in ACT_ELEMS.iter().skip(i + 1) {
+                assert!(a != b && a & b == 0);
             }
         }
 
