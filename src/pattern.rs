@@ -308,7 +308,7 @@ lazy_static! {
             );
         assert_eq!(max_defcon_imm, MDFIT);
 
-        return Vec::from(patterns);
+        Vec::from(patterns)
     };
     pub static ref NUM_PTNS: usize = PATTERNS.len();
     pub static ref PATTERNS_BY_DEFCON: HashMap<usize, Vec<&'static Pattern>> = {
@@ -318,7 +318,7 @@ lazy_static! {
             m.entry(p.defcon).or_insert(Vec::<&'static Pattern>::new()).push(p);
         }
 
-        return m;
+        m
     };
     pub static ref PATTERNS_BY_NAME: HashMap<String, &'static Pattern> = {
         let mut m: HashMap<String, &'static Pattern> = HashMap::new();
@@ -328,7 +328,7 @@ lazy_static! {
             m.insert(String::from(&p.name), p);
         }
 
-        return m;
+        m
     };
     pub static ref PATTERNS_I: Vec<&'static Pattern> = {
         let mut patterns: Vec<&'static Pattern> = Vec::new();
@@ -339,7 +339,7 @@ lazy_static! {
             }
         }
 
-        return patterns;
+        patterns
     };
     pub static ref PATTERNS_NI: Vec<&'static Pattern> = {
         let mut patterns: Vec<&'static Pattern> = Vec::new();
@@ -350,14 +350,14 @@ lazy_static! {
             }
         }
 
-        return patterns;
+        patterns
     };
     pub static ref PATTERNS_BY_PRI: HashMap<ThreatPri, &'static Vec<&'static Pattern>> = {
         let mut m: HashMap<ThreatPri, &'static Vec<&'static Pattern>> = HashMap::new();
         m.insert(ThreatPri::ALL, &PATTERNS);
         m.insert(ThreatPri::IMMEDIATE, &PATTERNS_I);
         m.insert(ThreatPri::NON_IMMEDIATE, &PATTERNS_NI);
-        return m;
+        m
     };
 }
 
@@ -370,12 +370,12 @@ pub struct Threat {
 }
 
 pub fn threat_item(m: Match, pattern: &Pattern) -> Threat {
-    return Threat {
+    Threat {
         m,
         pidx: pattern.index,
         defcon: pattern.defcon,
         critical_sqs: point_set_on_line(m.0, m.1, &pattern.critical_sqs),
-    };
+    }
 }
 
 pub fn search_all_board(board: &Array2<u8>, color: u8, pri: ThreatPri) -> Vec<Threat> {
@@ -387,7 +387,7 @@ pub fn search_all_board(board: &Array2<u8>, color: u8, pri: ThreatPri) -> Vec<Th
         }
     }
 
-    return threats;
+    threats
 }
 
 pub fn search_all_point(
@@ -404,7 +404,7 @@ pub fn search_all_point(
         }
     }
 
-    return threats;
+    threats
 }
 
 pub fn search_all_point_own(
@@ -421,7 +421,7 @@ pub fn search_all_point_own(
         }
     }
 
-    return threats;
+    threats
 }
 
 pub fn search_all_board_get_next_sqs(
@@ -437,7 +437,7 @@ pub fn search_all_board_get_next_sqs(
         }
     }
 
-    return nsqs;
+    nsqs
 }
 
 pub fn search_all_point_get_next_sqs(
@@ -454,7 +454,7 @@ pub fn search_all_point_get_next_sqs(
         }
     }
 
-    return nsqs;
+    nsqs
 }
 
 pub fn search_all_point_own_get_next_sqs(
@@ -471,5 +471,5 @@ pub fn search_all_point_own_get_next_sqs(
         }
     }
 
-    return nsqs;
+    nsqs
 }

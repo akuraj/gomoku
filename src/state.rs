@@ -97,5 +97,5 @@ impl fmt::Display for State {
 }
 
 pub fn get_state(blacks: &[&str], whites: &[&str], turn: u8, strict_stone_count: bool) -> State {
-    return State::new(get_board(blacks, whites), turn, strict_stone_count);
+    State::new(get_board(blacks, whites), turn, strict_stone_count)
 }

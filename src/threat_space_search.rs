@@ -136,13 +136,13 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
     }
 
     clear_sq(board, color, next_sq);
-    return SearchNode::new(
+    SearchNode::new(
         Some(next_sq),
         threats,
         Some(critical_sqs),
         potential_win,
         children,
-    );
+    )
 }
 
 // # # TODO: Change name of fn.

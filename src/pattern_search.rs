@@ -14,7 +14,7 @@ pub fn get_pattern(gen_pattern: &Array1<u8>, color: u8) -> Array1<u8> {
     let mut pattern = gen_pattern.to_owned();
 
     match color {
-        BLACK => return pattern,
+        BLACK => { pattern }
         WHITE => {
             for val in pattern.iter_mut() {
                 *val = if *val & STONE == 0 || *val & STONE == STONE {
@@ -24,7 +24,7 @@ pub fn get_pattern(gen_pattern: &Array1<u8>, color: u8) -> Array1<u8> {
                 };
             }
 
-            return pattern;
+            pattern
         }
         _ => panic!("Invalid color!"),
     }
@@ -56,7 +56,7 @@ pub fn dedupe_matches(matches: &mut Vec<Match>) {
 
 #[inline(always)]
 pub fn idx(start: isize, increment: isize, steps: usize) -> isize {
-    return start + increment * (steps as isize);
+    start + increment * (steps as isize)
 }
 
 pub fn search_board(board: &Array2<u8>, gen_pattern: &Array1<u8>, color: u8) -> Vec<Match> {
@@ -94,7 +94,7 @@ pub fn search_board(board: &Array2<u8>, gen_pattern: &Array1<u8>, color: u8) -> 
     }
 
     dedupe_matches(&mut matches);
-    return matches;
+    matches
 }
 
 pub fn search_point(
@@ -138,7 +138,7 @@ pub fn search_point(
     }
 
     dedupe_matches(&mut matches);
-    return matches;
+    matches
 }
 
 pub fn search_point_own(
@@ -189,7 +189,7 @@ pub fn search_point_own(
     }
 
     dedupe_matches(&mut matches);
-    return matches;
+    matches
 }
 
 pub fn dedupe_next_sq_match_pairs(pairs: &mut Vec<NSQMatch>) {
@@ -263,7 +263,7 @@ pub fn search_board_next_sq(
     }
 
     dedupe_next_sq_match_pairs(&mut next_sq_match_pairs);
-    return next_sq_match_pairs;
+    next_sq_match_pairs
 }
 
 pub fn search_point_next_sq(
@@ -316,7 +316,7 @@ pub fn search_point_next_sq(
     }
 
     dedupe_next_sq_match_pairs(&mut next_sq_match_pairs);
-    return next_sq_match_pairs;
+    next_sq_match_pairs
 }
 
 pub fn search_point_own_next_sq(
@@ -376,7 +376,7 @@ pub fn search_point_own_next_sq(
     }
 
     dedupe_next_sq_match_pairs(&mut next_sq_match_pairs);
-    return next_sq_match_pairs;
+    next_sq_match_pairs
 }
 
 pub fn apply_pattern(board: &mut Array2<u8>, pattern: &Array1<u8>, point: Point, d: usize) -> bool {
@@ -402,7 +402,7 @@ pub fn apply_pattern(board: &mut Array2<u8>, pattern: &Array1<u8>, point: Point,
         }
     }
 
-    return can_apply;
+    can_apply
 }
 
 pub fn matches_are_subset(x: &[Match], y: &[Match]) -> bool {
@@ -422,11 +422,11 @@ pub fn matches_are_subset(x: &[Match], y: &[Match]) -> bool {
         }
     }
 
-    return true;
+    true
 }
 
 pub fn matches_are_equal(x: &[Match], y: &[Match]) -> bool {
-    return matches_are_subset(x, y) && matches_are_subset(y, x);
+    matches_are_subset(x, y) && matches_are_subset(y, x)
 }
 
 pub fn next_sq_matches_are_subset(x: &[NSQMatch], y: &[NSQMatch]) -> bool {
@@ -446,11 +446,11 @@ pub fn next_sq_matches_are_subset(x: &[NSQMatch], y: &[NSQMatch]) -> bool {
         }
     }
 
-    return true;
+    true
 }
 
 pub fn next_sq_matches_are_equal(x: &[NSQMatch], y: &[NSQMatch]) -> bool {
-    return next_sq_matches_are_subset(x, y) && next_sq_matches_are_subset(y, x);
+    next_sq_matches_are_subset(x, y) && next_sq_matches_are_subset(y, x)
 }
 
 pub fn degree(gen_pattern: &Array1<u8>) -> usize {
@@ -479,11 +479,11 @@ pub fn degree(gen_pattern: &Array1<u8>) -> usize {
         }
     }
 
-    return max_owns;
+    max_owns
 }
 
 pub fn defcon_from_degree(d: usize) -> usize {
-    return MAX_DEFCON - d;
+    MAX_DEFCON - d
 }
 
 pub fn one_step_from_straight_threat(gen_pattern: &Array1<u8>) -> bool {
@@ -520,5 +520,5 @@ pub fn one_step_from_straight_threat(gen_pattern: &Array1<u8>) -> bool {
         }
     }
 
-    return false;
+    false
 }

@@ -9,26 +9,26 @@ use std::collections::HashSet;
 
 pub fn row_idx_to_num(x: usize) -> usize {
     assert!(1 <= x && x <= SIDE_LEN_ACT);
-    return SIDE_LEN_ACT + 1 - x;
+    SIDE_LEN_ACT + 1 - x
 }
 
 pub use row_idx_to_num as row_num_to_idx;
 
 pub fn col_idx_to_chr(x: usize) -> char {
     assert!(1 <= x && x <= SIDE_LEN_ACT);
-    return char::from_u32(97 + (x as u32) - 1).unwrap();
+    char::from_u32(97 + (x as u32) - 1).unwrap()
 }
 
 pub fn col_chr_to_idx(x: char) -> usize {
     let idx = (x.to_digit(RADIX).unwrap() - 'a'.to_digit(RADIX).unwrap() + 1) as usize;
     assert!(1 <= idx && idx <= SIDE_LEN_ACT);
-    return idx;
+    idx
 }
 
 pub fn point_to_algebraic(x: Point) -> String {
     let row_num = row_idx_to_num(x.0 as usize);
     let col_chr = col_idx_to_chr(x.1 as usize);
-    return format!("{}{}", row_num, col_chr);
+    format!("{}{}", row_num, col_chr)
 }
 
 pub fn algebraic_to_point(x: &str) -> Point {
@@ -41,7 +41,7 @@ pub fn algebraic_to_point(x: &str) -> Point {
     }
     let row_num: usize = (&num_str).parse().unwrap();
     let row_idx = row_num_to_idx(row_num) as isize;
-    return (row_idx, col_idx);
+    (row_idx, col_idx)
 }
 
 pub fn new_board() -> Array2<u8> {
@@ -54,7 +54,7 @@ pub fn new_board() -> Array2<u8> {
         }
     }
 
-    return board;
+    board
 }
 
 pub fn get_board(blacks: &[&str], whites: &[&str]) -> Array2<u8> {
@@ -81,7 +81,7 @@ pub fn get_board(blacks: &[&str], whites: &[&str]) -> Array2<u8> {
         board[(p.0 as usize, p.1 as usize)] = WHITE;
     }
 
-    return board;
+    board
 }
 
 pub fn board_to_str(board: &Array2<u8>) -> String {
@@ -131,7 +131,7 @@ pub fn board_to_str(board: &Array2<u8>) -> String {
 
     board_repr.push_str("\n\n");
 
-    return board_repr;
+    board_repr
 }
 
 pub fn set_sq(board: &mut Array2<u8>, color: u8, point: Point) {

@@ -55,7 +55,7 @@ lazy_static! {
                    ACT_ELEMS.iter().cloned().collect::<HashSet<u8>>());
         assert_eq!(m.values().cloned().collect::<HashSet<char>>().len(), ACT_ELEMS.len());
 
-        return m;
+        m
     };
 
     pub static ref ACT_ELEMS_TO_NAMES: HashMap<u8, &'static str> = {
@@ -70,7 +70,7 @@ lazy_static! {
                    ACT_ELEMS.iter().cloned().collect::<HashSet<u8>>());
         assert_eq!(m.values().cloned().collect::<HashSet<&str>>().len(), ACT_ELEMS.len());
 
-        return m;
+        m
     };
 }
 
@@ -112,7 +112,7 @@ lazy_static! {
                    GEN_ELEMS.iter().cloned().collect::<HashSet<u8>>());
         assert_eq!(m.values().cloned().collect::<HashSet<&str>>().len(), GEN_ELEMS.len());
 
-        return m;
+        m
     };
 }
 
