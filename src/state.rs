@@ -7,9 +7,9 @@ use std::fmt;
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Status {
-    ONGOING,
-    BLACK_WON,
-    WHITE_WON,
+    Ongoing,
+    BlackWon,
+    WhiteWon,
 }
 
 #[derive(Clone, Debug)]
@@ -58,7 +58,7 @@ impl State {
             }
         }
 
-        let mut status = Status::ONGOING;
+        let mut status = Status::Ongoing;
         let b_wins_found = search_board(&board, &P_WIN.pattern, BLACK);
         let w_wins_found = search_board(&board, &P_WIN.pattern, WHITE);
         let black_won = !b_wins_found.is_empty();
@@ -67,10 +67,10 @@ impl State {
         if black_won && white_won {
             panic!("Both BLACK and WHITE cannot have won!");
         } else if black_won {
-            status = Status::BLACK_WON;
+            status = Status::BlackWon;
             assert_eq!(turn, WHITE);
         } else if white_won {
-            status = Status::WHITE_WON;
+            status = Status::WhiteWon;
             assert_eq!(turn, BLACK);
         }
 

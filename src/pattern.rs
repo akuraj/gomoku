@@ -26,6 +26,7 @@ pub struct Pattern {
     pub immediate: bool,
 }
 
+#[allow(clippy::collapsible_if)]
 impl Pattern {
     pub fn new(
         pattern: Array1<u8>,

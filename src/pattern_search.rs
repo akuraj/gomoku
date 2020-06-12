@@ -486,6 +486,7 @@ pub fn defcon_from_degree(d: usize) -> usize {
     MAX_DEFCON - d
 }
 
+#[allow(clippy::collapsible_if)]
 pub fn one_step_from_straight_threat(gen_pattern: &Array1<u8>) -> bool {
     let n = gen_pattern.len();
     let l = WIN_LENGTH + 1;
