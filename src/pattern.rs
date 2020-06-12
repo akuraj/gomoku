@@ -1,8 +1,6 @@
 //! Define struct to represent threat patterns, and related functions (search etc.).
 
-use crate::consts::{
-    EMPTY, GEN_ELEMS, GEN_ELEMS_TO_NAMES, MDFIT, NOT_OWN, OWN, WALL_ENEMY,
-};
+use crate::consts::{EMPTY, GEN_ELEMS, GEN_ELEMS_TO_NAMES, MDFIT, NOT_OWN, OWN, WALL_ENEMY};
 use crate::geometry::{point_set_on_line, Point};
 use crate::pattern_search::{
     defcon_from_degree, degree, one_step_from_straight_threat, search_board, search_board_next_sq,
@@ -16,24 +14,19 @@ use std::fmt;
 
 #[derive(Clone, Debug)]
 pub struct Pattern {
-    pub pattern: Array1<u8>,
-    pub critical_sqs: Array1<isize>,
-    pub own_sqs: Array1<isize>,
+    pub pattern: Vec<u8>,
+    pub critical_sqs: Vec<isize>,
+    pub own_sqs: Vec<isize>,
     pub name: String,
     pub index: isize,
-    pub empty_sqs: Array1<isize>,
+    pub empty_sqs: Vec<isize>,
     pub defcon: usize,
     pub immediate: bool,
 }
 
 #[allow(clippy::collapsible_if)]
 impl Pattern {
-    pub fn new(
-        pattern: Array1<u8>,
-        critical_sqs: Array1<isize>,
-        name: String,
-        index: isize,
-    ) -> Self {
+    pub fn new(pattern: Vec<u8>, critical_sqs: Vec<isize>, name: String, index: isize) -> Self {
         for elem in pattern.iter() {
             assert!(GEN_ELEMS.iter().any(|&x| x == *elem));
             assert!(*elem == OWN || (*elem & OWN == 0));
@@ -118,10 +111,10 @@ impl Pattern {
         Self {
             pattern,
             critical_sqs,
-            own_sqs: Array1::from(own_sqs),
+            own_sqs,
             name,
             index,
-            empty_sqs: Array1::from(empty_sqs),
+            empty_sqs,
             defcon,
             immediate,
         }
@@ -140,9 +133,9 @@ impl fmt::Display for Pattern {
         output.push('\n');
         output.push_str(&format!("defcon: {}\n", self.defcon));
         output.push_str(&format!("immediate: {}\n", self.immediate));
-        output.push_str(&format!("critical_sqs: {}\n", self.critical_sqs));
-        output.push_str(&format!("own_sqs: {}\n", self.own_sqs));
-        output.push_str(&format!("empty_sqs: {}\n", self.empty_sqs));
+        output.push_str(&format!("critical_sqs: {:?}\n", self.critical_sqs));
+        output.push_str(&format!("own_sqs: {:?}\n", self.own_sqs));
+        output.push_str(&format!("empty_sqs: {:?}\n", self.empty_sqs));
         output.push_str(&format!("name: {}\n", self.name));
         output.push_str(&format!("index: {}\n", self.index));
 
@@ -159,114 +152,104 @@ pub enum ThreatPri {
 
 lazy_static! {
     pub static ref P_WIN: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([OWN, OWN, OWN, OWN, OWN])),
-        Array1::from(Vec::<isize>::from([])),
+        Vec::<u8>::from([OWN, OWN, OWN, OWN, OWN]),
+        Vec::<isize>::new(),
         String::from("P_WIN"),
         0
     );
     pub static ref P_4_ST: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([EMPTY, OWN, OWN, OWN, OWN, EMPTY])),
-        Array1::from(Vec::<isize>::from([])),
+        Vec::<u8>::from([EMPTY, OWN, OWN, OWN, OWN, EMPTY]),
+        Vec::<isize>::new(),
         String::from("P_4_ST"),
         1
     );
     pub static ref P_4_A: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([WALL_ENEMY, OWN, OWN, OWN, OWN, EMPTY])),
-        Array1::from(Vec::<isize>::from([5])),
+        Vec::<u8>::from([WALL_ENEMY, OWN, OWN, OWN, OWN, EMPTY]),
+        Vec::<isize>::from([5]),
         String::from("P_4_A"),
         2
     );
     pub static ref P_4_B: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([NOT_OWN, OWN, OWN, OWN, EMPTY, OWN])),
-        Array1::from(Vec::<isize>::from([4])),
+        Vec::<u8>::from([NOT_OWN, OWN, OWN, OWN, EMPTY, OWN]),
+        Vec::<isize>::from([4]),
         String::from("P_4_B"),
         3
     );
     pub static ref P_4_C: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([
-            NOT_OWN, OWN, OWN, EMPTY, OWN, OWN, NOT_OWN
-        ])),
-        Array1::from(Vec::<isize>::from([3])),
+        Vec::<u8>::from([NOT_OWN, OWN, OWN, EMPTY, OWN, OWN, NOT_OWN]),
+        Vec::<isize>::from([3]),
         String::from("P_4_C"),
         4
     );
     pub static ref P_3_ST: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([EMPTY, EMPTY, OWN, OWN, OWN, EMPTY, EMPTY])),
-        Array1::from(Vec::<isize>::from([1, 5])),
+        Vec::<u8>::from([EMPTY, EMPTY, OWN, OWN, OWN, EMPTY, EMPTY]),
+        Vec::<isize>::from([1, 5]),
         String::from("P_3_ST"),
         5
     );
     pub static ref P_3_A: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([
-            WALL_ENEMY, EMPTY, OWN, OWN, OWN, EMPTY, EMPTY
-        ])),
-        Array1::from(Vec::<isize>::from([1, 5, 6])),
+        Vec::<u8>::from([WALL_ENEMY, EMPTY, OWN, OWN, OWN, EMPTY, EMPTY]),
+        Vec::<isize>::from([1, 5, 6]),
         String::from("P_3_A"),
         6
     );
     pub static ref P_3_B: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([EMPTY, OWN, OWN, EMPTY, OWN, EMPTY])),
-        Array1::from(Vec::<isize>::from([0, 3, 5])),
+        Vec::<u8>::from([EMPTY, OWN, OWN, EMPTY, OWN, EMPTY]),
+        Vec::<isize>::from([0, 3, 5]),
         String::from("P_3_B"),
         7
     );
     pub static ref P_3_C: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([WALL_ENEMY, OWN, OWN, OWN, EMPTY, EMPTY])),
-        Array1::from(Vec::<isize>::from([4, 5])),
+        Vec::<u8>::from([WALL_ENEMY, OWN, OWN, OWN, EMPTY, EMPTY]),
+        Vec::<isize>::from([4, 5]),
         String::from("P_3_C"),
         8
     );
     pub static ref P_3_D: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([WALL_ENEMY, OWN, OWN, EMPTY, OWN, EMPTY])),
-        Array1::from(Vec::<isize>::from([3, 5])),
+        Vec::<u8>::from([WALL_ENEMY, OWN, OWN, EMPTY, OWN, EMPTY]),
+        Vec::<isize>::from([3, 5]),
         String::from("P_3_D"),
         9
     );
     pub static ref P_3_E: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([WALL_ENEMY, OWN, EMPTY, OWN, OWN, EMPTY])),
-        Array1::from(Vec::<isize>::from([2, 5])),
+        Vec::<u8>::from([WALL_ENEMY, OWN, EMPTY, OWN, OWN, EMPTY]),
+        Vec::<isize>::from([2, 5]),
         String::from("P_3_E"),
         10
     );
     pub static ref P_3_F: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([
-            WALL_ENEMY, EMPTY, OWN, OWN, OWN, EMPTY, WALL_ENEMY
-        ])),
-        Array1::from(Vec::<isize>::from([1, 5])),
+        Vec::<u8>::from([WALL_ENEMY, EMPTY, OWN, OWN, OWN, EMPTY, WALL_ENEMY]),
+        Vec::<isize>::from([1, 5]),
         String::from("P_3_F"),
         11
     );
     pub static ref P_3_G: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([NOT_OWN, OWN, OWN, EMPTY, EMPTY, OWN])),
-        Array1::from(Vec::<isize>::from([3, 4])),
+        Vec::<u8>::from([NOT_OWN, OWN, OWN, EMPTY, EMPTY, OWN]),
+        Vec::<isize>::from([3, 4]),
         String::from("P_3_G"),
         12
     );
     pub static ref P_3_H: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([
-            NOT_OWN, OWN, EMPTY, OWN, EMPTY, OWN, NOT_OWN
-        ])),
-        Array1::from(Vec::<isize>::from([2, 4])),
+        Vec::<u8>::from([NOT_OWN, OWN, EMPTY, OWN, EMPTY, OWN, NOT_OWN]),
+        Vec::<isize>::from([2, 4]),
         String::from("P_3_H"),
         13
     );
     pub static ref P_2_A: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([EMPTY, EMPTY, OWN, OWN, EMPTY, EMPTY])),
-        Array1::from(Vec::<isize>::from([0, 1, 4, 5])),
+        Vec::<u8>::from([EMPTY, EMPTY, OWN, OWN, EMPTY, EMPTY]),
+        Vec::<isize>::from([0, 1, 4, 5]),
         String::from("P_2_A"),
         14
     );
     pub static ref P_2_B: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([
-            EMPTY, EMPTY, OWN, EMPTY, OWN, EMPTY, EMPTY
-        ])),
-        Array1::from(Vec::<isize>::from([0, 1, 3, 5, 6])),
+        Vec::<u8>::from([EMPTY, EMPTY, OWN, EMPTY, OWN, EMPTY, EMPTY]),
+        Vec::<isize>::from([0, 1, 3, 5, 6]),
         String::from("P_2_B"),
         15
     );
     pub static ref P_2_C: Pattern = Pattern::new(
-        Array1::from(Vec::<u8>::from([EMPTY, OWN, EMPTY, EMPTY, OWN, EMPTY])),
-        Array1::from(Vec::<isize>::from([0, 2, 3, 5])),
+        Vec::<u8>::from([EMPTY, OWN, EMPTY, EMPTY, OWN, EMPTY]),
+        Vec::<isize>::from([0, 2, 3, 5]),
         String::from("P_2_C"),
         16
     );
@@ -316,7 +299,9 @@ lazy_static! {
         let mut m: HashMap<usize, Vec<&'static Pattern>> = HashMap::new();
 
         for p in PATTERNS.iter() {
-            m.entry(p.defcon).or_insert_with(Vec::<&'static Pattern>::new).push(p);
+            m.entry(p.defcon)
+                .or_insert_with(Vec::<&'static Pattern>::new)
+                .push(p);
         }
 
         m

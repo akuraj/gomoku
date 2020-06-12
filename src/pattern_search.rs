@@ -10,11 +10,11 @@ use std::cmp::max;
 pub type Match = (Point, Point);
 pub type NSQMatch = (Point, Match);
 
-pub fn get_pattern(gen_pattern: &Array1<u8>, color: u8) -> Array1<u8> {
+pub fn get_pattern(gen_pattern: &[u8], color: u8) -> Vec<u8> {
     let mut pattern = gen_pattern.to_owned();
 
     match color {
-        BLACK => { pattern }
+        BLACK => pattern,
         WHITE => {
             for val in pattern.iter_mut() {
                 *val = if *val & STONE == 0 || *val & STONE == STONE {
@@ -59,7 +59,7 @@ pub fn idx(start: isize, increment: isize, steps: usize) -> isize {
     start + increment * (steps as isize)
 }
 
-pub fn search_board(board: &Array2<u8>, gen_pattern: &Array1<u8>, color: u8) -> Vec<Match> {
+pub fn search_board(board: &Array2<u8>, gen_pattern: &[u8], color: u8) -> Vec<Match> {
     let side = board.shape()[0];
     let pattern = get_pattern(gen_pattern, color);
     let length = pattern.len();
@@ -97,12 +97,7 @@ pub fn search_board(board: &Array2<u8>, gen_pattern: &Array1<u8>, color: u8) -> 
     matches
 }
 
-pub fn search_point(
-    board: &Array2<u8>,
-    gen_pattern: &Array1<u8>,
-    color: u8,
-    point: Point,
-) -> Vec<Match> {
+pub fn search_point(board: &Array2<u8>, gen_pattern: &[u8], color: u8, point: Point) -> Vec<Match> {
     let (x, y) = point;
 
     let side = board.shape()[0];
@@ -143,10 +138,10 @@ pub fn search_point(
 
 pub fn search_point_own(
     board: &Array2<u8>,
-    gen_pattern: &Array1<u8>,
+    gen_pattern: &[u8],
     color: u8,
     point: Point,
-    own_sqs: &Array1<isize>,
+    own_sqs: &[isize],
 ) -> Vec<Match> {
     let (x, y) = point;
 
@@ -216,11 +211,7 @@ pub fn dedupe_next_sq_match_pairs(pairs: &mut Vec<NSQMatch>) {
     }
 }
 
-pub fn search_board_next_sq(
-    board: &Array2<u8>,
-    gen_pattern: &Array1<u8>,
-    color: u8,
-) -> Vec<NSQMatch> {
+pub fn search_board_next_sq(board: &Array2<u8>, gen_pattern: &[u8], color: u8) -> Vec<NSQMatch> {
     let side = board.shape()[0];
     let pattern = get_pattern(gen_pattern, color);
     let length = pattern.len();
@@ -268,7 +259,7 @@ pub fn search_board_next_sq(
 
 pub fn search_point_next_sq(
     board: &Array2<u8>,
-    gen_pattern: &Array1<u8>,
+    gen_pattern: &[u8],
     color: u8,
     point: Point,
 ) -> Vec<NSQMatch> {
@@ -321,10 +312,10 @@ pub fn search_point_next_sq(
 
 pub fn search_point_own_next_sq(
     board: &Array2<u8>,
-    gen_pattern: &Array1<u8>,
+    gen_pattern: &[u8],
     color: u8,
     point: Point,
-    own_sqs: &Array1<isize>,
+    own_sqs: &[isize],
 ) -> Vec<NSQMatch> {
     let (x, y) = point;
 
@@ -379,7 +370,7 @@ pub fn search_point_own_next_sq(
     next_sq_match_pairs
 }
 
-pub fn apply_pattern(board: &mut Array2<u8>, pattern: &Array1<u8>, point: Point, d: usize) -> bool {
+pub fn apply_pattern(board: &mut Array2<u8>, pattern: &[u8], point: Point, d: usize) -> bool {
     let (x, y) = point;
 
     let side = board.shape()[0];
@@ -453,7 +444,7 @@ pub fn next_sq_matches_are_equal(x: &[NSQMatch], y: &[NSQMatch]) -> bool {
     next_sq_matches_are_subset(x, y) && next_sq_matches_are_subset(y, x)
 }
 
-pub fn degree(gen_pattern: &Array1<u8>) -> usize {
+pub fn degree(gen_pattern: &[u8]) -> usize {
     let n = gen_pattern.len();
     let mut max_owns: usize = 0;
 
@@ -487,7 +478,7 @@ pub fn defcon_from_degree(d: usize) -> usize {
 }
 
 #[allow(clippy::collapsible_if)]
-pub fn one_step_from_straight_threat(gen_pattern: &Array1<u8>) -> bool {
+pub fn one_step_from_straight_threat(gen_pattern: &[u8]) -> bool {
     let n = gen_pattern.len();
     let l = WIN_LENGTH + 1;
 

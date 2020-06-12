@@ -203,11 +203,7 @@ pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, HashSet<Po
     variations
 }
 
-pub fn animate_variation(
-    board: &mut Array2<u8>,
-    color: u8,
-    variation: &[(Point, HashSet<Point>)],
-) {
+pub fn animate_variation(board: &mut Array2<u8>, color: u8, variation: &[(Point, HashSet<Point>)]) {
     let sleep_duration = Duration::from_secs(ANIMATION_TIMESTEP_SECS);
 
     println!("{}", board_to_str(board));

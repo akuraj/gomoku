@@ -12,7 +12,7 @@ use ndarray::prelude::*;
 
 pub fn subtest_search_board(
     board: &Array2<u8>,
-    gen_pattern: &Array1<u8>,
+    gen_pattern: &[u8],
     color: u8,
     start: Point,
     end: Point,
@@ -24,7 +24,7 @@ pub fn subtest_search_board(
 
 pub fn subtest_search_point(
     board: &Array2<u8>,
-    gen_pattern: &Array1<u8>,
+    gen_pattern: &[u8],
     color: u8,
     start: Point,
     end: Point,
@@ -46,9 +46,9 @@ pub fn subtest_search_point(
 
 pub fn subtest_search_point_own(
     board: &Array2<u8>,
-    gen_pattern: &Array1<u8>,
+    gen_pattern: &[u8],
     color: u8,
-    own_sqs: &Array1<isize>,
+    own_sqs: &[isize],
     start: Point,
     end: Point,
 ) {
@@ -68,9 +68,9 @@ pub fn subtest_search_point_own(
 
 pub fn subtest_search_board_next_sq(
     board: &mut Array2<u8>,
-    gen_pattern: &Array1<u8>,
+    gen_pattern: &[u8],
     color: u8,
-    own_sqs: &Array1<isize>,
+    own_sqs: &[isize],
     defcon: usize,
     start: Point,
     end: Point,
@@ -99,9 +99,9 @@ pub fn subtest_search_board_next_sq(
 
 pub fn subtest_search_point_next_sq(
     board: &mut Array2<u8>,
-    gen_pattern: &Array1<u8>,
+    gen_pattern: &[u8],
     color: u8,
-    own_sqs: &Array1<isize>,
+    own_sqs: &[isize],
     defcon: usize,
     start: Point,
     end: Point,
@@ -141,9 +141,9 @@ pub fn subtest_search_point_next_sq(
 
 pub fn subtest_search_point_own_next_sq(
     board: &mut Array2<u8>,
-    gen_pattern: &Array1<u8>,
+    gen_pattern: &[u8],
     color: u8,
-    own_sqs: &Array1<isize>,
+    own_sqs: &[isize],
     defcon: usize,
     start: Point,
     end: Point,
@@ -183,12 +183,7 @@ pub fn subtest_search_point_own_next_sq(
     }
 }
 
-pub fn subtest_search_fns(
-    gen_pattern: &Array1<u8>,
-    color: u8,
-    own_sqs: &Array1<isize>,
-    defcon: usize,
-) {
+pub fn subtest_search_fns(gen_pattern: &[u8], color: u8, own_sqs: &[isize], defcon: usize) {
     let pattern = get_pattern(gen_pattern, color);
     let length = pattern.len();
 

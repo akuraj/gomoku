@@ -1,6 +1,5 @@
 use crate::consts::{
-    ACT_ELEMS_TO_CHRS, BLACK, EMPTY, RADIX, SIDE_LEN, SIDE_LEN_ACT, SPL_ELEM_CHR, WALL,
-    WHITE,
+    ACT_ELEMS_TO_CHRS, BLACK, EMPTY, RADIX, SIDE_LEN, SIDE_LEN_ACT, SPL_ELEM_CHR, WALL, WHITE,
 };
 use crate::geometry::Point;
 use ndarray::prelude::*;

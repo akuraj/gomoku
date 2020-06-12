@@ -1,6 +1,5 @@
 //! Functions related to the geometry of the problem.
 
-use ndarray::prelude::*;
 use num::{abs, signum};
 use std::cmp::{max, min};
 use std::collections::HashSet;
@@ -104,7 +103,7 @@ pub fn chebyshev_distance(start: Point, end: Point) -> isize {
     max(adx, ady)
 }
 
-pub fn point_set_on_line(start: Point, end: Point, idxs: &Array1<isize>) -> HashSet<Point> {
+pub fn point_set_on_line(start: Point, end: Point, idxs: &[isize]) -> HashSet<Point> {
     let mut point_set: HashSet<Point> = HashSet::new();
 
     for idx in idxs.iter() {
@@ -131,5 +130,9 @@ pub fn slope_intercept(start: Point, end: Point) -> (isize, isize, isize) {
 pub fn point_idx_on_line(point: Point, line: (isize, isize, isize)) -> isize {
     let (x, y) = point;
     assert!(line.0 * y == line.1 * x + line.2);
-    if line.0 != 0 { x } else { y }
+    if line.0 != 0 {
+        x
+    } else {
+        y
+    }
 }
