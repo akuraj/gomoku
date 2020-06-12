@@ -151,9 +151,9 @@ impl fmt::Display for Pattern {
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ThreatPri {
-    ALL,
-    IMMEDIATE,
-    NON_IMMEDIATE,
+    All,
+    Immediate,
+    NonImmediate,
 }
 
 lazy_static! {
@@ -354,9 +354,9 @@ lazy_static! {
     };
     pub static ref PATTERNS_BY_PRI: HashMap<ThreatPri, &'static Vec<&'static Pattern>> = {
         let mut m: HashMap<ThreatPri, &'static Vec<&'static Pattern>> = HashMap::new();
-        m.insert(ThreatPri::ALL, &PATTERNS);
-        m.insert(ThreatPri::IMMEDIATE, &PATTERNS_I);
-        m.insert(ThreatPri::NON_IMMEDIATE, &PATTERNS_NI);
+        m.insert(ThreatPri::All, &PATTERNS);
+        m.insert(ThreatPri::Immediate, &PATTERNS_I);
+        m.insert(ThreatPri::NonImmediate, &PATTERNS_NI);
         m
     };
 }

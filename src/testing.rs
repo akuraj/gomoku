@@ -38,7 +38,7 @@ pub fn subtest_search_point(
             if point_is_on_line(point, start, end, true) {
                 assert!(matches_are_equal(&matches, &expected_matches));
             } else {
-                assert_eq!(matches.len(), 0);
+                assert!(matches.is_empty());
             }
         }
     }
@@ -60,7 +60,7 @@ pub fn subtest_search_point_own(
             if board[(x, y)] == color && point_is_on_line(point, start, end, true) {
                 assert!(matches_are_equal(&matches, &expected_matches));
             } else {
-                assert_eq!(matches.len(), 0);
+                assert!(matches.is_empty());
             }
         }
     }
@@ -125,10 +125,8 @@ pub fn subtest_search_point_next_sq(
                         &ns_matches
                     ));
                 } else if point_is_on_line(point, start, end, false) {
-                } else {
-                    if WIN_LENGTH - defcon > 2 {
-                        assert_eq!(ns_matches.len(), 0);
-                    }
+                } else if WIN_LENGTH - defcon > 2 {
+                    assert!(ns_matches.is_empty());
                 }
 
                 if WIN_LENGTH - defcon > 2 {
@@ -171,10 +169,8 @@ pub fn subtest_search_point_own_next_sq(
                         &ns_matches
                     ));
                 } else if point_is_own_sq && point_is_on_line(point, start, end, false) {
-                } else {
-                    if WIN_LENGTH - defcon > 2 {
-                        assert_eq!(ns_matches.len(), 0);
-                    }
+                } else if WIN_LENGTH - defcon > 2 {
+                    assert!(ns_matches.is_empty());
                 }
 
                 if WIN_LENGTH - defcon > 2 {

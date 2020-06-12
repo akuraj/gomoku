@@ -1,6 +1,6 @@
 // from time import sleep
 use crate::board::{board_to_str, clear_sq, set_sq};
-use crate::consts::{ANIMATION_TIMESTEP_SECS, MAX_DEFCON, STONE};
+use crate::consts::{ANIMATION_TIMESTEP_SECS, STONE};
 use crate::geometry::Point;
 use crate::pattern::Threat;
 use crate::pattern::{
@@ -54,7 +54,7 @@ impl SearchNode {
 pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchNode {
     set_sq(board, color, next_sq);
 
-    let threats = search_all_point_own(board, color, next_sq, ThreatPri::IMMEDIATE);
+    let threats = search_all_point_own(board, color, next_sq, ThreatPri::Immediate);
     let num_threats = threats.len();
     let critical_sqs: HashSet<Point> = if num_threats > 0 {
         // FIXME: Reduce?
@@ -76,7 +76,7 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
     for csq in critical_sqs.iter() {
         set_sq(board, color ^ STONE, *csq);
 
-        let threats_csq = search_all_point_own(board, color ^ STONE, *csq, ThreatPri::IMMEDIATE);
+        let threats_csq = search_all_point_own(board, color ^ STONE, *csq, ThreatPri::Immediate);
         let num_threats_csq = threats_csq.len();
         let critical_sqs_csq: HashSet<Point> = if num_threats_csq > 0 {
             // FIXME: Reduce?
@@ -115,13 +115,13 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
             set_sq(board, color ^ STONE, *csq);
         }
 
-        let nsqs = search_all_point_own_get_next_sqs(board, color, next_sq, ThreatPri::IMMEDIATE);
+        let nsqs = search_all_point_own_get_next_sqs(board, color, next_sq, ThreatPri::Immediate);
         children = nsqs.iter().map(|x| tss_next_sq(board, color, *x)).collect();
         potential_win = children.iter().any(|x| x.potential_win);
 
         if !potential_win {
             let nsqs_other =
-                search_all_point_own_get_next_sqs(board, color, next_sq, ThreatPri::NON_IMMEDIATE);
+                search_all_point_own_get_next_sqs(board, color, next_sq, ThreatPri::NonImmediate);
             let children_other: Vec<SearchNode> = nsqs_other
                 .iter()
                 .map(|x| tss_next_sq(board, color, *x))
@@ -162,12 +162,12 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
 // #     pass
 
 pub fn tss_board(board: &mut Array2<u8>, color: u8) -> SearchNode {
-    let threats = search_all_board(board, color, ThreatPri::IMMEDIATE);
+    let threats = search_all_board(board, color, ThreatPri::Immediate);
     let mut potential_win = !threats.is_empty();
     let mut children = Vec::<SearchNode>::new();
 
     if !potential_win {
-        let nsqs = search_all_board_get_next_sqs(board, color, ThreatPri::IMMEDIATE);
+        let nsqs = search_all_board_get_next_sqs(board, color, ThreatPri::Immediate);
         children = nsqs.iter().map(|x| tss_next_sq(board, color, *x)).collect();
         potential_win = children.iter().any(|x| x.potential_win);
     }
