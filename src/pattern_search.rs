@@ -405,7 +405,7 @@ pub fn apply_pattern(board: &mut Array2<u8>, pattern: &Array1<u8>, point: Point,
     return can_apply;
 }
 
-pub fn matches_are_subset(x: &Vec<Match>, y: &Vec<Match>) -> bool {
+pub fn matches_are_subset(x: &[Match], y: &[Match]) -> bool {
     for a_ref in x.iter() {
         let a = *a_ref;
         let mut found = false;
@@ -425,11 +425,11 @@ pub fn matches_are_subset(x: &Vec<Match>, y: &Vec<Match>) -> bool {
     return true;
 }
 
-pub fn matches_are_equal(x: &Vec<Match>, y: &Vec<Match>) -> bool {
+pub fn matches_are_equal(x: &[Match], y: &[Match]) -> bool {
     return matches_are_subset(x, y) && matches_are_subset(y, x);
 }
 
-pub fn next_sq_matches_are_subset(x: &Vec<NSQMatch>, y: &Vec<NSQMatch>) -> bool {
+pub fn next_sq_matches_are_subset(x: &[NSQMatch], y: &[NSQMatch]) -> bool {
     for a_ref in x.iter() {
         let a = *a_ref;
         let mut found = false;
@@ -449,7 +449,7 @@ pub fn next_sq_matches_are_subset(x: &Vec<NSQMatch>, y: &Vec<NSQMatch>) -> bool 
     return true;
 }
 
-pub fn next_sq_matches_are_equal(x: &Vec<NSQMatch>, y: &Vec<NSQMatch>) -> bool {
+pub fn next_sq_matches_are_equal(x: &[NSQMatch], y: &[NSQMatch]) -> bool {
     return next_sq_matches_are_subset(x, y) && next_sq_matches_are_subset(y, x);
 }
 

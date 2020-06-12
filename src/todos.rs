@@ -6,6 +6,7 @@
 // FIXME: Replace if-else-if with match!
 // FIXME: Add function documentation. Just copy from Python impl.
 // FIXME: Add all the comments in Python code to the Rust code.
+// FIXME: Use Vec instead of Array1.
 
 // TODO: Add checks on size of board and patterns by having max value in consts.
 // TODO: Just use i8 for all indices and sizes?

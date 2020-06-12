@@ -59,9 +59,9 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
     let critical_sqs: HashSet<Point> = if num_threats > 0 {
         // FIXME: Reduce?
         let mut csqs_temp: HashSet<Point> = threats[0].critical_sqs.iter().cloned().collect();
-        for i in 1..num_threats {
+        for item in threats.iter().skip(1) {
             csqs_temp = csqs_temp
-                .intersection(&threats[i].critical_sqs)
+                .intersection(&item.critical_sqs)
                 .cloned()
                 .collect::<HashSet<Point>>();
         }
@@ -82,9 +82,9 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
             // FIXME: Reduce?
             let mut csqs_temp: HashSet<Point> =
                 threats_csq[0].critical_sqs.iter().cloned().collect();
-            for i in 1..num_threats_csq {
+            for item in threats_csq.iter().skip(1) {
                 csqs_temp = csqs_temp
-                    .intersection(&threats_csq[i].critical_sqs)
+                    .intersection(&item.critical_sqs)
                     .cloned()
                     .collect::<HashSet<Point>>();
             }

@@ -61,8 +61,8 @@ impl State {
         let mut status = Status::ONGOING;
         let b_wins_found = search_board(&board, &P_WIN.pattern, BLACK);
         let w_wins_found = search_board(&board, &P_WIN.pattern, WHITE);
-        let black_won = b_wins_found.len() > 0;
-        let white_won = w_wins_found.len() > 0;
+        let black_won = !b_wins_found.is_empty();
+        let white_won = !w_wins_found.is_empty();
 
         if black_won && white_won {
             panic!("Both BLACK and WHITE cannot have won!");
