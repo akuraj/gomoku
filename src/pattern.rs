@@ -1,12 +1,12 @@
 //! Define struct to represent threat patterns, and related functions (search etc.).
+
 use crate::consts::{
-    EMPTY, GEN_ELEMS, GEN_ELEMS_TO_NAMES, MAX_DEFCON, MDFIT, NOT_OWN, OWN, WALL_ENEMY,
+    EMPTY, GEN_ELEMS, GEN_ELEMS_TO_NAMES, MDFIT, NOT_OWN, OWN, WALL_ENEMY,
 };
 use crate::geometry::{point_set_on_line, Point};
 use crate::pattern_search::{
     defcon_from_degree, degree, one_step_from_straight_threat, search_board, search_board_next_sq,
     search_point, search_point_next_sq, search_point_own, search_point_own_next_sq, Match,
-    NSQMatch,
 };
 use lazy_static::lazy_static;
 use ndarray::prelude::*;
@@ -115,14 +115,14 @@ impl Pattern {
         //     assert degree(next_pattern) == curr_degree + 1
 
         Self {
-            pattern: pattern,
-            critical_sqs: critical_sqs,
+            pattern,
+            critical_sqs,
             own_sqs: Array1::from(own_sqs),
-            name: name,
-            index: index,
+            name,
+            index,
             empty_sqs: Array1::from(empty_sqs),
-            defcon: defcon,
-            immediate: immediate,
+            defcon,
+            immediate,
         }
     }
 }
@@ -376,7 +376,7 @@ pub struct Threat {
 
 pub fn threat_item(m: Match, pattern: &Pattern) -> Threat {
     return Threat {
-        m: m,
+        m,
         pidx: pattern.index,
         defcon: pattern.defcon,
         critical_sqs: point_set_on_line(m.0, m.1, &pattern.critical_sqs),

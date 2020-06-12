@@ -1,4 +1,4 @@
-use crate::board::{board_to_str, get_board, new_board};
+use crate::board::{board_to_str, get_board};
 use crate::consts::{ACT_ELEMS_TO_NAMES, BLACK, COLORS, EMPTY, SIDE_LEN, WALL, WHITE};
 use crate::pattern::P_WIN;
 use crate::pattern_search::search_board;
@@ -75,9 +75,9 @@ impl State {
         }
 
         Self {
-            board: board,
-            turn: turn,
-            status: status,
+            board,
+            turn,
+            status,
         }
     }
 }

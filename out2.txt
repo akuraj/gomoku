@@ -1,0 +1,848 @@
+warning: unused import: `COLORS`
+ --> src\board.rs:2:31
+  |
+2 |     ACT_ELEMS_TO_CHRS, BLACK, COLORS, EMPTY, RADIX, SIDE_LEN, SIDE_LEN_ACT, SPL_ELEM_CHR, WALL,
+  |                               ^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: variant `NON_IMMEDIATE` should have an upper camel case name
+   --> src\pattern.rs:156:5
+    |
+156 |     NON_IMMEDIATE,
+    |     ^^^^^^^^^^^^^ help: convert the identifier to upper camel case: `NonImmediate`
+    |
+    = note: `#[warn(non_camel_case_types)]` on by default
+
+warning: unused import: `COLORS`
+ --> src\state.rs:2:48
+  |
+2 | use crate::consts::{ACT_ELEMS_TO_NAMES, BLACK, COLORS, EMPTY, SIDE_LEN, WALL, WHITE};
+  |                                                ^^^^^^
+
+warning: variant `BLACK_WON` should have an upper camel case name
+  --> src\state.rs:11:5
+   |
+11 |     BLACK_WON,
+   |     ^^^^^^^^^ help: convert the identifier to upper camel case: `BlackWon`
+
+warning: variant `WHITE_WON` should have an upper camel case name
+  --> src\state.rs:12:5
+   |
+12 |     WHITE_WON,
+   |     ^^^^^^^^^ help: convert the identifier to upper camel case: `WhiteWon`
+
+warning: unused import: `MAX_DEFCON`
+ --> src\threat_space_search.rs:3:46
+  |
+3 | use crate::consts::{ANIMATION_TIMESTEP_SECS, MAX_DEFCON, STONE};
+  |                                              ^^^^^^^^^^
+
+warning: unused import: `consts::BLACK`
+  --> src\main.rs:10:5
+   |
+10 | use consts::BLACK;
+   |     ^^^^^^^^^^^^^
+
+warning: unused import: `state::get_state`
+  --> src\main.rs:11:5
+   |
+11 | use state::get_state;
+   |     ^^^^^^^^^^^^^^^^
+
+warning: unused imports: `animate_variation`, `potential_win_variations`, `tss_board`
+  --> src\main.rs:14:27
+   |
+14 | use threat_space_search::{animate_variation, potential_win_variations, tss_board};
+   |                           ^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^
+
+warning: unneeded `return` statement
+  --> src\board.rs:12:5
+   |
+12 |     return SIDE_LEN_ACT + 1 - x;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `SIDE_LEN_ACT + 1 - x`
+   |
+   = note: `#[warn(clippy::needless_return)]` on by default
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\board.rs:19:5
+   |
+19 |     return char::from_u32(97 + (x as u32) - 1).unwrap();
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `char::from_u32(97 + (x as u32) - 1).unwrap()`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\board.rs:25:5
+   |
+25 |     return idx;
+   |     ^^^^^^^^^^^ help: remove `return`: `idx`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\board.rs:44:5
+   |
+44 |     return (row_idx, col_idx);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `(row_idx, col_idx)`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\board.rs:57:5
+   |
+57 |     return board;
+   |     ^^^^^^^^^^^^^ help: remove `return`: `board`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\board.rs:84:5
+   |
+84 |     return board;
+   |     ^^^^^^^^^^^^^ help: remove `return`: `board`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\board.rs:134:5
+    |
+134 |     return board_repr;
+    |     ^^^^^^^^^^^^^^^^^^ help: remove `return`: `board_repr`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\consts.rs:58:9
+   |
+58 |         return m;
+   |         ^^^^^^^^^ help: remove `return`: `m`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\consts.rs:73:9
+   |
+73 |         return m;
+   |         ^^^^^^^^^ help: remove `return`: `m`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\consts.rs:115:9
+    |
+115 |         return m;
+    |         ^^^^^^^^^ help: remove `return`: `m`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\geometry.rs:12:9
+   |
+12 |         return 0;
+   |         ^^^^^^^^^ help: remove `return`: `0`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\geometry.rs:14:9
+   |
+14 |         return 1;
+   |         ^^^^^^^^^ help: remove `return`: `1`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\geometry.rs:16:9
+   |
+16 |         return -1;
+   |         ^^^^^^^^^^ help: remove `return`: `-1`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\geometry.rs:21:5
+   |
+21 |     return (increment(d), increment(d + 2));
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `(increment(d), increment(d + 2))`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\geometry.rs:27:19
+   |
+27 |             -1 => return (length - 1, side),
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `(length - 1, side)`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\geometry.rs:28:18
+   |
+28 |             0 => return (0, side),
+   |                  ^^^^^^^^^^^^^^^^ help: remove `return`: `(0, side)`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\geometry.rs:29:18
+   |
+29 |             1 => return (0, side - length + 1),
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `(0, side - length + 1)`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\geometry.rs:33:9
+   |
+33 |         return (0, 0);
+   |         ^^^^^^^^^^^^^^ help: remove `return`: `(0, 0)`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\geometry.rs:78:5
+   |
+78 |     return (-min(back, length - 1), min(front, length) - (length - 1));
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `(-min(back, length - 1), min(front, length) - (length - 1))`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\geometry.rs:87:5
+   |
+87 |     return (dx1 * dy2 == dx2 * dy1) && (!segment_only || (dx1 * dx2 <= 0 && dy1 * dy2 <= 0));
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `(dx1 * dy2 == dx2 * dy1) && (!segment_only || (dx1 * dx2 <= 0 && dy1 * dy2 <= 0))`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\geometry.rs:95:5
+   |
+95 |     return (start.0 + signum(dx) * i, start.1 + signum(dy) * i);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `(start.0 + signum(dx) * i, start.1 + signum(dy) * i)`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\geometry.rs:101:5
+    |
+101 |     return (adx * ady == 0 || adx == ady) && (adx + ady > 0);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `(adx * ady == 0 || adx == ady) && (adx + ady > 0)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\geometry.rs:107:5
+    |
+107 |     return max(adx, ady);
+    |     ^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `max(adx, ady)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\geometry.rs:117:5
+    |
+117 |     return point_set;
+    |     ^^^^^^^^^^^^^^^^^ help: remove `return`: `point_set`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\geometry.rs:127:9
+    |
+127 |         return (0, 1, -start.0);
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `(0, 1, -start.0)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\geometry.rs:130:9
+    |
+130 |         return (1, slope, start.1 - slope * start.0);
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `(1, slope, start.1 - slope * start.0)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\geometry.rs:140:9
+    |
+140 |         return x;
+    |         ^^^^^^^^^ help: remove `return`: `x`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\geometry.rs:142:9
+    |
+142 |         return y;
+    |         ^^^^^^^^^ help: remove `return`: `y`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: this `else { if .. }` block can be collapsed
+  --> src\pattern.rs:63:20
+   |
+63 |               } else {
+   |  ____________________^
+64 | |                 if oe_start && !oe_end {
+65 | |                     oe_end = true;
+66 | |                 }
+67 | |             }
+   | |_____________^
+   |
+   = note: `#[warn(clippy::collapsible_if)]` on by default
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_if
+help: try
+   |
+63 |             } else if oe_start && !oe_end {
+64 |                 oe_end = true;
+65 |             }
+   |
+
+warning: unneeded `return` statement
+   --> src\pattern.rs:311:9
+    |
+311 |         return Vec::from(patterns);
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `Vec::from(patterns)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern.rs:326:9
+    |
+326 |         return m;
+    |         ^^^^^^^^^ help: remove `return`: `m`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern.rs:336:9
+    |
+336 |         return m;
+    |         ^^^^^^^^^ help: remove `return`: `m`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern.rs:347:9
+    |
+347 |         return patterns;
+    |         ^^^^^^^^^^^^^^^^ help: remove `return`: `patterns`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern.rs:358:9
+    |
+358 |         return patterns;
+    |         ^^^^^^^^^^^^^^^^ help: remove `return`: `patterns`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern.rs:365:9
+    |
+365 |         return m;
+    |         ^^^^^^^^^ help: remove `return`: `m`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern.rs:378:5
+    |
+378 | /     return Threat {
+379 | |         m,
+380 | |         pidx: pattern.index,
+381 | |         defcon: pattern.defcon,
+382 | |         critical_sqs: point_set_on_line(m.0, m.1, &pattern.critical_sqs),
+383 | |     };
+    | |______^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+help: remove `return`
+    |
+378 |     Threat {
+379 |         m,
+380 |         pidx: pattern.index,
+381 |         defcon: pattern.defcon,
+382 |         critical_sqs: point_set_on_line(m.0, m.1, &pattern.critical_sqs),
+383 |     }
+    |
+
+warning: unneeded `return` statement
+   --> src\pattern.rs:395:5
+    |
+395 |     return threats;
+    |     ^^^^^^^^^^^^^^^ help: remove `return`: `threats`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern.rs:412:5
+    |
+412 |     return threats;
+    |     ^^^^^^^^^^^^^^^ help: remove `return`: `threats`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern.rs:429:5
+    |
+429 |     return threats;
+    |     ^^^^^^^^^^^^^^^ help: remove `return`: `threats`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern.rs:445:5
+    |
+445 |     return nsqs;
+    |     ^^^^^^^^^^^^ help: remove `return`: `nsqs`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern.rs:462:5
+    |
+462 |     return nsqs;
+    |     ^^^^^^^^^^^^ help: remove `return`: `nsqs`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern.rs:479:5
+    |
+479 |     return nsqs;
+    |     ^^^^^^^^^^^^ help: remove `return`: `nsqs`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\pattern_search.rs:17:18
+   |
+17 |         BLACK => return pattern,
+   |                  ^^^^^^^^^^^^^^ help: remove `return`: `pattern`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\pattern_search.rs:27:13
+   |
+27 |             return pattern;
+   |             ^^^^^^^^^^^^^^^ help: remove `return`: `pattern`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\pattern_search.rs:59:5
+   |
+59 |     return start + increment * (steps as isize);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `start + increment * (steps as isize)`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+  --> src\pattern_search.rs:97:5
+   |
+97 |     return matches;
+   |     ^^^^^^^^^^^^^^^ help: remove `return`: `matches`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern_search.rs:141:5
+    |
+141 |     return matches;
+    |     ^^^^^^^^^^^^^^^ help: remove `return`: `matches`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern_search.rs:192:5
+    |
+192 |     return matches;
+    |     ^^^^^^^^^^^^^^^ help: remove `return`: `matches`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern_search.rs:266:5
+    |
+266 |     return next_sq_match_pairs;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `next_sq_match_pairs`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern_search.rs:319:5
+    |
+319 |     return next_sq_match_pairs;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `next_sq_match_pairs`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern_search.rs:379:5
+    |
+379 |     return next_sq_match_pairs;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `next_sq_match_pairs`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern_search.rs:405:5
+    |
+405 |     return can_apply;
+    |     ^^^^^^^^^^^^^^^^^ help: remove `return`: `can_apply`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern_search.rs:425:5
+    |
+425 |     return true;
+    |     ^^^^^^^^^^^^ help: remove `return`: `true`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern_search.rs:429:5
+    |
+429 |     return matches_are_subset(x, y) && matches_are_subset(y, x);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `matches_are_subset(x, y) && matches_are_subset(y, x)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern_search.rs:449:5
+    |
+449 |     return true;
+    |     ^^^^^^^^^^^^ help: remove `return`: `true`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern_search.rs:453:5
+    |
+453 |     return next_sq_matches_are_subset(x, y) && next_sq_matches_are_subset(y, x);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `next_sq_matches_are_subset(x, y) && next_sq_matches_are_subset(y, x)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern_search.rs:482:5
+    |
+482 |     return max_owns;
+    |     ^^^^^^^^^^^^^^^^ help: remove `return`: `max_owns`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern_search.rs:486:5
+    |
+486 |     return MAX_DEFCON - d;
+    |     ^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `MAX_DEFCON - d`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\pattern_search.rs:523:5
+    |
+523 |     return false;
+    |     ^^^^^^^^^^^^^ help: remove `return`: `false`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: this `else { if .. }` block can be collapsed
+   --> src\pattern_search.rs:508:28
+    |
+508 |                       } else {
+    |  ____________________________^
+509 | |                         if value != gen_pattern[i + j] {
+510 | |                             found = false;
+511 | |                             break;
+512 | |                         }
+513 | |                     }
+    | |_____________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_if
+help: try
+    |
+508 |                     } else if value != gen_pattern[i + j] {
+509 |                         found = false;
+510 |                         break;
+511 |                     }
+    |
+
+warning: unneeded `return` statement
+   --> src\state.rs:100:5
+    |
+100 |     return State::new(get_board(blacks, whites), turn, strict_stone_count);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `State::new(get_board(blacks, whites), turn, strict_stone_count)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: this `else { if .. }` block can be collapsed
+   --> src\testing.rs:128:24
+    |
+128 |                   } else {
+    |  ________________________^
+129 | |                     if WIN_LENGTH - defcon > 2 {
+130 | |                         assert_eq!(ns_matches.len(), 0);
+131 | |                     }
+132 | |                 }
+    | |_________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_if
+help: try
+    |
+128 |                 } else if WIN_LENGTH - defcon > 2 {
+129 |                     assert_eq!(ns_matches.len(), 0);
+130 |                 }
+    |
+
+warning: this `else { if .. }` block can be collapsed
+   --> src\testing.rs:174:24
+    |
+174 |                   } else {
+    |  ________________________^
+175 | |                     if WIN_LENGTH - defcon > 2 {
+176 | |                         assert_eq!(ns_matches.len(), 0);
+177 | |                     }
+178 | |                 }
+    | |_________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#collapsible_if
+help: try
+    |
+174 |                 } else if WIN_LENGTH - defcon > 2 {
+175 |                     assert_eq!(ns_matches.len(), 0);
+176 |                 }
+    |
+
+warning: unneeded `return` statement
+   --> src\threat_space_search.rs:139:5
+    |
+139 | /     return SearchNode::new(
+140 | |         Some(next_sq),
+141 | |         threats,
+142 | |         Some(critical_sqs),
+143 | |         potential_win,
+144 | |         children,
+145 | |     );
+    | |______^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+help: remove `return`
+    |
+139 |     SearchNode::new(
+140 |         Some(next_sq),
+141 |         threats,
+142 |         Some(critical_sqs),
+143 |         potential_win,
+144 |         children,
+  ...
+
+warning: unneeded `return` statement
+   --> src\threat_space_search.rs:175:5
+    |
+175 |     return SearchNode::new(None, threats, None, potential_win, children);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: remove `return`: `SearchNode::new(None, threats, None, potential_win, children)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: unneeded `return` statement
+   --> src\threat_space_search.rs:203:5
+    |
+203 |     return variations;
+    |     ^^^^^^^^^^^^^^^^^^ help: remove `return`: `variations`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+
+warning: the loop variable `i` is only used to index `c`.
+  --> src\board.rs:39:14
+   |
+39 |     for i in 1..n {
+   |              ^^^^
+   |
+   = note: `#[warn(clippy::needless_range_loop)]` on by default
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_range_loop
+help: consider using an iterator
+   |
+39 |     for <item> in c.iter().take(n).skip(1) {
+   |         ^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: length comparison to zero
+  --> src\board.rs:70:13
+   |
+70 |     assert!(common.len() == 0);
+   |             ^^^^^^^^^^^^^^^^^ help: using `is_empty` is clearer and more explicit: `common.is_empty()`
+   |
+   = note: `#[warn(clippy::len_zero)]` on by default
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#len_zero
+
+warning: the operation is ineffective. Consider reducing it to `1`
+  --> src\consts.rs:14:23
+   |
+14 | pub const EMPTY: u8 = 1 << 0;
+   |                       ^^^^^^
+   |
+   = note: `#[warn(clippy::identity_op)]` on by default
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#identity_op
+
+warning: the loop variable `i` is used to index `ACT_ELEMS`
+  --> src\consts.rs:40:18
+   |
+40 |         for i in 0..NUM_ACT_ELEMS {
+   |                  ^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_range_loop
+help: consider using an iterator
+   |
+40 |         for (i, <item>) in ACT_ELEMS.iter().enumerate().take(NUM_ACT_ELEMS) {
+   |             ^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: the loop variable `j` is only used to index `ACT_ELEMS`.
+  --> src\consts.rs:41:22
+   |
+41 |             for j in (i + 1)..NUM_ACT_ELEMS {
+   |                      ^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_range_loop
+help: consider using an iterator
+   |
+41 |             for <item> in ACT_ELEMS.iter().take(NUM_ACT_ELEMS).skip((i + 1)) {
+   |                 ^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: length comparison to zero
+  --> src\pattern.rs:52:17
+   |
+52 |         assert!(name.len() > 0);
+   |                 ^^^^^^^^^^^^^^ help: using `!is_empty` is clearer and more explicit: `!name.is_empty()`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#len_zero
+
+warning: usage of `contains_key` followed by `insert` on a `HashMap`
+   --> src\pattern.rs:318:13
+    |
+318 | /             if m.contains_key(&p.defcon) {
+319 | |                 m.get_mut(&p.defcon).unwrap().push(p);
+320 | |             } else {
+321 | |                 m.insert(p.defcon, Vec::<&'static Pattern>::new());
+322 | |                 m.get_mut(&p.defcon).unwrap().push(p);
+323 | |             }
+    | |_____________^ consider using `m.entry(p.defcon)`
+    |
+    = note: `#[warn(clippy::map_entry)]` on by default
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#map_entry
+
+warning: writing `&Vec<_>` instead of `&[_]` involves one more reference and cannot be used with non-Vec-based slices.
+   --> src\pattern_search.rs:408:30
+    |
+408 | pub fn matches_are_subset(x: &Vec<Match>, y: &Vec<Match>) -> bool {
+    |                              ^^^^^^^^^^^ help: change this to: `&[Match]`
+    |
+    = note: `#[warn(clippy::ptr_arg)]` on by default
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg
+
+warning: writing `&Vec<_>` instead of `&[_]` involves one more reference and cannot be used with non-Vec-based slices.
+   --> src\pattern_search.rs:408:46
+    |
+408 | pub fn matches_are_subset(x: &Vec<Match>, y: &Vec<Match>) -> bool {
+    |                                              ^^^^^^^^^^^ help: change this to: `&[Match]`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg
+
+warning: writing `&Vec<_>` instead of `&[_]` involves one more reference and cannot be used with non-Vec-based slices.
+   --> src\pattern_search.rs:428:29
+    |
+428 | pub fn matches_are_equal(x: &Vec<Match>, y: &Vec<Match>) -> bool {
+    |                             ^^^^^^^^^^^ help: change this to: `&[Match]`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg
+
+warning: writing `&Vec<_>` instead of `&[_]` involves one more reference and cannot be used with non-Vec-based slices.
+   --> src\pattern_search.rs:428:45
+    |
+428 | pub fn matches_are_equal(x: &Vec<Match>, y: &Vec<Match>) -> bool {
+    |                                             ^^^^^^^^^^^ help: change this to: `&[Match]`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg
+
+warning: writing `&Vec<_>` instead of `&[_]` involves one more reference and cannot be used with non-Vec-based slices.
+   --> src\pattern_search.rs:432:38
+    |
+432 | pub fn next_sq_matches_are_subset(x: &Vec<NSQMatch>, y: &Vec<NSQMatch>) -> bool {
+    |                                      ^^^^^^^^^^^^^^ help: change this to: `&[NSQMatch]`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg
+
+warning: writing `&Vec<_>` instead of `&[_]` involves one more reference and cannot be used with non-Vec-based slices.
+   --> src\pattern_search.rs:432:57
+    |
+432 | pub fn next_sq_matches_are_subset(x: &Vec<NSQMatch>, y: &Vec<NSQMatch>) -> bool {
+    |                                                         ^^^^^^^^^^^^^^ help: change this to: `&[NSQMatch]`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg
+
+warning: writing `&Vec<_>` instead of `&[_]` involves one more reference and cannot be used with non-Vec-based slices.
+   --> src\pattern_search.rs:452:37
+    |
+452 | pub fn next_sq_matches_are_equal(x: &Vec<NSQMatch>, y: &Vec<NSQMatch>) -> bool {
+    |                                     ^^^^^^^^^^^^^^ help: change this to: `&[NSQMatch]`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg
+
+warning: writing `&Vec<_>` instead of `&[_]` involves one more reference and cannot be used with non-Vec-based slices.
+   --> src\pattern_search.rs:452:56
+    |
+452 | pub fn next_sq_matches_are_equal(x: &Vec<NSQMatch>, y: &Vec<NSQMatch>) -> bool {
+    |                                                        ^^^^^^^^^^^^^^ help: change this to: `&[NSQMatch]`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_arg
+
+warning: length comparison to zero
+  --> src\state.rs:64:25
+   |
+64 |         let black_won = b_wins_found.len() > 0;
+   |                         ^^^^^^^^^^^^^^^^^^^^^^ help: using `!is_empty` is clearer and more explicit: `!b_wins_found.is_empty()`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#len_zero
+
+warning: length comparison to zero
+  --> src\state.rs:65:25
+   |
+65 |         let white_won = w_wins_found.len() > 0;
+   |                         ^^^^^^^^^^^^^^^^^^^^^^ help: using `!is_empty` is clearer and more explicit: `!w_wins_found.is_empty()`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#len_zero
+
+warning: the loop variable `i` is only used to index `threats`.
+  --> src\threat_space_search.rs:62:18
+   |
+62 |         for i in 1..num_threats {
+   |                  ^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_range_loop
+help: consider using an iterator
+   |
+62 |         for <item> in threats.iter().take(num_threats).skip(1) {
+   |             ^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: the loop variable `i` is only used to index `threats_csq`.
+  --> src\threat_space_search.rs:85:22
+   |
+85 |             for i in 1..num_threats_csq {
+   |                      ^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_range_loop
+help: consider using an iterator
+   |
+85 |             for <item> in threats_csq.iter().take(num_threats_csq).skip(1) {
+   |                 ^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: 94 warnings emitted
+
+    Finished dev [unoptimized + debuginfo] target(s) in 0.05s

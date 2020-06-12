@@ -1,5 +1,7 @@
 //! Functions to search for patterns on the board.
 
+#![allow(clippy::many_single_char_names)]
+
 use crate::consts::{BLACK, EMPTY, MAX_DEFCON, NUM_DIRECTIONS, OWN, STONE, WHITE, WIN_LENGTH};
 use crate::geometry::{increments, index_bounds, index_bounds_incl, Point};
 use ndarray::prelude::*;
@@ -388,7 +390,7 @@ pub fn apply_pattern(board: &mut Array2<u8>, pattern: &Array1<u8>, point: Point,
     let mut can_apply = true;
     for k in 0..length {
         let (i, j) = (idx(x, row_inc, k) as usize, idx(y, col_inc, k) as usize);
-        if !(0 <= i && i < side) || !(0 <= j && j < side) {
+        if side <= i || side <= j {
             can_apply = false;
             break;
         }

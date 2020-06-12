@@ -42,11 +42,11 @@ impl SearchNode {
         //     # children = [x for x in children if x["potential_win"]]
 
         Self {
-            next_sq: next_sq,
-            threats: threats,
-            critical_sqs: critical_sqs,
-            potential_win: potential_win,
-            children: children,
+            next_sq,
+            threats,
+            critical_sqs,
+            potential_win,
+            children,
         }
     }
 }
@@ -70,7 +70,7 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
         HashSet::<Point>::new()
     };
 
-    let mut potential_win = num_threats > 0 && critical_sqs.len() == 0;
+    let mut potential_win = num_threats > 0 && critical_sqs.is_empty();
     let mut children = Vec::<SearchNode>::new();
 
     for csq in critical_sqs.iter() {
@@ -93,7 +93,7 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
             HashSet::<Point>::new()
         };
 
-        let potential_win_csq = num_threats_csq > 0 && critical_sqs_csq.len() == 0;
+        let potential_win_csq = num_threats_csq > 0 && critical_sqs_csq.is_empty();
 
         clear_sq(board, color ^ STONE, *csq);
 
@@ -163,7 +163,7 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
 
 pub fn tss_board(board: &mut Array2<u8>, color: u8) -> SearchNode {
     let threats = search_all_board(board, color, ThreatPri::IMMEDIATE);
-    let mut potential_win = threats.len() > 0;
+    let mut potential_win = !threats.is_empty();
     let mut children = Vec::<SearchNode>::new();
 
     if !potential_win {
@@ -184,7 +184,7 @@ pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, HashSet<Po
             node_var.push((node.next_sq.unwrap(), node.critical_sqs.clone().unwrap()));
         }
 
-        if node.children.len() > 0 {
+        if !node.children.is_empty() {
             for child in node.children.iter() {
                 if child.potential_win {
                     let child_variations = potential_win_variations(child);
@@ -206,7 +206,7 @@ pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, HashSet<Po
 pub fn animate_variation(
     board: &mut Array2<u8>,
     color: u8,
-    variation: &Vec<(Point, HashSet<Point>)>,
+    variation: &[(Point, HashSet<Point>)],
 ) {
     let sleep_duration = Duration::from_secs(ANIMATION_TIMESTEP_SECS);
 
@@ -223,7 +223,7 @@ pub fn animate_variation(
             set_sq(board, color ^ STONE, *csq);
         }
 
-        if item.1.len() > 0 {
+        if !item.1.is_empty() {
             println!("{}", board_to_str(board));
             thread::sleep(sleep_duration);
         }
