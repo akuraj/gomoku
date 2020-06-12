@@ -1,5 +1,5 @@
 use crate::board::{board_to_str, get_board};
-use crate::consts::{ACT_ELEMS_TO_NAMES, BLACK, COLORS, EMPTY, SIDE_LEN, WALL, WHITE};
+use crate::consts::{ACT_ELEMS_TO_NAMES, BLACK, EMPTY, SIDE_LEN, WALL, WHITE};
 use crate::pattern::P_WIN;
 use crate::pattern_search::search_board;
 use ndarray::prelude::*;
