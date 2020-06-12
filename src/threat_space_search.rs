@@ -172,7 +172,7 @@ pub fn tss_board(board: &mut Array2<u8>, color: u8) -> SearchNode {
         potential_win = children.iter().any(|x| x.potential_win);
     }
 
-    return SearchNode::new(None, threats, None, potential_win, children);
+    SearchNode::new(None, threats, None, potential_win, children)
 }
 
 pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, HashSet<Point>)>> {
@@ -200,7 +200,7 @@ pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, HashSet<Po
         }
     }
 
-    return variations;
+    variations
 }
 
 pub fn animate_variation(

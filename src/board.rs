@@ -67,7 +67,7 @@ pub fn get_board(blacks: &[&str], whites: &[&str]) -> Array2<u8> {
         .map(|&x| String::from(x))
         .collect::<HashSet<String>>();
     let common: HashSet<String> = blacks_set.intersection(&whites_set).cloned().collect();
-    assert!(common.len() == 0);
+    assert!(common.is_empty());
 
     let mut board = new_board();
 

@@ -49,7 +49,7 @@ impl Pattern {
             assert!((0 <= *sq && *sq < (length as isize)) && pattern[*sq as usize] == EMPTY);
         }
 
-        assert!(name.len() > 0);
+        assert!(!name.is_empty());
 
         let mut oe_start = false;
         let mut oe_end = false;
@@ -315,12 +315,7 @@ lazy_static! {
         let mut m: HashMap<usize, Vec<&'static Pattern>> = HashMap::new();
 
         for p in PATTERNS.iter() {
-            if m.contains_key(&p.defcon) {
-                m.get_mut(&p.defcon).unwrap().push(p);
-            } else {
-                m.insert(p.defcon, Vec::<&'static Pattern>::new());
-                m.get_mut(&p.defcon).unwrap().push(p);
-            }
+            m.entry(p.defcon).or_insert(Vec::<&'static Pattern>::new()).push(p);
         }
 
         return m;

@@ -11,7 +11,7 @@ pub const SIDE_LEN: usize = SIDE_LEN_ACT + 2; // Including the walls.
 // Actual elements.
 // All the actual elements defined below must be part of ACT_ELEMS,
 // as well as ACT_ELEMS_TO_CHRS and ACT_ELEMS_TO_NAMES.
-pub const EMPTY: u8 = 1 << 0;
+pub const EMPTY: u8 = 1;
 pub const BLACK: u8 = 1 << 1;
 pub const WHITE: u8 = 1 << 2;
 pub const WALL: u8 = 1 << 3;
