@@ -12,10 +12,7 @@ pub fn row_idx_to_num(x: usize) -> usize {
     return SIDE_LEN_ACT + 1 - x;
 }
 
-pub fn row_num_to_idx(x: usize) -> usize {
-    assert!(1 <= x && x <= SIDE_LEN_ACT);
-    return SIDE_LEN_ACT + 1 - x;
-}
+pub use row_idx_to_num as row_num_to_idx;
 
 pub fn col_idx_to_chr(x: usize) -> char {
     assert!(1 <= x && x <= SIDE_LEN_ACT);

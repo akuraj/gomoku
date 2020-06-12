@@ -130,6 +130,7 @@ pub const MAX_DEFCON: usize = WIN_LENGTH;
 // Max defcon for immediate threat.
 pub const MDFIT: usize = 2;
 
+// Used for Unicode character conversion.
 pub const RADIX: u32 = 36;
 
 pub const ANIMATION_TIMESTEP_SECS: u64 = 2;
