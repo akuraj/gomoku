@@ -15,6 +15,7 @@
 // FIXME: i32/isize anywhere where we store them, instead of usize? Also for relevant constants.
 // FIXME: Chcek on integer overflow checking in rust.
 // FIXME: Replace if-else-if with match!
+// FIXME: Look at the rust book and replace relevant code with appropriate idiomatic rust code.
 // FIXME: Add function documentation. Just copy from Python impl.
 
 // TODO: Add checks on size of board and patterns by having max value in consts.
