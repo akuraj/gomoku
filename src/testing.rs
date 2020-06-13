@@ -9,6 +9,7 @@ use crate::pattern_search::{
     search_point_own_next_sq, Match, NSQMatch,
 };
 use ndarray::prelude::*;
+use std::time::Instant;
 
 pub fn subtest_search_board(
     board: &Array2<u8>,
@@ -237,9 +238,21 @@ pub fn subtest_search_fns(gen_pattern: &[u8], color: u8, own_sqs: &[isize], defc
 }
 
 pub fn test_search_fns() {
+    let start = Instant::now();
+
     for color in COLORS.iter() {
         for p in PATTERNS.iter() {
             subtest_search_fns(&p.pattern, *color, &p.own_sqs, p.defcon);
         }
     }
+
+    println!(
+        "Time taken: {} seconds",
+        (start.elapsed().as_nanos() as f32) / 1e9
+    );
+}
+
+#[test]
+pub fn run_test_search_fns() {
+    test_search_fns();
 }

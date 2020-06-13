@@ -47,7 +47,7 @@ fn main() {
     // //                       BLACK,
     // //                       false );
 
-    // let n = 10;
+    // let n = 100;
 
     // for _ in 0..n {
     //     tss_board(&mut s.board, s.turn);
@@ -62,16 +62,10 @@ fn main() {
     //     (start.elapsed().as_nanos() as f32) / 1e9
     // );
 
-    // // let node = tss_board(&mut s.board, s.turn);
-    // // let win_vars = potential_win_variations(&node);
-    // // println!("{}", win_vars.len());
-    // // animate_variation(&mut s.board, s.turn, &win_vars[0]);
+    // let node = tss_board(&mut s.board, s.turn);
+    // let win_vars = potential_win_variations(&node);
+    // println!("{}", win_vars.len());
+    // animate_variation(&mut s.board, s.turn, &win_vars[0]);
 
     test_search_fns();
-    let start = Instant::now();
-    test_search_fns();
-    println!(
-        "Time taken: {} seconds",
-        (start.elapsed().as_nanos() as f32) / 1e9
-    );
 }
