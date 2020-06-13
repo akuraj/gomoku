@@ -12,11 +12,8 @@
 //        9. todos
 // FIXME: get the todos from the Python code and put them here.
 // FIXME: Find better place to put these FIXMEs and TODOs.
-// FIXME: i32/isize anywhere where we store them, instead of usize?
+// FIXME: i32/isize anywhere where we store them, instead of usize? Also for relevant constants.
 // FIXME: Chcek on integer overflow checking in rust.
-// FIXME: usize is the appropriate type for WIN_LENGTH, MAX_DEFCON, MDFIT?
-// FIXME: isize, usize and other stuff inside geometry fns?
-//        Use more appropriate data types that take up less space like i8 or u8?
 // FIXME: Replace if-else-if with match!
 // FIXME: Add function documentation. Just copy from Python impl.
 
