@@ -12,7 +12,7 @@
 //        9. todos
 // FIXME: get the todos from the Python code and put them here.
 // FIXME: Find better place to put these FIXMEs and TODOs.
-// FIXME: usize i32/isize anywhere where we store them, instead of usize?
+// FIXME: i32/isize anywhere where we store them, instead of usize?
 // FIXME: Chcek on integer overflow checking in rust.
 // FIXME: usize is the appropriate type for WIN_LENGTH, MAX_DEFCON, MDFIT?
 // FIXME: isize, usize and other stuff inside geometry fns?
@@ -21,5 +21,4 @@
 // FIXME: Add function documentation. Just copy from Python impl.
 
 // TODO: Add checks on size of board and patterns by having max value in consts.
-// TODO: Just use i8 for all indices and sizes?
-// TODO: See if we can impl index<i8> trait for and Array2?
+// TODO: See if we can impl index<int type> trait for an Array2?
