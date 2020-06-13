@@ -12,7 +12,6 @@
 //        9. todos
 // FIXME: get the todos from the Python code and put them here.
 // FIXME: Find better place to put these FIXMEs and TODOs.
-// FIXME: Use test feature and setup travis.
 // FIXME: usize i32/isize anywhere where we store them, instead of usize?
 // FIXME: Chcek on integer overflow checking in rust.
 // FIXME: usize is the appropriate type for WIN_LENGTH, MAX_DEFCON, MDFIT?
