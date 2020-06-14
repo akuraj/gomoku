@@ -7,9 +7,14 @@ use crate::geometry::{increments, index_bounds, index_bounds_incl, Point};
 use ndarray::prelude::*;
 use std::cmp::max;
 
+/// Represents the total region/location of a pattern match.
 pub type Match = (Point, Point);
+
+/// Represents a tuple of the next_sq and the corresponding total region/location of the corresponding pattern match.
 pub type NSQMatch = (Point, Match);
 
+/// Specialize a generic pattern for the given color.
+/// A generic pattern is specified from BLACK's POV.
 pub fn get_pattern(gen_pattern: &[u8], color: u8) -> Vec<u8> {
     let mut pattern = gen_pattern.to_owned();
 
@@ -17,6 +22,7 @@ pub fn get_pattern(gen_pattern: &[u8], color: u8) -> Vec<u8> {
         BLACK => pattern,
         WHITE => {
             for val in pattern.iter_mut() {
+                // Switch the BLACK and WHITE bits.
                 *val = if *val & STONE == 0 || *val & STONE == STONE {
                     *val
                 } else {
@@ -30,6 +36,7 @@ pub fn get_pattern(gen_pattern: &[u8], color: u8) -> Vec<u8> {
     }
 }
 
+/// Remove duplicates from matches.
 pub fn dedupe_matches(matches: &mut Vec<Match>) {
     let mut i: usize = 0;
     let mut n = matches.len();
@@ -54,11 +61,13 @@ pub fn dedupe_matches(matches: &mut Vec<Match>) {
     }
 }
 
+/// Get index.
 #[inline(always)]
 pub fn idx(start: isize, increment: isize, steps: usize) -> isize {
     start + increment * (steps as isize)
 }
 
+/// Search for a 1d pattern on a 2d board.
 pub fn search_board(board: &Array2<u8>, gen_pattern: &[u8], color: u8) -> Vec<Match> {
     let side = board.shape()[0];
     let pattern = get_pattern(gen_pattern, color);
@@ -85,6 +94,7 @@ pub fn search_board(board: &Array2<u8>, gen_pattern: &[u8], color: u8) -> Vec<Ma
                 }
 
                 if found {
+                    // Store Ordered Line Segment, a -> b, where the pattern lies.
                     let a = (i, j);
                     let b = (idx(i, row_inc, length - 1), idx(j, col_inc, length - 1));
                     matches.push((a, b));
@@ -97,6 +107,7 @@ pub fn search_board(board: &Array2<u8>, gen_pattern: &[u8], color: u8) -> Vec<Ma
     matches
 }
 
+/// Search for a 1d pattern on a 2d board including the given point.
 pub fn search_point(board: &Array2<u8>, gen_pattern: &[u8], color: u8, point: Point) -> Vec<Match> {
     let (x, y) = point;
 
@@ -125,6 +136,7 @@ pub fn search_point(board: &Array2<u8>, gen_pattern: &[u8], color: u8, point: Po
             }
 
             if found {
+                // Store Ordered Line Segment, a -> b, where the pattern lies.
                 let a = (i, j);
                 let b = (idx(i, row_inc, length - 1), idx(j, col_inc, length - 1));
                 matches.push((a, b));
@@ -136,6 +148,7 @@ pub fn search_point(board: &Array2<u8>, gen_pattern: &[u8], color: u8, point: Po
     matches
 }
 
+/// Search for a 1d pattern on a 2d board including the given point as an own_sq.
 pub fn search_point_own(
     board: &Array2<u8>,
     gen_pattern: &[u8],
@@ -151,6 +164,7 @@ pub fn search_point_own(
 
     let mut matches: Vec<Match> = Vec::new();
 
+    // We are searching for patterns including the given point as an "own_sq".
     if board[(x as usize, y as usize)] == color {
         for d in 0..NUM_DIRECTIONS {
             let (row_inc, col_inc) = increments(d as isize);
@@ -174,6 +188,7 @@ pub fn search_point_own(
                     }
 
                     if found {
+                        // Store Ordered Line Segment, a -> b, where the pattern lies.
                         let a = (i, j);
                         let b = (idx(i, row_inc, length - 1), idx(j, col_inc, length - 1));
                         matches.push((a, b));
@@ -187,6 +202,7 @@ pub fn search_point_own(
     matches
 }
 
+/// Remove duplicates from next_sq_matche pairs.
 pub fn dedupe_next_sq_match_pairs(pairs: &mut Vec<NSQMatch>) {
     let mut i: usize = 0;
     let mut n = pairs.len();
@@ -211,6 +227,13 @@ pub fn dedupe_next_sq_match_pairs(pairs: &mut Vec<NSQMatch>) {
     }
 }
 
+/// Search for a 1d pattern on a 2d board.
+///
+/// Returns "next_sq"s and the corresponding pattern matches (as in above functions)
+/// as a list of (next_sq, match) pairs.
+///
+/// In existing terminology, "point" is a "rest" square,
+/// and "next_sq" is the "gain" square.
 pub fn search_board_next_sq(board: &Array2<u8>, gen_pattern: &[u8], color: u8) -> Vec<NSQMatch> {
     let side = board.shape()[0];
     let pattern = get_pattern(gen_pattern, color);
@@ -244,6 +267,7 @@ pub fn search_board_next_sq(board: &Array2<u8>, gen_pattern: &[u8], color: u8) -
                 }
 
                 if found && found_next_sq {
+                    // Store Ordered Line Segment, a -> b, where the pattern lies.
                     let a = (i, j);
                     let b = (idx(i, row_inc, length - 1), idx(j, col_inc, length - 1));
                     let next_sq = (i + row_inc * k_next_sq, j + col_inc * k_next_sq);
@@ -257,6 +281,13 @@ pub fn search_board_next_sq(board: &Array2<u8>, gen_pattern: &[u8], color: u8) -
     next_sq_match_pairs
 }
 
+/// Search for a 1d pattern on a 2d board including the given point.
+///
+/// Returns "next_sq"s and the corresponding pattern matches (as in above functions)
+/// as a list of (next_sq, match) pairs.
+///
+/// In existing terminology, "point" is a "rest" square,
+/// and "next_sq" is the "gain" square.
 pub fn search_point_next_sq(
     board: &Array2<u8>,
     gen_pattern: &[u8],
@@ -298,6 +329,7 @@ pub fn search_point_next_sq(
             }
 
             if found && found_next_sq {
+                // Store Ordered Line Segment, a -> b, where the pattern lies.
                 let a = (i, j);
                 let b = (idx(i, row_inc, length - 1), idx(j, col_inc, length - 1));
                 let next_sq = (i + row_inc * k_next_sq, j + col_inc * k_next_sq);
@@ -310,6 +342,13 @@ pub fn search_point_next_sq(
     next_sq_match_pairs
 }
 
+/// Search for a 1d pattern on a 2d board including the given point as an own_sq.
+///
+/// Returns "next_sq"s and the corresponding pattern matches (as in above functions)
+/// as a list of (next_sq, match) pairs.
+///
+/// In existing terminology, "point" is a "rest" square,
+/// and "next_sq" is the "gain" square.
 pub fn search_point_own_next_sq(
     board: &Array2<u8>,
     gen_pattern: &[u8],
@@ -325,6 +364,7 @@ pub fn search_point_own_next_sq(
 
     let mut next_sq_match_pairs: Vec<NSQMatch> = Vec::new();
 
+    // We are searching for patterns including the given point as an "own_sq".
     if board[(x as usize, y as usize)] == color {
         for d in 0..NUM_DIRECTIONS {
             let (row_inc, col_inc) = increments(d as isize);
@@ -356,6 +396,7 @@ pub fn search_point_own_next_sq(
                     }
 
                     if found && found_next_sq {
+                        // Store Ordered Line Segment, a -> b, where the pattern lies.
                         let a = (i, j);
                         let b = (idx(i, row_inc, length - 1), idx(j, col_inc, length - 1));
                         let next_sq = (i + row_inc * k_next_sq, j + col_inc * k_next_sq);
@@ -370,6 +411,17 @@ pub fn search_point_own_next_sq(
     next_sq_match_pairs
 }
 
+/// Apply given pattern at given point in given direction.
+///
+/// Returns True if application was succesful.
+/// Else, returns False.
+/// If application fails then board is unchanged.
+///
+/// We only check that the length fits at that point.
+/// We will apply a non-standard element as it is,
+/// including overwriting a wall with any element whatsoever.
+///
+/// Useful for testing purposes.
 pub fn apply_pattern(board: &mut Array2<u8>, pattern: &[u8], point: Point, d: usize) -> bool {
     let (x, y) = point;
 
@@ -389,6 +441,7 @@ pub fn apply_pattern(board: &mut Array2<u8>, pattern: &[u8], point: Point, d: us
 
     if can_apply {
         for k in 0..length {
+            // NOTE: If it's a non-standard element (i.e., not an actual element), we just apply it as is.
             board[(idx(x, row_inc, k) as usize, idx(y, col_inc, k) as usize)] = pattern[k];
         }
     }
@@ -396,6 +449,7 @@ pub fn apply_pattern(board: &mut Array2<u8>, pattern: &[u8], point: Point, d: us
     can_apply
 }
 
+/// Check if x is a subset of y.
 pub fn matches_are_subset(x: &[Match], y: &[Match]) -> bool {
     for a_ref in x.iter() {
         let a = *a_ref;
@@ -416,10 +470,12 @@ pub fn matches_are_subset(x: &[Match], y: &[Match]) -> bool {
     true
 }
 
+/// Check if x and y are equal/equivalent.
 pub fn matches_are_equal(x: &[Match], y: &[Match]) -> bool {
     matches_are_subset(x, y) && matches_are_subset(y, x)
 }
 
+/// Check if x is a subset of y.
 pub fn next_sq_matches_are_subset(x: &[NSQMatch], y: &[NSQMatch]) -> bool {
     for a_ref in x.iter() {
         let a = *a_ref;
@@ -440,10 +496,12 @@ pub fn next_sq_matches_are_subset(x: &[NSQMatch], y: &[NSQMatch]) -> bool {
     true
 }
 
+/// Check if x and y are equal/equivalent.
 pub fn next_sq_matches_are_equal(x: &[NSQMatch], y: &[NSQMatch]) -> bool {
     next_sq_matches_are_subset(x, y) && next_sq_matches_are_subset(y, x)
 }
 
+/// Maximum number of 'OWN's in a sub-sequence of length = WIN_LENGTH, full of OWN/EMPTY sqs.
 pub fn degree(gen_pattern: &[u8]) -> usize {
     let n = gen_pattern.len();
     let mut max_owns: usize = 0;
@@ -473,10 +531,12 @@ pub fn degree(gen_pattern: &[u8]) -> usize {
     max_owns
 }
 
+/// Get defcon from degree. See 'consts' module for a definition of defcon.
 pub fn defcon_from_degree(d: usize) -> usize {
     MAX_DEFCON - d
 }
 
+/// True if a straight threat (unstoppable: a straight four for example) can be achieved in one more move.
 #[allow(clippy::collapsible_if)]
 pub fn one_step_from_straight_threat(gen_pattern: &[u8]) -> bool {
     let n = gen_pattern.len();

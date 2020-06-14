@@ -49,6 +49,7 @@ pub fn algebraic_to_point(x: &str) -> Point {
 pub fn new_board() -> Array2<u8> {
     let mut board: Array2<u8> = Array::from_elem((SIDE_LEN, SIDE_LEN), EMPTY);
 
+    // Set the walls.
     for wall in [0, SIDE_LEN - 1].iter() {
         for i in 0..SIDE_LEN {
             board[(*wall, i)] = WALL;
