@@ -237,6 +237,7 @@ pub fn subtest_search_fns(gen_pattern: &[u8], color: u8, own_sqs: &[isize], defc
     }
 }
 
+#[test]
 pub fn test_search_fns() {
     let start = Instant::now();
 
@@ -250,9 +251,4 @@ pub fn test_search_fns() {
         "Time taken: {} seconds",
         (start.elapsed().as_nanos() as f32) / 1e9
     );
-}
-
-#[test]
-pub fn run_test_search_fns() {
-    test_search_fns();
 }

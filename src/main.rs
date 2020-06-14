@@ -10,7 +10,6 @@ pub mod threat_space_search;
 use consts::BLACK;
 use state::get_state;
 use std::time::Instant;
-use testing::test_search_fns;
 use threat_space_search::{animate_variation, potential_win_variations, tss_board};
 
 fn main() {
@@ -66,6 +65,4 @@ fn main() {
     // let win_vars = potential_win_variations(&node);
     // println!("{}", win_vars.len());
     // animate_variation(&mut s.board, s.turn, &win_vars[0]);
-
-    test_search_fns();
 }
