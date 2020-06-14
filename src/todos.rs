@@ -1,8 +1,7 @@
 //! A place for general FIXMEs and TODOs.
 
 // FIXME: Add all the comments in Python code to the Rust code.
-//        5. pattern
-//        6. state
+//        6. pattern
 //        7. testing
 //        8. threat_space_search
 //        9. todos

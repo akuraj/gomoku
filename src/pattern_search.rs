@@ -540,6 +540,9 @@ pub fn defcon_from_degree(d: usize) -> usize {
 #[allow(clippy::collapsible_if)]
 pub fn one_step_from_straight_threat(gen_pattern: &[u8]) -> bool {
     let n = gen_pattern.len();
+
+    // Length of a straight threat: WIN_LENGTH - 1 OWN's in a row,
+    // with an empty space on either side.
     let l = WIN_LENGTH + 1;
 
     for idx in 0..n {
@@ -550,6 +553,7 @@ pub fn one_step_from_straight_threat(gen_pattern: &[u8]) -> bool {
                 let mut found = true;
 
                 for j in 0..l {
+                    // Straight threat pattern value.
                     let value = if j == 0 || j == (l - 1) { EMPTY } else { OWN };
 
                     if i + j == idx {

@@ -1,3 +1,5 @@
+//! Implements a struct to represent State. Also implements related methods.
+
 use crate::board::{board_to_str, get_board};
 use crate::consts::{ACT_ELEMS_TO_NAMES, BLACK, EMPTY, SIDE_LEN, WALL, WHITE};
 use crate::pattern::P_WIN;
@@ -5,6 +7,7 @@ use crate::pattern_search::search_board;
 use ndarray::prelude::*;
 use std::fmt;
 
+/// Enum to represent the current status of the game.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Status {
     Ongoing,
@@ -12,6 +15,7 @@ pub enum Status {
     WhiteWon,
 }
 
+/// Game State.
 #[derive(Clone, Debug)]
 pub struct State {
     pub board: Array2<u8>,
@@ -21,6 +25,7 @@ pub struct State {
 
 impl State {
     pub fn new(board: Array2<u8>, turn: u8, strict_stone_count: bool) -> Self {
+        // State Integrity Checks.
         let shape = board.shape();
         assert!(shape.len() == 2);
         assert!(shape[0] == SIDE_LEN && shape[1] == SIDE_LEN);
@@ -58,6 +63,7 @@ impl State {
             }
         }
 
+        // Calculate game status.
         let mut status = Status::Ongoing;
         let b_wins_found = search_board(&board, &P_WIN.pattern, BLACK);
         let w_wins_found = search_board(&board, &P_WIN.pattern, WHITE);
@@ -96,6 +102,7 @@ impl fmt::Display for State {
     }
 }
 
+/// Return State object.
 pub fn get_state(blacks: &[&str], whites: &[&str], turn: u8, strict_stone_count: bool) -> State {
     State::new(get_board(blacks, whites), turn, strict_stone_count)
 }
