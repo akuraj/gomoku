@@ -1,3 +1,5 @@
+//! Functions related to the board and its representation.
+
 use crate::consts::{
     ACT_ELEMS_TO_CHRS, BLACK, EMPTY, RADIX, SIDE_LEN, SIDE_LEN_ACT, SPL_ELEM_CHR, WALL, WHITE,
 };
@@ -6,30 +8,36 @@ use ndarray::prelude::*;
 use std::char;
 use std::collections::HashSet;
 
+/// Get the display row number from the internal row index.
 pub fn row_idx_to_num(x: usize) -> usize {
     assert!(1 <= x && x <= SIDE_LEN_ACT);
     SIDE_LEN_ACT + 1 - x
 }
 
+/// Get the internal row index from the display row number.
 pub use row_idx_to_num as row_num_to_idx;
 
+/// Get the display column character from the internal column number.
 pub fn col_idx_to_chr(x: usize) -> char {
     assert!(1 <= x && x <= SIDE_LEN_ACT);
     char::from_u32(97 + (x as u32) - 1).unwrap()
 }
 
+/// Get the internal column number from the display column character.
 pub fn col_chr_to_idx(x: char) -> usize {
     let idx = (x.to_digit(RADIX).unwrap() - 'a'.to_digit(RADIX).unwrap() + 1) as usize;
     assert!(1 <= idx && idx <= SIDE_LEN_ACT);
     idx
 }
 
+/// Get algebraic representation of point.
 pub fn point_to_algebraic(x: Point) -> String {
     let row_num = row_idx_to_num(x.0 as usize);
     let col_chr = col_idx_to_chr(x.1 as usize);
     format!("{}{}", row_num, col_chr)
 }
 
+/// Get the point from its algebraic representation.
 pub fn algebraic_to_point(x: &str) -> Point {
     let col_idx = col_chr_to_idx(x.chars().next().unwrap()) as isize;
     let row_num: usize = x.chars().skip(1).collect::<String>().parse().unwrap();
@@ -37,6 +45,7 @@ pub fn algebraic_to_point(x: &str) -> Point {
     (row_idx, col_idx)
 }
 
+/// Get new board.
 pub fn new_board() -> Array2<u8> {
     let mut board: Array2<u8> = Array::from_elem((SIDE_LEN, SIDE_LEN), EMPTY);
 
@@ -50,6 +59,7 @@ pub fn new_board() -> Array2<u8> {
     board
 }
 
+/// Get board from lists of points of blacks and whites.
 pub fn get_board(blacks: &[&str], whites: &[&str]) -> Array2<u8> {
     let blacks_set = blacks
         .iter()
@@ -77,6 +87,7 @@ pub fn get_board(blacks: &[&str], whites: &[&str]) -> Array2<u8> {
     board
 }
 
+/// Representation of the board as a string.
 pub fn board_to_str(board: &Array2<u8>) -> String {
     let shape = board.shape();
 
@@ -127,6 +138,7 @@ pub fn board_to_str(board: &Array2<u8>) -> String {
     board_repr
 }
 
+/// Sets the given square on the board to the given color.
 pub fn set_sq(board: &mut Array2<u8>, color: u8, point: Point) {
     assert!(color == BLACK || color == WHITE);
     let p = (point.0 as usize, point.1 as usize);
@@ -134,6 +146,7 @@ pub fn set_sq(board: &mut Array2<u8>, color: u8, point: Point) {
     board[p] = color;
 }
 
+/// Clears the given square on the board of the given color.
 pub fn clear_sq(board: &mut Array2<u8>, color: u8, point: Point) {
     assert!(color == BLACK || color == WHITE);
     let p = (point.0 as usize, point.1 as usize);

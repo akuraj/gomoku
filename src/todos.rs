@@ -1,7 +1,6 @@
 //! A place for general FIXMEs and TODOs.
 
 // FIXME: Add all the comments in Python code to the Rust code.
-//        2. board
 //        3. geometry
 //        4. pattern_search
 //        5. pattern
