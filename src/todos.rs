@@ -1,7 +1,6 @@
 //! A place for general FIXMEs and TODOs.
 
 // FIXME: Add all the comments in Python code to the Rust code.
-//        1. consts
 //        2. board
 //        3. geometry
 //        4. pattern_search
@@ -10,6 +9,7 @@
 //        7. testing
 //        8. threat_space_search
 //        9. todos
+// FIXME: Document code using /// and //! and non-doc comments (//).
 // FIXME: get the todos from the Python code and put them here.
 // FIXME: Find better place to put these FIXMEs and TODOs.
 // FIXME: i32/isize anywhere where we store them, instead of usize? Also for relevant constants.
