@@ -1,4 +1,5 @@
-// from time import sleep
+//! Implements Threat Space Search.
+
 use crate::board::{board_to_str, clear_sq, set_sq};
 use crate::consts::{ANIMATION_TIMESTEP_SECS, STONE};
 use crate::geometry::Point;
@@ -51,6 +52,7 @@ impl SearchNode {
     }
 }
 
+/// Threat Space Search for a given next_sq.
 pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchNode {
     set_sq(board, color, next_sq);
 
@@ -73,6 +75,8 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
     let mut potential_win = num_threats > 0 && critical_sqs.is_empty();
     let mut children = Vec::<SearchNode>::new();
 
+    // If the opponent is potentially winning by playing at one of the critical_sqs,
+    // then this variation is assumed to not be winning.
     for csq in critical_sqs.iter() {
         set_sq(board, color ^ STONE, *csq);
 
@@ -110,6 +114,7 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
         }
     }
 
+    // If next_sq produces no threats or we've found a potential win, we stop.
     if num_threats > 0 && !potential_win {
         for csq in critical_sqs.iter() {
             set_sq(board, color ^ STONE, *csq);
@@ -161,6 +166,7 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
 
 // #     pass
 
+/// Threat Space Search for the whole board.
 pub fn tss_board(board: &mut Array2<u8>, color: u8) -> SearchNode {
     let threats = search_all_board(board, color, ThreatPri::Immediate);
     let mut potential_win = !threats.is_empty();
