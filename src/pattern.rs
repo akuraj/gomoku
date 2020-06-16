@@ -54,7 +54,6 @@ impl Pattern {
         // Check size of name.
         assert!(!name.is_empty());
 
-
         // Check that any OWN or EMPTY squares in the pattern are contiguous,
         // i.e., OWN/EMPTY is not interrupted by any other kind of square.
         // This is what a normal/useful pattern would like.

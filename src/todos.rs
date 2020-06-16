@@ -1,8 +1,6 @@
 //! A place for general FIXMEs and TODOs.
 
 // FIXME: Add all the comments in Python code to the Rust code.
-//        6. pattern
-//        7. testing
 //        8. threat_space_search
 //        9. todos
 // FIXME: Document code using /// and //! and non-doc comments (//).
@@ -14,7 +12,7 @@
 // FIXME: Look at the rust book and replace relevant code with appropriate idiomatic rust code.
 // FIXME: Add function documentation. Just copy from Python impl.
 // FIXME: Reduce verbosity in the pattern search fns somehow?
-// FIXME: Add more documentation in pattern.rs.
+// FIXME: Add more documentation in pattern and testing modules.
 
 // TODO: Add checks on size of board and patterns by having max value in consts.
 // TODO: See if we can impl index<int type> trait for an Array2?

@@ -6,6 +6,7 @@ pub mod pattern_search;
 pub mod state;
 pub mod testing;
 pub mod threat_space_search;
+pub mod todos;
 
 use consts::BLACK;
 use state::get_state;

@@ -1,3 +1,5 @@
+//! Regression tests for this project.
+
 use crate::board::new_board;
 use crate::consts::{COLORS, EMPTY, NUM_DIRECTIONS, SIDE_LEN, WIN_LENGTH};
 use crate::geometry::Point;
@@ -85,11 +87,14 @@ pub fn subtest_search_board_next_sq(
         let ns_matches = search_board_next_sq(board, gen_pattern, color);
         board[(test_sq.0 as usize, test_sq.1 as usize)] = stored_val;
 
+        // We can only assert that naively expected matches are a subset of actual.
         assert!(next_sq_matches_are_subset(
             &expected_ns_matches,
             &ns_matches
         ));
 
+        // All matches must lie on the same line as the pattern.
+        // Doesn't apply to patterns having 2 or less OWN squares.
         if WIN_LENGTH - defcon > 2 {
             for nsm in ns_matches {
                 assert!(point_is_on_line(nsm.0, start, end, false));
@@ -120,6 +125,8 @@ pub fn subtest_search_point_next_sq(
                 let ns_matches = search_point_next_sq(board, gen_pattern, color, point);
                 board[(test_sq.0 as usize, test_sq.1 as usize)] = stored_val;
 
+                // We can only assert that naively expected matches are a subset of actual,
+                // if the point lies on the segment of the pattern.
                 if point_is_on_line(point, start, end, true) {
                     assert!(next_sq_matches_are_subset(
                         &expected_ns_matches,
@@ -127,9 +134,12 @@ pub fn subtest_search_point_next_sq(
                     ));
                 } else if point_is_on_line(point, start, end, false) {
                 } else if WIN_LENGTH - defcon > 2 {
+                    // Doesn't apply to patterns having 2 or less OWN squares.
                     assert!(ns_matches.is_empty());
                 }
 
+                // All matches must lie on the same line as the pattern.
+                // Doesn't apply to patterns having 2 or less OWN squares.
                 if WIN_LENGTH - defcon > 2 {
                     for nsm in ns_matches {
                         assert!(point_is_on_line(nsm.0, start, end, false));
@@ -164,6 +174,8 @@ pub fn subtest_search_point_own_next_sq(
                 let point_is_own_sq = board[(x, y)] == color;
                 board[(test_sq.0 as usize, test_sq.1 as usize)] = stored_val;
 
+                // We can only assert that naively expected matches are a subset of actual,
+                // if the point lies on the segment of the pattern.
                 if point_is_own_sq && point_is_on_line(point, start, end, true) {
                     assert!(next_sq_matches_are_subset(
                         &expected_ns_matches,
@@ -171,9 +183,12 @@ pub fn subtest_search_point_own_next_sq(
                     ));
                 } else if point_is_own_sq && point_is_on_line(point, start, end, false) {
                 } else if WIN_LENGTH - defcon > 2 {
+                    // Doesn't apply to patterns having 2 or less OWN squares.
                     assert!(ns_matches.is_empty());
                 }
 
+                // All matches must lie on the same line as the pattern.
+                // Doesn't apply to patterns having 2 or less OWN squares.
                 if WIN_LENGTH - defcon > 2 {
                     for nsm in ns_matches {
                         assert!(point_is_on_line(nsm.0, start, end, false));
