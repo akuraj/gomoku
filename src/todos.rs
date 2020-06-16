@@ -14,6 +14,7 @@
 // FIXME: Look at the rust book and replace relevant code with appropriate idiomatic rust code.
 // FIXME: Add function documentation. Just copy from Python impl.
 // FIXME: Reduce verbosity in the pattern search fns somehow?
+// FIXME: Add more documentation in pattern.rs.
 
 // TODO: Add checks on size of board and patterns by having max value in consts.
 // TODO: See if we can impl index<int type> trait for an Array2?

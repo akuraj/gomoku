@@ -12,6 +12,9 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 use std::fmt;
 
+// FIXME: Use map, fold, filter everywhere below when mapping/accumulating!
+
+/// Pattern: Used to represent threat patterns.
 #[derive(Clone, Debug)]
 pub struct Pattern {
     pub pattern: Vec<u8>,
@@ -27,12 +30,16 @@ pub struct Pattern {
 #[allow(clippy::collapsible_if)]
 impl Pattern {
     pub fn new(pattern: Vec<u8>, critical_sqs: Vec<isize>, name: String, index: isize) -> Self {
+        // Make sure elemnts of the pattern are valid.
         for elem in pattern.iter() {
             assert!(GEN_ELEMS.iter().any(|&x| x == *elem));
             assert!(*elem == OWN || (*elem & OWN == 0));
         }
 
         // FIXME: port below code.
+        // Critical Squares are the places where if the oppenent plays,
+        // then the threat is mitigated.
+        // Checks on critical_sqs.
         // critical_sqs.sort()
         // critical_sqs_uniq = list(set(critical_sqs))
         // critical_sqs_uniq.sort()
@@ -40,11 +47,17 @@ impl Pattern {
 
         let length = pattern.len();
         for sq in critical_sqs.iter() {
+            // sq must be EMPTY for it to be critical.
             assert!((0 <= *sq && *sq < (length as isize)) && pattern[*sq as usize] == EMPTY);
         }
 
+        // Check size of name.
         assert!(!name.is_empty());
 
+
+        // Check that any OWN or EMPTY squares in the pattern are contiguous,
+        // i.e., OWN/EMPTY is not interrupted by any other kind of square.
+        // This is what a normal/useful pattern would like.
         let mut oe_start = false;
         let mut oe_end = false;
         for v in pattern.iter() {
@@ -53,7 +66,7 @@ impl Pattern {
                     oe_start = true;
                 }
 
-                assert!(!oe_end);
+                assert!(!oe_end, "Non-contiguous OWN/EMPTY squares!");
             } else {
                 if oe_start && !oe_end {
                     oe_end = true;
@@ -75,6 +88,8 @@ impl Pattern {
             }
         }
 
+        // FIXME: Fix the below garbage: should use extend or something instead!
+        // Add entry for empty_sqs. critical_sqs appear first.
         let mut empty_sqs: Vec<isize> = Vec::new();
         for v in critical_sqs.iter() {
             empty_sqs.push(*v);
@@ -143,6 +158,7 @@ impl fmt::Display for Pattern {
     }
 }
 
+/// Enum to represent the priority of a Threat.
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ThreatPri {
     All,
@@ -253,6 +269,8 @@ lazy_static! {
         String::from("P_2_C"),
         16
     );
+
+    /// All defined patterns.
     pub static ref PATTERNS: Vec<&'static Pattern> = {
         let patterns: [&'static Pattern; 17] = [
             &(*P_WIN),
@@ -316,6 +334,8 @@ lazy_static! {
 
         m
     };
+
+    /// Immediate/High Priority PATTERNS.
     pub static ref PATTERNS_I: Vec<&'static Pattern> = {
         let mut patterns: Vec<&'static Pattern> = Vec::new();
 
@@ -327,6 +347,8 @@ lazy_static! {
 
         patterns
     };
+
+    /// NonImmediate/Low Priority PATTERNS.
     pub static ref PATTERNS_NI: Vec<&'static Pattern> = {
         let mut patterns: Vec<&'static Pattern> = Vec::new();
 
@@ -347,6 +369,7 @@ lazy_static! {
     };
 }
 
+/// Threat: the where and the what.
 #[derive(Clone, Debug)]
 pub struct Threat {
     pub m: Match,

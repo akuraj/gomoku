@@ -5,3 +5,4 @@ rust:
 script:
   - travis_wait cargo build --release
   - travis_wait cargo test --release -- --nocapture
+  - travis_wait cargo doc --release

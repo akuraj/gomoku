@@ -9,8 +9,6 @@ use crate::pattern_search::{
     search_point_own_next_sq, Match, NSQMatch,
 };
 use ndarray::prelude::*;
-
-
 use std::time::Instant;
 
 pub fn subtest_search_board(
