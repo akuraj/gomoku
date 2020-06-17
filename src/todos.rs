@@ -2,10 +2,8 @@
 
 // FIXME: Find better place to put these FIXMEs and TODOs.
 // FIXME: i32/isize anywhere where we store them, instead of usize? Also for relevant constants.
-// FIXME: Chcek on integer overflow checking in rust.
 // FIXME: Replace if-else-if with match!
 // FIXME: Look at the rust book and replace relevant code with appropriate idiomatic rust code.
-// FIXME: Add function documentation. Just copy from Python impl.
 // FIXME: Reduce verbosity in the pattern search fns somehow?
 // FIXME: Add proper documentation in pattern, testing and threat_space_search modules.
 

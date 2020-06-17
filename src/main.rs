@@ -66,4 +66,6 @@ fn main() {
     // let win_vars = potential_win_variations(&node);
     // println!("{}", win_vars.len());
     // animate_variation(&mut s.board, s.turn, &win_vars[0]);
+
+    testing::test_search_fns();
 }
