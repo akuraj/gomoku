@@ -9,10 +9,10 @@ use crate::pattern::{
     search_all_point_own_get_next_sqs, ThreatPri,
 };
 use ndarray::prelude::*;
+// use rayon::prelude::*;
 use std::collections::HashSet;
 use std::thread;
 use std::time::Duration;
-use rayon::prelude::*;
 
 // @unique
 // class SearchStatus(IntEnum):
@@ -167,10 +167,10 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
 
 // #     pass
 
-pub fn tss_next_sq_clone(board: &Array2<u8>, color: u8, next_sq: Point) -> SearchNode {
-    let mut board_clone = board.clone();
-    tss_next_sq(&mut board_clone, color, next_sq)
-}
+// pub fn tss_next_sq_clone(board: &Array2<u8>, color: u8, next_sq: Point) -> SearchNode {
+//     let mut board_clone = board.clone();
+//     tss_next_sq(&mut board_clone, color, next_sq)
+// }
 
 /// Threat Space Search for the whole board.
 pub fn tss_board(board: &mut Array2<u8>, color: u8) -> SearchNode {
@@ -180,8 +180,8 @@ pub fn tss_board(board: &mut Array2<u8>, color: u8) -> SearchNode {
 
     if !potential_win {
         let nsqs = search_all_board_get_next_sqs(board, color, ThreatPri::Immediate);
-        children = nsqs.par_iter().map(|x| tss_next_sq_clone(board, color, *x)).collect();
-        // children = nsqs.iter().map(|x| tss_next_sq(board, color, *x)).collect();
+        // children = nsqs.par_iter().map(|x| tss_next_sq_clone(board, color, *x)).collect();
+        children = nsqs.iter().map(|x| tss_next_sq(board, color, *x)).collect();
         potential_win = children.iter().any(|x| x.potential_win);
     }
 

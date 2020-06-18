@@ -42,16 +42,9 @@ fn main() {
     //                       BLACK,
     //                       true);
 
-    let mut s = get_state(&["j5", "j6", "i10", "i11"],
-                          &[],
-                          BLACK,
-                          false );
+    let mut s = get_state(&["j5", "j6", "i10", "i11"], &[], BLACK, false);
 
     let n = 100;
-
-    // for _ in 0..n {
-    //     tss_board(&mut s.board, s.turn);
-    // }
 
     let start = Instant::now();
     for _ in 0..n {
