@@ -396,6 +396,16 @@ pub fn search_all_board(board: &Array2<u8>, color: u8, pri: ThreatPri) -> Vec<Th
     }
 
     threats
+
+    // PATTERNS_BY_PRI[&pri]
+    // .iter()
+    // .map(|p| {
+    //     search_board(board, &p.pattern, color)
+    //         .into_iter()
+    //         .map(move |m| threat_item(m, p))
+    // })
+    // .flatten()
+    // .collect::<Vec<Threat>>()
 }
 
 pub fn search_all_point(
