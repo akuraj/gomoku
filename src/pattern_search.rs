@@ -422,7 +422,7 @@ pub fn search_point_own_next_sq(
 /// including overwriting a wall with any element whatsoever.
 ///
 /// Useful for testing purposes.
-pub fn apply_pattern(board: &mut Array2<u8>, pattern: &[u8], point: Point, d: isize) -> bool {
+pub fn apply_pattern(board: &mut Array2<u8>, pattern: &[u8], point: Point, d: usize) -> bool {
     let (x, y) = point;
 
     let side = board.shape()[0];

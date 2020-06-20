@@ -8,7 +8,7 @@ use std::collections::HashSet;
 pub type Point = (isize, isize);
 
 /// Row increment when moving in direction 'd'.
-pub fn increment(d: isize) -> isize {
+pub fn increment(d: usize) -> isize {
     if d % 4 == 0 {
         0
     } else if d % 8 < 4 {
@@ -19,7 +19,7 @@ pub fn increment(d: isize) -> isize {
 }
 
 /// Row and Column increments when moving in direction 'd'.
-pub fn increments(d: isize) -> (isize, isize) {
+pub fn increments(d: usize) -> (isize, isize) {
     (increment(d), increment(d + 2))
 }
 
