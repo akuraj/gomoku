@@ -1,7 +1,7 @@
 //! A place for general FIXMEs and TODOs.
 
 // FIXME: Find better place to put these FIXMEs and TODOs.
-// FIXME: i32/isize anywhere where we store them, instead of usize? Also for relevant constants.
+// FIXME: What stuff actually needs to be isize?
 // FIXME: Replace if-else-if with match!
 // FIXME: Look at the rust book and replace relevant code with appropriate idiomatic rust code.
 // FIXME: Reduce verbosity in the pattern search fns somehow?

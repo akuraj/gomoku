@@ -136,7 +136,7 @@ lazy_static! {
 }
 
 /// 4 cardinal directions + 4 ordinal directions.
-pub const NUM_DIRECTIONS: usize = 8;
+pub const NUM_DIRECTIONS: isize = 8;
 
 /// WIN_LENGTH is the length of a winning sequence.
 /// Some things implicitly assume a win length of 5, for example, threat pattern definitions.

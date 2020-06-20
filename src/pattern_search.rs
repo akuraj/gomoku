@@ -75,7 +75,7 @@ pub fn search_board(board: &Array2<u8>, gen_pattern: &[u8], color: u8) -> Vec<Ma
 
     let mut matches: Vec<Match> = Vec::new();
     for d in 0..NUM_DIRECTIONS {
-        let (row_inc, col_inc) = increments(d as isize);
+        let (row_inc, col_inc) = increments(d);
         let (row_min, row_max) = index_bounds(side as isize, length as isize, row_inc);
         let (col_min, col_max) = index_bounds(side as isize, length as isize, col_inc);
 
@@ -117,7 +117,7 @@ pub fn search_point(board: &Array2<u8>, gen_pattern: &[u8], color: u8, point: Po
 
     let mut matches: Vec<Match> = Vec::new();
     for d in 0..NUM_DIRECTIONS {
-        let (row_inc, col_inc) = increments(d as isize);
+        let (row_inc, col_inc) = increments(d);
         let (s_min, s_max) =
             index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
 
@@ -167,7 +167,7 @@ pub fn search_point_own(
     // We are searching for patterns including the given point as an "own_sq".
     if board[(x as usize, y as usize)] == color {
         for d in 0..NUM_DIRECTIONS {
-            let (row_inc, col_inc) = increments(d as isize);
+            let (row_inc, col_inc) = increments(d);
             let (s_min, s_max) =
                 index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
 
@@ -241,7 +241,7 @@ pub fn search_board_next_sq(board: &Array2<u8>, gen_pattern: &[u8], color: u8) -
 
     let mut next_sq_match_pairs: Vec<NSQMatch> = Vec::new();
     for d in 0..NUM_DIRECTIONS {
-        let (row_inc, col_inc) = increments(d as isize);
+        let (row_inc, col_inc) = increments(d);
         let (row_min, row_max) = index_bounds(side as isize, length as isize, row_inc);
         let (col_min, col_max) = index_bounds(side as isize, length as isize, col_inc);
 
@@ -302,7 +302,7 @@ pub fn search_point_next_sq(
 
     let mut next_sq_match_pairs: Vec<NSQMatch> = Vec::new();
     for d in 0..NUM_DIRECTIONS {
-        let (row_inc, col_inc) = increments(d as isize);
+        let (row_inc, col_inc) = increments(d);
         let (s_min, s_max) =
             index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
 
@@ -367,7 +367,7 @@ pub fn search_point_own_next_sq(
     // We are searching for patterns including the given point as an "own_sq".
     if board[(x as usize, y as usize)] == color {
         for d in 0..NUM_DIRECTIONS {
-            let (row_inc, col_inc) = increments(d as isize);
+            let (row_inc, col_inc) = increments(d);
             let (s_min, s_max) =
                 index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
 
@@ -422,13 +422,13 @@ pub fn search_point_own_next_sq(
 /// including overwriting a wall with any element whatsoever.
 ///
 /// Useful for testing purposes.
-pub fn apply_pattern(board: &mut Array2<u8>, pattern: &[u8], point: Point, d: usize) -> bool {
+pub fn apply_pattern(board: &mut Array2<u8>, pattern: &[u8], point: Point, d: isize) -> bool {
     let (x, y) = point;
 
     let side = board.shape()[0];
     let length = pattern.len();
 
-    let (row_inc, col_inc) = increments(d as isize);
+    let (row_inc, col_inc) = increments(d);
 
     let mut can_apply = true;
     for k in 0..length {

@@ -208,7 +208,7 @@ pub fn subtest_search_fns(gen_pattern: &[u8], color: u8, own_sqs: &[isize], defc
             for d in 0..NUM_DIRECTIONS {
                 let mut board = new_board();
                 if apply_pattern(&mut board, &pattern, (i as isize, j as isize), d) {
-                    let (row_inc, col_inc) = increments(d as isize);
+                    let (row_inc, col_inc) = increments(d);
                     let start = (i as isize, j as isize);
                     let end = (
                         idx(i as isize, row_inc, length - 1),
