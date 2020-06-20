@@ -48,10 +48,16 @@ fn main() {
 
     let n = 100;
 
-    let start = Instant::now();
     for _ in 0..n {
         tss_board(&mut s.board, s.turn);
     }
+
+    let start = Instant::now();
+
+    for _ in 0..n {
+        tss_board(&mut s.board, s.turn);
+    }
+
     println!(
         "Time taken: {} seconds",
         (start.elapsed().as_nanos() as f32) / 1e9
