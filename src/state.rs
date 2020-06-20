@@ -91,7 +91,7 @@ impl State {
 impl fmt::Display for State {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let mut output = String::new();
-        output.push_str(&format!("\nboard:\n{}", board_to_str(&self.board)));
+        output.push_str(&format!("\nboard:{}", board_to_str(&self.board)));
         output.push_str(&format!(
             "turn: {}\n",
             ACT_ELEMS_TO_NAMES.get(&self.turn).unwrap()

@@ -21,16 +21,16 @@ fn main() {
     //                       BLACK,
     //                       false);
 
-    // let mut s = get_state(
-    //     &[
-    //         "f5", "g5", "h5", "g6", "g7", "h7", "i7", "h8", "h9", "g9", "i9",
-    //     ],
-    //     &[
-    //         "g4", "e5", "f6", "h6", "j6", "f7", "j7", "f8", "g8", "i8", "f9",
-    //     ],
-    //     BLACK,
-    //     true,
-    // );
+    let mut s = get_state(
+        &[
+            "f5", "g5", "h5", "g6", "g7", "h7", "i7", "h8", "h9", "g9", "i9",
+        ],
+        &[
+            "g4", "e5", "f6", "h6", "j6", "f7", "j7", "f8", "g8", "i8", "f9",
+        ],
+        BLACK,
+        true,
+    );
 
     // let mut s = get_state(&["g10", "h8", "i7", "j7", "j9"],
     //                       &["g7", "g8", "g9", "i9", "k8"],
@@ -42,7 +42,9 @@ fn main() {
     //                       BLACK,
     //                       true);
 
-    let mut s = get_state(&["j5", "j6", "i10", "i11"], &[], BLACK, false);
+    // let mut s = get_state(&["j5", "j6", "i10", "i11"], &[], BLACK, false);
+
+    println!("{}", s);
 
     let n = 100;
 
