@@ -21,7 +21,7 @@ pub struct Pattern {
     pub critical_sqs: Vec<isize>,
     pub own_sqs: Vec<isize>,
     pub name: String,
-    pub index: isize,
+    pub index: usize,
     pub empty_sqs: Vec<isize>,
     pub defcon: usize,
     pub immediate: bool,
@@ -29,7 +29,7 @@ pub struct Pattern {
 
 #[allow(clippy::collapsible_if)]
 impl Pattern {
-    pub fn new(pattern: Vec<u8>, critical_sqs: Vec<isize>, name: String, index: isize) -> Self {
+    pub fn new(pattern: Vec<u8>, critical_sqs: Vec<isize>, name: String, index: usize) -> Self {
         // Make sure elemnts of the pattern are valid.
         for elem in pattern.iter() {
             assert!(GEN_ELEMS.iter().any(|&x| x == *elem));
@@ -292,7 +292,7 @@ lazy_static! {
         ];
 
         for (i, p) in patterns.iter().enumerate() {
-            assert_eq!(i as isize, p.index);
+            assert_eq!(i, p.index);
         }
 
         let num_names = patterns
@@ -372,7 +372,7 @@ lazy_static! {
 #[derive(Clone, Debug)]
 pub struct Threat {
     pub m: Match,
-    pub pidx: isize,
+    pub pidx: usize,
     pub defcon: usize,
     pub critical_sqs: HashSet<Point>,
 }
