@@ -4,8 +4,8 @@
 // FIXME: Look at the rust book and replace relevant code with appropriate idiomatic rust code.
 // FIXME: Reduce verbosity in the pattern search fns somehow?
 // FIXME: Add proper documentation in pattern, testing and threat_space_search modules.
+// FIXME: Implement un-impl code (for example checks in pattern module).
 
-// TODO: Add checks on size of board and patterns by having max value in consts.
 // TODO: See if we can impl index<int type> trait for an Array2?
 
 // *** TODO SOON ***
