@@ -48,7 +48,8 @@ impl Pattern {
         let length = pattern.len();
         for sq in critical_sqs.iter() {
             // sq must be EMPTY for it to be critical.
-            assert!((0 <= *sq && *sq < (length as isize)) && pattern[*sq as usize] == EMPTY);
+            let squ = *sq as usize;
+            assert!((0..length).contains(&squ) && pattern[squ] == EMPTY);
         }
 
         // Check size of name.

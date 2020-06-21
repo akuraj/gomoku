@@ -1,11 +1,9 @@
 //! A place for general FIXMEs and TODOs.
 
-// FIXME: Find better place to put these FIXMEs and TODOs.
 // FIXME: Replace if-else-if with match!
 // FIXME: Look at the rust book and replace relevant code with appropriate idiomatic rust code.
 // FIXME: Reduce verbosity in the pattern search fns somehow?
 // FIXME: Add proper documentation in pattern, testing and threat_space_search modules.
-// FIXME: Can we use Range.contains when checking that the number lies within a range?
 
 // TODO: Add checks on size of board and patterns by having max value in consts.
 // TODO: See if we can impl index<int type> trait for an Array2?

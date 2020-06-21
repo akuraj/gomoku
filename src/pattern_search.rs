@@ -172,7 +172,7 @@ pub fn search_point_own(
                 index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
 
             for own_sq in own_sqs.iter() {
-                if s_min <= (-*own_sq) && (-*own_sq) < s_max {
+                if (s_min..s_max).contains(&(-*own_sq)) {
                     let (i, j) = (x - row_inc * (*own_sq), y - col_inc * (*own_sq));
 
                     let mut found = true;
@@ -372,7 +372,7 @@ pub fn search_point_own_next_sq(
                 index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
 
             for own_sq in own_sqs.iter() {
-                if s_min <= (-*own_sq) && (-*own_sq) < s_max {
+                if (s_min..s_max).contains(&(-*own_sq)) {
                     let (i, j) = (x - row_inc * (*own_sq), y - col_inc * (*own_sq));
 
                     let mut found_next_sq = false;
@@ -506,7 +506,7 @@ pub fn degree(gen_pattern: &[u8]) -> usize {
     let n = gen_pattern.len();
     let mut max_owns: usize = 0;
 
-    for i in 0..(n - WIN_LENGTH + 1) {
+    for i in 0..=(n - WIN_LENGTH) {
         let mut owns: usize = 0;
         let mut found = true;
 
@@ -549,7 +549,7 @@ pub fn one_step_from_straight_threat(gen_pattern: &[u8]) -> bool {
         let v = gen_pattern[idx];
 
         if v == EMPTY {
-            for i in 0..(n - l + 1) {
+            for i in 0..=(n - l) {
                 let mut found = true;
 
                 for j in 0..l {

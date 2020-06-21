@@ -10,7 +10,7 @@ use std::collections::HashSet;
 
 /// Get the display row number from the internal row index.
 pub fn row_idx_to_num(x: usize) -> usize {
-    assert!(1 <= x && x <= SIDE_LEN_ACT);
+    assert!((1..=SIDE_LEN_ACT).contains(&x));
     SIDE_LEN_ACT + 1 - x
 }
 
@@ -19,14 +19,14 @@ pub use row_idx_to_num as row_num_to_idx;
 
 /// Get the display column character from the internal column number.
 pub fn col_idx_to_chr(x: usize) -> char {
-    assert!(1 <= x && x <= SIDE_LEN_ACT);
+    assert!((1..=SIDE_LEN_ACT).contains(&x));
     char::from_u32(97 + (x as u32) - 1).unwrap()
 }
 
 /// Get the internal column number from the display column character.
 pub fn col_chr_to_idx(x: char) -> usize {
     let idx = (x.to_digit(RADIX).unwrap() - 'a'.to_digit(RADIX).unwrap() + 1) as usize;
-    assert!(1 <= idx && idx <= SIDE_LEN_ACT);
+    assert!((1..=SIDE_LEN_ACT).contains(&idx));
     idx
 }
 
@@ -97,7 +97,7 @@ pub fn board_to_str(board: &Array2<u8>) -> String {
 
     for i in 0..shape[0] {
         let mut num_str = String::from("  ");
-        if 1 <= i && i <= SIDE_LEN_ACT {
+        if (1..=SIDE_LEN_ACT).contains(&i) {
             num_str = row_idx_to_num(i).to_string();
             match num_str.len() {
                 2 => {}
@@ -129,7 +129,7 @@ pub fn board_to_str(board: &Array2<u8>) -> String {
 
     board_repr.push_str("     ");
 
-    for i in 1..(SIDE_LEN_ACT + 1) {
+    for i in 1..=SIDE_LEN_ACT {
         board_repr.push(col_idx_to_chr(i));
         board_repr.push(' ');
     }
