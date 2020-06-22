@@ -1,6 +1,5 @@
 //! A place for general FIXMEs and TODOs.
 
-// FIXME: Replace if-else-if with match!
 // FIXME: Look at the rust book and replace relevant code with appropriate idiomatic rust code.
 // FIXME: Reduce verbosity in the pattern search fns somehow?
 // FIXME: Add proper documentation in pattern, testing and threat_space_search modules.

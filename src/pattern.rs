@@ -1,6 +1,8 @@
 //! Define struct to represent threat patterns, and related functions (search etc.).
 
-use crate::consts::{EMPTY, GEN_ELEMS, GEN_ELEMS_TO_NAMES, MDFIT, NOT_OWN, OWN, WALL_ENEMY, SIDE_LEN};
+use crate::consts::{
+    EMPTY, GEN_ELEMS, GEN_ELEMS_TO_NAMES, MDFIT, NOT_OWN, OWN, SIDE_LEN, WALL_ENEMY,
+};
 use crate::geometry::{point_set_on_line, Point};
 use crate::pattern_search::{
     defcon_from_degree, degree, one_step_from_straight_threat, search_board, search_board_next_sq,

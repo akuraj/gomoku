@@ -36,30 +36,24 @@ impl State {
 
         for i in 0..SIDE_LEN {
             for j in 0..SIDE_LEN {
-                let val = board[(i, j)];
-                if (i == 0 || i == (SIDE_LEN - 1)) || (j == 0 || j == (SIDE_LEN - 1)) {
-                    assert_eq!(val, WALL);
-                } else if val == BLACK {
-                    black_total += 1;
-                } else if val == WHITE {
-                    white_total += 1;
-                } else if val == EMPTY {
-                } else {
-                    panic!("Invalid item on board: {}", val);
+                match board[(i, j)] {
+                    WALL => assert!(i == 0 || i == (SIDE_LEN - 1) || j == 0 || j == (SIDE_LEN - 1)),
+                    BLACK => black_total += 1,
+                    WHITE => white_total += 1,
+                    EMPTY => (),
+                    _ => panic!("Invalid item on board: {}", board[(i, j)]),
                 }
             }
         }
 
         if strict_stone_count {
-            if black_total == white_total + 1 {
-                assert_eq!(turn, WHITE);
-            } else if black_total == white_total {
-                assert_eq!(turn, BLACK);
-            } else {
-                panic!(
+            match black_total - white_total {
+                1 => assert_eq!(turn, WHITE),
+                0 => assert_eq!(turn, BLACK),
+                _ => panic!(
                     "Invalid number of stones: Black: {}, White: {}",
                     black_total, white_total
-                );
+                ),
             }
         }
 
