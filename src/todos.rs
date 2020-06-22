@@ -5,6 +5,12 @@
 // FIXME: Add proper documentation in pattern, testing and threat_space_search modules.
 // FIXME: Implement un-impl code (for example checks in pattern module).
 
+// TODO: General Rust Learning:
+//       a) Try operator(?), Slice patterns/subslice patterns,
+//          Cargo fix, cargo miri, impl Trait, async/await,
+//          NLL, const functions, cargo workspaces
+//       b) https://blog.rust-lang.org/2020/05/15/five-years-of-rust.html
+
 // *** TODO SOON ***
 // TODO: FIXME: Too many garbage variations when using LowPri threats!
 //       0) Create a TSS which fully takes into account the opponent's threats.
