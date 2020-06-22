@@ -6,8 +6,6 @@
 // FIXME: Add proper documentation in pattern, testing and threat_space_search modules.
 // FIXME: Implement un-impl code (for example checks in pattern module).
 
-// TODO: See if we can impl index<int type> trait for an Array2?
-
 // *** TODO SOON ***
 // TODO: FIXME: Too many garbage variations when using LowPri threats!
 //       0) Create a TSS which fully takes into account the opponent's threats.
