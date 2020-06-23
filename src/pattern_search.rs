@@ -202,7 +202,7 @@ pub fn search_point_own(
     matches
 }
 
-/// Remove duplicates from next_sq_matche pairs.
+/// Remove duplicates from next_sq_match pairs.
 pub fn dedupe_next_sq_match_pairs(pairs: &mut Vec<NSQMatch>) {
     let mut i: usize = 0;
     let mut n = pairs.len();

@@ -1,7 +1,7 @@
 //! A place for general FIXMEs and TODOs.
 
 // FIXME: Look at the rust book and replace relevant code with appropriate idiomatic rust code.
-// FIXME: Reduce verbosity in the pattern search fns somehow?
+// FIXME: Reduce verbosity in the pattern search and other fns somehow?
 // FIXME: Add proper documentation in pattern, testing and threat_space_search modules.
 // FIXME: Implement un-impl code (for example checks in pattern module).
 
@@ -91,6 +91,3 @@
 
 // *** Swap2 Implementation ***
 // TODO: Implement Swap2 (and update state initialization, relevant checks, and code).
-
-// *** Release! ***
-// TODO: Implement setup.py or pyproject.toml!
