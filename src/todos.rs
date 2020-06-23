@@ -2,10 +2,9 @@
 
 // FIXME: Look at the rust book and replace relevant code with appropriate idiomatic rust code.
 // FIXME: Use iterators instead of loops.
-// FIXME: Add proper documentation in threat_space_search modules.
 
 // *** TODO SOON ***
-// TODO: FIXME: Too many garbage variations when using LowPri threats!
+// TODO: Too many garbage variations when using LowPri threats!
 //       0) Create a TSS which fully takes into account the opponent's threats.
 //          Handle different possible min_defcon combinations among the threats.
 //          Maintain, update, pass-down threats (both own and opp).
@@ -28,6 +27,7 @@
 //       11) Threats data and other data should be lean to reduce memory usage.
 //       12) We don't actually need critical sqs for NON_IMMEDIATE threats.
 //           Should we keep them as they are currently?
+// TODO: Add documentation in threat_space_search module.
 // TODO: Use Yixin to check for best moves in test positions.
 //       Use it to guide the development effort and debugging.
 // TODO: Check all test positions in paper. Implement regtests based on them.
