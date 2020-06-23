@@ -1,9 +1,8 @@
 //! A place for general FIXMEs and TODOs.
 
 // FIXME: Look at the rust book and replace relevant code with appropriate idiomatic rust code.
-// FIXME: Reduce verbosity in the pattern search and other fns somehow?
+// FIXME: Use iterators instead of loops.
 // FIXME: Add proper documentation in pattern, testing and threat_space_search modules.
-// FIXME: Implement un-impl code (for example checks in pattern module).
 
 // *** TODO SOON ***
 // TODO: FIXME: Too many garbage variations when using LowPri threats!

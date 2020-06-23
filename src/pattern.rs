@@ -1,7 +1,7 @@
 //! Define struct to represent threat patterns, and related functions (search etc.).
 
 use crate::consts::{
-    EMPTY, GEN_ELEMS, GEN_ELEMS_TO_NAMES, MDFIT, NOT_OWN, OWN, SIDE_LEN, WALL_ENEMY,
+    EMPTY, GEN_ELEMS, GEN_ELEMS_TO_NAMES, MAX_DEFCON, MDFIT, NOT_OWN, OWN, SIDE_LEN, WALL_ENEMY,
 };
 use crate::geometry::{point_set_on_line, Point};
 use crate::pattern_search::{
@@ -38,14 +38,13 @@ impl Pattern {
             assert!(*elem == OWN || (*elem & OWN == 0));
         }
 
-        // FIXME: port below code.
         // Critical Squares are the places where if the oppenent plays,
         // then the threat is mitigated.
         // Checks on critical_sqs.
-        // critical_sqs.sort()
-        // critical_sqs_uniq = list(set(critical_sqs))
-        // critical_sqs_uniq.sort()
-        // assert critical_sqs == critical_sqs_uniq
+        let mut critical_sqs_new = critical_sqs.clone();
+        critical_sqs_new.sort();
+        critical_sqs_new.dedup();
+        assert_eq!(critical_sqs, critical_sqs_new);
 
         let length = pattern.len();
         assert!(length <= SIDE_LEN);
@@ -110,22 +109,17 @@ impl Pattern {
             one_step_from_straight_threat(&pattern)
         };
 
-        // FIXME: port below code.
-        // # Checks on data fields.
-        // assert self.pattern.ndim == 1
-        // assert self.pattern.size > 0
-        // assert self.critical_sqs.ndim == 1
-        // assert self.own_sqs.ndim == 1
-        // assert self.empty_sqs.ndim == 1
-        // assert self.defcon in DEFCON_RANGE
+        // Checks on data fields.
+        assert!(!pattern.is_empty());
+        assert!((0..=MAX_DEFCON).contains(&defcon));
 
-        // FIXME: port below code.
-        // # Check on empty_sqs that they need to be useful.
-        // curr_degree = degree(self.pattern)
-        // for esq in self.empty_sqs:
-        //     next_pattern = np.array(self.pattern, dtype=np.byte)
-        //     next_pattern[esq] = OWN
-        //     assert degree(next_pattern) == curr_degree + 1
+        // Check on empty_sqs that they need to be useful.
+        let curr_degree = degree(&pattern);
+        for esq in empty_sqs.iter() {
+            let mut next_pattern = pattern.clone();
+            next_pattern[*esq as usize] = OWN;
+            assert_eq!(degree(&next_pattern), curr_degree + 1);
+        }
 
         Self {
             pattern,
