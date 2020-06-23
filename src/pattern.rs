@@ -310,7 +310,10 @@ lazy_static! {
 
         Vec::from(patterns)
     };
+
     pub static ref NUM_PTNS: usize = PATTERNS.len();
+
+    /// Patterns by defcon.
     pub static ref PATTERNS_BY_DEFCON: HashMap<usize, Vec<&'static Pattern>> = {
         let mut m: HashMap<usize, Vec<&'static Pattern>> = HashMap::new();
 
@@ -322,6 +325,8 @@ lazy_static! {
 
         m
     };
+
+    /// Patterns by name.
     pub static ref PATTERNS_BY_NAME: HashMap<String, &'static Pattern> = {
         let mut m: HashMap<String, &'static Pattern> = HashMap::new();
 
@@ -358,6 +363,8 @@ lazy_static! {
 
         patterns
     };
+
+    /// Patterns by priority.
     pub static ref PATTERNS_BY_PRI: HashMap<ThreatPri, &'static Vec<&'static Pattern>> = {
         let mut m: HashMap<ThreatPri, &'static Vec<&'static Pattern>> = HashMap::new();
         m.insert(ThreatPri::All, &PATTERNS);
@@ -376,27 +383,31 @@ pub struct Threat {
     pub critical_sqs: HashSet<Point>,
 }
 
-pub fn threat_item(m: Match, pattern: &Pattern) -> Threat {
-    Threat {
-        m,
-        pidx: pattern.index,
-        defcon: pattern.defcon,
-        critical_sqs: point_set_on_line(m.0, m.1, &pattern.critical_sqs),
+impl Threat {
+    pub fn new(m: Match, pattern: &Pattern) -> Self {
+        Self {
+            m,
+            pidx: pattern.index,
+            defcon: pattern.defcon,
+            critical_sqs: point_set_on_line(m.0, m.1, &pattern.critical_sqs),
+        }
     }
 }
 
+/// Get all pattern matches on the board.
 pub fn search_all_board(board: &Array2<u8>, color: u8, pri: ThreatPri) -> Vec<Threat> {
     let mut threats: Vec<Threat> = Vec::new();
 
     for p in PATTERNS_BY_PRI[&pri] {
         for m in search_board(board, &p.pattern, color) {
-            threats.push(threat_item(m, p));
+            threats.push(Threat::new(m, p));
         }
     }
 
     threats
 }
 
+/// Get all pattern matches including the given point.
 pub fn search_all_point(
     board: &Array2<u8>,
     color: u8,
@@ -407,13 +418,14 @@ pub fn search_all_point(
 
     for p in PATTERNS_BY_PRI[&pri] {
         for m in search_point(board, &p.pattern, color, point) {
-            threats.push(threat_item(m, p));
+            threats.push(Threat::new(m, p));
         }
     }
 
     threats
 }
 
+/// Get all pattern matches including the given point as an own_sq.
 pub fn search_all_point_own(
     board: &Array2<u8>,
     color: u8,
@@ -424,13 +436,14 @@ pub fn search_all_point_own(
 
     for p in PATTERNS_BY_PRI[&pri] {
         for m in search_point_own(board, &p.pattern, color, point, &p.own_sqs) {
-            threats.push(threat_item(m, p));
+            threats.push(Threat::new(m, p));
         }
     }
 
     threats
 }
 
+/// Get all next_sqs on the board.
 pub fn search_all_board_get_next_sqs(
     board: &Array2<u8>,
     color: u8,
@@ -447,6 +460,7 @@ pub fn search_all_board_get_next_sqs(
     nsqs
 }
 
+/// Get all next_sqs including the given point.
 pub fn search_all_point_get_next_sqs(
     board: &Array2<u8>,
     color: u8,
@@ -464,6 +478,7 @@ pub fn search_all_point_get_next_sqs(
     nsqs
 }
 
+/// Get all next_sqs including the given point as an own_sq.
 pub fn search_all_point_own_get_next_sqs(
     board: &Array2<u8>,
     color: u8,
