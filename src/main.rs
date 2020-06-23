@@ -68,5 +68,5 @@ fn main() {
     // // println!("{}", win_vars.len());
     // // animate_variation(&mut s.board, s.turn, &win_vars[0]);
 
-    testing::test_search_fns();
+    testing::test_pattern_search_fns();
 }

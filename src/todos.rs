@@ -2,7 +2,7 @@
 
 // FIXME: Look at the rust book and replace relevant code with appropriate idiomatic rust code.
 // FIXME: Use iterators instead of loops.
-// FIXME: Add proper documentation in testing and threat_space_search modules.
+// FIXME: Add proper documentation in threat_space_search modules.
 
 // *** TODO SOON ***
 // TODO: FIXME: Too many garbage variations when using LowPri threats!

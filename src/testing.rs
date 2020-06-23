@@ -252,7 +252,9 @@ pub fn subtest_search_fns(gen_pattern: &[u8], color: u8, own_sqs: &[isize], defc
     }
 }
 
-pub fn test_search_fns() {
+/// Test pattern search functions by setting up the pattern at a given location on the baord,
+/// and then testing that the search functions return the expected answer.
+pub fn test_pattern_search_fns() {
     let start = Instant::now();
 
     for color in COLORS.iter() {
@@ -268,6 +270,6 @@ pub fn test_search_fns() {
 }
 
 #[test]
-pub fn test_search_fns_test() {
-    test_search_fns();
+pub fn test_pattern_search_fns_test() {
+    test_pattern_search_fns();
 }
