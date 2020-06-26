@@ -14,8 +14,6 @@ use lazy_static::lazy_static;
 use ndarray::prelude::*;
 use std::fmt;
 
-// FIXME: Use map, fold, filter everywhere below when mapping/accumulating!
-
 /// Pattern: Used to represent threat patterns.
 #[derive(Clone, Debug)]
 pub struct Pattern {

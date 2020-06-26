@@ -24,6 +24,7 @@ use std::time::Duration;
 //     WIN = auto()
 //     LOSS = auto()
 
+/// A tree that represents the result of a Threat Space Search.
 #[derive(Clone, Debug)]
 pub struct SearchNode {
     pub next_sq: Option<Point>,
