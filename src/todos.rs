@@ -2,6 +2,7 @@
 
 // FIXME: Look at the rust book and replace relevant code with appropriate idiomatic rust code.
 // FIXME: Use iterators instead of loops.
+// FIXME: to_owned vs cloned?
 
 // *** TODO SOON ***
 // TODO: Too many garbage variations when using LowPri threats!

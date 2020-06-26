@@ -77,12 +77,12 @@ impl Pattern {
             }
         }
 
-        let mut own_sqs: Vec<isize> = Vec::new();
-        for (i, v) in pattern.iter().enumerate() {
-            if *v == OWN {
-                own_sqs.push(i as isize);
-            }
-        }
+        let own_sqs = pattern
+            .iter()
+            .enumerate()
+            .filter(|x| *x.1 == OWN)
+            .map(|x| x.0 as isize)
+            .collect::<Vec<isize>>();
 
         let mut other_empty_sqs: Vec<isize> = Vec::new();
         for (i, v) in pattern.iter().enumerate() {
