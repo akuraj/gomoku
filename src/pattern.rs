@@ -41,7 +41,7 @@ impl Pattern {
         // Critical Squares are the places where if the oppenent plays,
         // then the threat is mitigated.
         // Checks on critical_sqs.
-        let mut critical_sqs_new = critical_sqs.clone();
+        let mut critical_sqs_new = critical_sqs.to_owned();
         critical_sqs_new.sort();
         critical_sqs_new.dedup();
         assert_eq!(critical_sqs, critical_sqs_new);
@@ -114,7 +114,7 @@ impl Pattern {
         // Check on empty_sqs that they need to be useful.
         let curr_degree = degree(&pattern);
         for esq in empty_sqs.iter() {
-            let mut next_pattern = pattern.clone();
+            let mut next_pattern = pattern.to_owned();
             next_pattern[*esq as usize] = OWN;
             assert_eq!(degree(&next_pattern), curr_degree + 1);
         }

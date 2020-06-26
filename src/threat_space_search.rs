@@ -167,8 +167,9 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
 
 // #     pass
 
-// pub fn tss_next_sq_clone(board: &Array2<u8>, color: u8, next_sq: Point) -> SearchNode {
-//     let mut board_clone = board.clone();
+// /// Thread safe version of tss_next_sq.
+// pub fn tss_next_sq_safe(board: &Array2<u8>, color: u8, next_sq: Point) -> SearchNode {
+//     let mut board_clone = board.to_owned();
 //     tss_next_sq(&mut board_clone, color, next_sq)
 // }
 
@@ -180,7 +181,7 @@ pub fn tss_board(board: &mut Array2<u8>, color: u8) -> SearchNode {
 
     if !potential_win {
         let nsqs = search_all_board_get_next_sqs(board, color, ThreatPri::Immediate);
-        // children = nsqs.par_iter().map(|x| tss_next_sq_clone(board, color, *x)).collect();
+        // children = nsqs.par_iter().map(|x| tss_next_sq_safe(board, color, *x)).collect();
         children = nsqs.iter().map(|x| tss_next_sq(board, color, *x)).collect();
         potential_win = children.iter().any(|x| x.potential_win);
     }
@@ -194,7 +195,7 @@ pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, HashSet<Po
     if node.potential_win {
         let mut node_var: Vec<(Point, HashSet<Point>)> = Vec::new();
         if node.next_sq.is_some() {
-            node_var.push((node.next_sq.unwrap(), node.critical_sqs.clone().unwrap()));
+            node_var.push((node.next_sq.unwrap(), node.critical_sqs.to_owned().unwrap()));
         }
 
         if !node.children.is_empty() {
@@ -202,7 +203,7 @@ pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, HashSet<Po
                 if child.potential_win {
                     let child_variations = potential_win_variations(child);
                     for child_var in child_variations {
-                        let mut child_var_next = node_var.clone();
+                        let mut child_var_next = node_var.to_owned();
                         child_var_next.extend(child_var);
                         variations.push(child_var_next);
                     }
