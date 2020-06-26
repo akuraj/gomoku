@@ -1,7 +1,5 @@
 //! A place for general FIXMEs and TODOs.
 
-// FIXME: Use Option<critical_sqs> properly in tss funcs.
-
 // *** TODO SOON ***
 // TODO: Too many garbage variations when using LowPri threats!
 //       0) Create a TSS which fully takes into account the opponent's threats.
