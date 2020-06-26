@@ -84,22 +84,20 @@ impl Pattern {
             .map(|x| x.0 as isize)
             .collect::<Vec<isize>>();
 
-        let mut other_empty_sqs: Vec<isize> = Vec::new();
-        for (i, v) in pattern.iter().enumerate() {
-            if *v == EMPTY && !critical_sqs.iter().any(|&x| x == (i as isize)) {
-                other_empty_sqs.push(i as isize);
-            }
-        }
+        let other_empty_sqs = pattern
+            .iter()
+            .enumerate()
+            .filter(|x| *x.1 == EMPTY && !critical_sqs.iter().any(|&y| y == (x.0 as isize)))
+            .map(|x| x.0 as isize)
+            .collect::<Vec<isize>>();
 
         // FIXME: Fix the below garbage: should use extend or something instead!
         // Add entry for empty_sqs. critical_sqs appear first.
-        let mut empty_sqs: Vec<isize> = Vec::new();
-        for v in critical_sqs.iter() {
-            empty_sqs.push(*v);
-        }
-        for v in other_empty_sqs.iter() {
-            empty_sqs.push(*v);
-        }
+        let empty_sqs = critical_sqs
+            .iter()
+            .chain(other_empty_sqs.iter())
+            .cloned()
+            .collect::<Vec<isize>>();
 
         let defcon = defcon_from_degree(degree(&pattern));
 
@@ -340,28 +338,12 @@ lazy_static! {
 
     /// Immediate/High Priority PATTERNS.
     pub static ref PATTERNS_I: Vec<&'static Pattern> = {
-        let mut patterns: Vec<&'static Pattern> = Vec::new();
-
-        for p in PATTERNS.iter() {
-            if p.immediate {
-                patterns.push(p);
-            }
-        }
-
-        patterns
+        PATTERNS.iter().filter(|x| x.immediate).map(|x| *x).collect::<Vec<&'static Pattern>>()
     };
 
     /// NonImmediate/Low Priority PATTERNS.
     pub static ref PATTERNS_NI: Vec<&'static Pattern> = {
-        let mut patterns: Vec<&'static Pattern> = Vec::new();
-
-        for p in PATTERNS.iter() {
-            if !p.immediate {
-                patterns.push(p);
-            }
-        }
-
-        patterns
+        PATTERNS.iter().filter(|x| !x.immediate).map(|x| *x).collect::<Vec<&'static Pattern>>()
     };
 
     /// Patterns by priority.
