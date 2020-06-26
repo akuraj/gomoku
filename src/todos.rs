@@ -1,6 +1,5 @@
 //! A place for general FIXMEs and TODOs.
 
-// FIXME: Test reduce lib.
 // FIXME: Use Option<critical_sqs> properly in tss funcs.
 
 // *** TODO SOON ***
