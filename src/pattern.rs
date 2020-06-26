@@ -91,7 +91,6 @@ impl Pattern {
             .map(|x| x.0 as isize)
             .collect::<Vec<isize>>();
 
-        // FIXME: Fix the below garbage: should use extend or something instead!
         // Add entry for empty_sqs. critical_sqs appear first.
         let empty_sqs = critical_sqs
             .iter()
