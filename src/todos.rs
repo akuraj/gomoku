@@ -1,7 +1,5 @@
 //! A place for general FIXMEs and TODOs.
 
-// FIXME: Look at the rust book and replace relevant code with appropriate idiomatic rust code.
-
 // *** TODO SOON ***
 // TODO: Too many garbage variations when using LowPri threats!
 //       0) Create a TSS which fully takes into account the opponent's threats.
