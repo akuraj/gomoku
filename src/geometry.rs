@@ -1,8 +1,8 @@
 //! Functions related to the geometry of the problem.
 
+use fnv::FnvHashSet;
 use num::{abs, signum};
 use std::cmp::{max, min};
-use std::collections::HashSet;
 
 /// Represents a point on the board.
 pub type Point = (isize, isize);
@@ -115,10 +115,10 @@ pub fn chebyshev_distance(start: Point, end: Point) -> isize {
 
 /// Set of points, as specified by idxs, on the line spanning start and end.
 /// See point_on_line for more info.
-pub fn point_set_on_line(start: Point, end: Point, idxs: &[isize]) -> HashSet<Point> {
+pub fn point_set_on_line(start: Point, end: Point, idxs: &[isize]) -> FnvHashSet<Point> {
     idxs.iter()
         .map(|x| point_on_line(start, end, *x))
-        .collect::<HashSet<Point>>()
+        .collect::<FnvHashSet<Point>>()
 }
 
 /// Modified slope intercept form.

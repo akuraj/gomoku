@@ -4,9 +4,9 @@ use crate::consts::{
     ACT_ELEMS_TO_CHRS, BLACK, EMPTY, RADIX, SIDE_LEN, SIDE_LEN_ACT, SPL_ELEM_CHR, WALL, WHITE,
 };
 use crate::geometry::Point;
+use fnv::FnvHashSet;
 use ndarray::prelude::*;
 use std::char;
-use std::collections::HashSet;
 
 /// Get the display row number from the internal row index.
 pub fn row_idx_to_num(x: usize) -> usize {
@@ -65,12 +65,12 @@ pub fn get_board(blacks: &[&str], whites: &[&str]) -> Array2<u8> {
     let blacks_set = blacks
         .iter()
         .map(|&x| String::from(x))
-        .collect::<HashSet<String>>();
+        .collect::<FnvHashSet<String>>();
     let whites_set = whites
         .iter()
         .map(|&x| String::from(x))
-        .collect::<HashSet<String>>();
-    let common: HashSet<String> = blacks_set.intersection(&whites_set).cloned().collect();
+        .collect::<FnvHashSet<String>>();
+    let common: FnvHashSet<String> = blacks_set.intersection(&whites_set).cloned().collect();
     assert!(common.is_empty());
 
     let mut board = new_board();

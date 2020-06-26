@@ -1,6 +1,7 @@
 //! A place for general FIXMEs and TODOs.
 
-// FIXME: Use vectors instead of hashsets! Remove reduce library!
+// FIXME: Test reduce lib.
+// FIXME: Use Option<critical_sqs> properly in tss funcs.
 
 // *** TODO SOON ***
 // TODO: Too many garbage variations when using LowPri threats!

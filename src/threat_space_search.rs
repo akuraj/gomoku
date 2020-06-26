@@ -10,8 +10,8 @@ use crate::pattern::{
 };
 use ndarray::prelude::*;
 // use rayon::prelude::*;
+use fnv::FnvHashSet;
 use reduce::Reduce;
-use std::collections::HashSet;
 use std::thread;
 use std::time::Duration;
 
@@ -28,7 +28,7 @@ use std::time::Duration;
 pub struct SearchNode {
     pub next_sq: Option<Point>,
     pub threats: Vec<Threat>,
-    pub critical_sqs: Option<HashSet<Point>>,
+    pub critical_sqs: Option<FnvHashSet<Point>>,
     pub potential_win: bool,
     pub children: Vec<SearchNode>,
 }
@@ -37,7 +37,7 @@ impl SearchNode {
     pub fn new(
         next_sq: Option<Point>,
         threats: Vec<Threat>,
-        critical_sqs: Option<HashSet<Point>>,
+        critical_sqs: Option<FnvHashSet<Point>>,
         potential_win: bool,
         children: Vec<SearchNode>,
     ) -> Self {
@@ -60,14 +60,14 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
 
     let threats = search_all_point_own(board, color, next_sq, ThreatPri::Immediate);
     let num_threats = threats.len();
-    let critical_sqs: HashSet<Point> = if num_threats > 0 {
+    let critical_sqs: FnvHashSet<Point> = if num_threats > 0 {
         threats
             .iter()
             .map(|x| x.critical_sqs.to_owned())
-            .reduce(|a, b| a.intersection(&b).cloned().collect::<HashSet<Point>>())
+            .reduce(|a, b| a.intersection(&b).cloned().collect::<FnvHashSet<Point>>())
             .unwrap()
     } else {
-        HashSet::<Point>::new()
+        FnvHashSet::<Point>::default()
     };
 
     let mut potential_win = num_threats > 0 && critical_sqs.is_empty();
@@ -80,14 +80,14 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
 
         let threats_csq = search_all_point_own(board, color ^ STONE, *csq, ThreatPri::Immediate);
         let num_threats_csq = threats_csq.len();
-        let critical_sqs_csq: HashSet<Point> = if num_threats_csq > 0 {
+        let critical_sqs_csq: FnvHashSet<Point> = if num_threats_csq > 0 {
             threats_csq
                 .iter()
                 .map(|x| x.critical_sqs.to_owned())
-                .reduce(|a, b| a.intersection(&b).cloned().collect::<HashSet<Point>>())
+                .reduce(|a, b| a.intersection(&b).cloned().collect::<FnvHashSet<Point>>())
                 .unwrap()
         } else {
-            HashSet::<Point>::new()
+            FnvHashSet::<Point>::default()
         };
 
         let potential_win_csq = num_threats_csq > 0 && critical_sqs_csq.is_empty();
@@ -182,11 +182,11 @@ pub fn tss_board(board: &mut Array2<u8>, color: u8) -> SearchNode {
 }
 
 /// Extract all potential win variations from SearchNode.
-pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, HashSet<Point>)>> {
-    let mut variations: Vec<Vec<(Point, HashSet<Point>)>> = Vec::new();
+pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, FnvHashSet<Point>)>> {
+    let mut variations: Vec<Vec<(Point, FnvHashSet<Point>)>> = Vec::new();
 
     if node.potential_win {
-        let mut node_var: Vec<(Point, HashSet<Point>)> = Vec::new();
+        let mut node_var: Vec<(Point, FnvHashSet<Point>)> = Vec::new();
         if node.next_sq.is_some() {
             node_var.push((node.next_sq.unwrap(), node.critical_sqs.to_owned().unwrap()));
         }
@@ -211,7 +211,11 @@ pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, HashSet<Po
 }
 
 /// Animate a given variation on the board.
-pub fn animate_variation(board: &mut Array2<u8>, color: u8, variation: &[(Point, HashSet<Point>)]) {
+pub fn animate_variation(
+    board: &mut Array2<u8>,
+    color: u8,
+    variation: &[(Point, FnvHashSet<Point>)],
+) {
     let sleep_duration = Duration::from_secs(ANIMATION_TIMESTEP_SECS);
 
     println!("{}", board_to_str(board));

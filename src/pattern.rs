@@ -8,10 +8,10 @@ use crate::pattern_search::{
     defcon_from_degree, degree, one_step_from_straight_threat, search_board, search_board_next_sq,
     search_point, search_point_next_sq, search_point_own, search_point_own_next_sq, Match,
 };
+use fnv::FnvHashMap;
+use fnv::FnvHashSet;
 use lazy_static::lazy_static;
 use ndarray::prelude::*;
-use std::collections::HashMap;
-use std::collections::HashSet;
 use std::fmt;
 
 // FIXME: Use map, fold, filter everywhere below when mapping/accumulating!
@@ -294,7 +294,7 @@ lazy_static! {
         let num_names = patterns
             .iter()
             .map(|&x| String::from(&x.name))
-            .collect::<HashSet<String>>()
+            .collect::<FnvHashSet<String>>()
             .len();
         assert_eq!(num_names, patterns.len());
 
@@ -311,8 +311,8 @@ lazy_static! {
     pub static ref NUM_PTNS: usize = PATTERNS.len();
 
     /// Patterns by defcon.
-    pub static ref PATTERNS_BY_DEFCON: HashMap<usize, Vec<&'static Pattern>> = {
-        let mut m: HashMap<usize, Vec<&'static Pattern>> = HashMap::new();
+    pub static ref PATTERNS_BY_DEFCON: FnvHashMap<usize, Vec<&'static Pattern>> = {
+        let mut m: FnvHashMap<usize, Vec<&'static Pattern>> = FnvHashMap::default();
 
         for p in PATTERNS.iter() {
             m.entry(p.defcon)
@@ -324,8 +324,8 @@ lazy_static! {
     };
 
     /// Patterns by name.
-    pub static ref PATTERNS_BY_NAME: HashMap<String, &'static Pattern> = {
-        let mut m: HashMap<String, &'static Pattern> = HashMap::new();
+    pub static ref PATTERNS_BY_NAME: FnvHashMap<String, &'static Pattern> = {
+        let mut m: FnvHashMap<String, &'static Pattern> = FnvHashMap::default();
 
         for p in PATTERNS.iter() {
             assert!(!m.contains_key(&p.name));
@@ -346,8 +346,8 @@ lazy_static! {
     };
 
     /// Patterns by priority.
-    pub static ref PATTERNS_BY_PRI: HashMap<ThreatPri, &'static Vec<&'static Pattern>> = {
-        let mut m: HashMap<ThreatPri, &'static Vec<&'static Pattern>> = HashMap::new();
+    pub static ref PATTERNS_BY_PRI: FnvHashMap<ThreatPri, &'static Vec<&'static Pattern>> = {
+        let mut m: FnvHashMap<ThreatPri, &'static Vec<&'static Pattern>> = FnvHashMap::default();
         m.insert(ThreatPri::All, &PATTERNS);
         m.insert(ThreatPri::Immediate, &PATTERNS_I);
         m.insert(ThreatPri::NonImmediate, &PATTERNS_NI);
@@ -361,7 +361,7 @@ pub struct Threat {
     pub m: Match,
     pub pidx: usize,
     pub defcon: usize,
-    pub critical_sqs: HashSet<Point>,
+    pub critical_sqs: FnvHashSet<Point>,
 }
 
 impl Threat {
@@ -429,8 +429,8 @@ pub fn search_all_board_get_next_sqs(
     board: &Array2<u8>,
     color: u8,
     pri: ThreatPri,
-) -> HashSet<Point> {
-    let mut nsqs: HashSet<Point> = HashSet::new();
+) -> FnvHashSet<Point> {
+    let mut nsqs: FnvHashSet<Point> = FnvHashSet::default();
 
     for p in PATTERNS_BY_PRI[&pri] {
         for x in search_board_next_sq(board, &p.pattern, color) {
@@ -447,8 +447,8 @@ pub fn search_all_point_get_next_sqs(
     color: u8,
     point: Point,
     pri: ThreatPri,
-) -> HashSet<Point> {
-    let mut nsqs: HashSet<Point> = HashSet::new();
+) -> FnvHashSet<Point> {
+    let mut nsqs: FnvHashSet<Point> = FnvHashSet::default();
 
     for p in PATTERNS_BY_PRI[&pri] {
         for x in search_point_next_sq(board, &p.pattern, color, point) {
@@ -465,8 +465,8 @@ pub fn search_all_point_own_get_next_sqs(
     color: u8,
     point: Point,
     pri: ThreatPri,
-) -> HashSet<Point> {
-    let mut nsqs: HashSet<Point> = HashSet::new();
+) -> FnvHashSet<Point> {
+    let mut nsqs: FnvHashSet<Point> = FnvHashSet::default();
 
     for p in PATTERNS_BY_PRI[&pri] {
         for x in search_point_own_next_sq(board, &p.pattern, color, point, &p.own_sqs) {

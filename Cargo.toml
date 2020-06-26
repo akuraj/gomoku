@@ -12,6 +12,7 @@ num = "*"
 ndarray = "*"
 # rayon = "*"
 reduce = "*"
+fnv = "*"
 
 [profile.test]
 opt-level = 3

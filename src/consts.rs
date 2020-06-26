@@ -1,9 +1,9 @@
 //! Defines required constants that will be used in this project.
 
+use fnv::FnvHashMap;
+use fnv::FnvHashSet;
 use lazy_static::lazy_static;
 use std::char;
-use std::collections::HashMap;
-use std::collections::HashSet;
 
 /// The actual side length.
 pub const SIDE_LEN_ACT: usize = 15;
@@ -51,7 +51,7 @@ pub const SPL_ELEM_CHR: char = '!';
 // Also check that ACT_ELEMS are unique and defined without mutual overlap of bits.
 lazy_static! {
     /// Map from actual element to display character.
-    pub static ref ACT_ELEMS_TO_CHRS: HashMap<u8, char> = {
+    pub static ref ACT_ELEMS_TO_CHRS: FnvHashMap<u8, char> = {
         // Checks on ACT_ELEMS.
         for (i, a) in ACT_ELEMS.iter().enumerate() {
             for b in ACT_ELEMS.iter().skip(i + 1) {
@@ -59,32 +59,32 @@ lazy_static! {
             }
         }
 
-        let mut m = HashMap::new();
+        let mut m = FnvHashMap::default();
         m.insert(EMPTY, EMPTY_CHR);
         m.insert(BLACK, if SWITCH_DISPLAY_COLORS { WHITE_CIRCLE } else { BLACK_CIRCLE });
         m.insert(WHITE, if SWITCH_DISPLAY_COLORS { BLACK_CIRCLE } else { WHITE_CIRCLE });
         m.insert(WALL, WALL_CHR);
 
         // Make sure all ACT_ELEMS are represented and corresponding chars are unique.
-        assert_eq!(m.keys().cloned().collect::<HashSet<u8>>(),
-                   ACT_ELEMS.iter().cloned().collect::<HashSet<u8>>());
-        assert_eq!(m.values().cloned().collect::<HashSet<char>>().len(), ACT_ELEMS.len());
+        assert_eq!(m.keys().cloned().collect::<FnvHashSet<u8>>(),
+                   ACT_ELEMS.iter().cloned().collect::<FnvHashSet<u8>>());
+        assert_eq!(m.values().cloned().collect::<FnvHashSet<char>>().len(), ACT_ELEMS.len());
 
         m
     };
 
     /// Map from actual element to display name.
-    pub static ref ACT_ELEMS_TO_NAMES: HashMap<u8, &'static str> = {
-        let mut m = HashMap::new();
+    pub static ref ACT_ELEMS_TO_NAMES: FnvHashMap<u8, &'static str> = {
+        let mut m = FnvHashMap::default();
         m.insert(EMPTY, "EMPTY");
         m.insert(BLACK, "BLACK");
         m.insert(WHITE, "WHITE");
         m.insert(WALL, "WALL");
 
         // Make sure all ACT_ELEMS are represented and corresponding names are unique.
-        assert_eq!(m.keys().cloned().collect::<HashSet<u8>>(),
-                   ACT_ELEMS.iter().cloned().collect::<HashSet<u8>>());
-        assert_eq!(m.values().cloned().collect::<HashSet<&str>>().len(), ACT_ELEMS.len());
+        assert_eq!(m.keys().cloned().collect::<FnvHashSet<u8>>(),
+                   ACT_ELEMS.iter().cloned().collect::<FnvHashSet<u8>>());
+        assert_eq!(m.values().cloned().collect::<FnvHashSet<&str>>().len(), ACT_ELEMS.len());
 
         m
     };
@@ -112,8 +112,8 @@ pub const GEN_ELEMS: [u8; 11] = [
 
 lazy_static! {
     /// Map from generic element to display name.
-    pub static ref GEN_ELEMS_TO_NAMES: HashMap<u8, &'static str> = {
-        let mut m = HashMap::new();
+    pub static ref GEN_ELEMS_TO_NAMES: FnvHashMap<u8, &'static str> = {
+        let mut m = FnvHashMap::default();
         m.insert(EMPTY, "EMPTY");
         m.insert(WALL, "WALL");
         m.insert(OWN, "OWN");
@@ -127,9 +127,9 @@ lazy_static! {
         m.insert(WALL_ENEMY, "WALL_ENEMY");
 
         // Make sure all GEN_ELEMS are represented and corresponding names are unique.
-        assert_eq!(m.keys().cloned().collect::<HashSet<u8>>(),
-                   GEN_ELEMS.iter().cloned().collect::<HashSet<u8>>());
-        assert_eq!(m.values().cloned().collect::<HashSet<&str>>().len(), GEN_ELEMS.len());
+        assert_eq!(m.keys().cloned().collect::<FnvHashSet<u8>>(),
+                   GEN_ELEMS.iter().cloned().collect::<FnvHashSet<u8>>());
+        assert_eq!(m.values().cloned().collect::<FnvHashSet<&str>>().len(), GEN_ELEMS.len());
 
         m
     };
