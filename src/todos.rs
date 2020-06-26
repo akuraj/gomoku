@@ -1,5 +1,7 @@
 //! A place for general FIXMEs and TODOs.
 
+// FIXME: Use vectors instead of hashsets! Remove reduce library!
+
 // *** TODO SOON ***
 // TODO: Too many garbage variations when using LowPri threats!
 //       0) Create a TSS which fully takes into account the opponent's threats.
