@@ -116,13 +116,9 @@ pub fn chebyshev_distance(start: Point, end: Point) -> isize {
 /// Set of points, as specified by idxs, on the line spanning start and end.
 /// See point_on_line for more info.
 pub fn point_set_on_line(start: Point, end: Point, idxs: &[isize]) -> HashSet<Point> {
-    let mut point_set: HashSet<Point> = HashSet::new();
-
-    for idx in idxs.iter() {
-        point_set.insert(point_on_line(start, end, *idx));
-    }
-
-    point_set
+    idxs.iter()
+        .map(|x| point_on_line(start, end, *x))
+        .collect::<HashSet<Point>>()
 }
 
 /// Modified slope intercept form.
