@@ -337,12 +337,12 @@ lazy_static! {
 
     /// Immediate/High Priority PATTERNS.
     pub static ref PATTERNS_I: Vec<&'static Pattern> = {
-        PATTERNS.iter().filter(|x| x.immediate).map(|x| *x).collect::<Vec<&'static Pattern>>()
+        PATTERNS.iter().filter(|x| x.immediate).copied().collect::<Vec<&'static Pattern>>()
     };
 
     /// NonImmediate/Low Priority PATTERNS.
     pub static ref PATTERNS_NI: Vec<&'static Pattern> = {
-        PATTERNS.iter().filter(|x| !x.immediate).map(|x| *x).collect::<Vec<&'static Pattern>>()
+        PATTERNS.iter().filter(|x| !x.immediate).copied().collect::<Vec<&'static Pattern>>()
     };
 
     /// Patterns by priority.

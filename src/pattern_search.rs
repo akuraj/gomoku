@@ -24,7 +24,7 @@ pub fn get_pattern(gen_pattern: &[u8], color: u8) -> Vec<u8> {
             for val in pattern.iter_mut() {
                 // Switch the BLACK and WHITE bits if only one of them is set.
                 if !(*val & STONE == 0 || *val & STONE == STONE) {
-                    *val = *val ^ STONE;
+                    *val ^= STONE;
                 }
             }
 
