@@ -65,7 +65,7 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
         threats
             .iter()
             .map(|x| x.critical_sqs.to_owned())
-            .reduce(|a, b| a.intersection(&b).cloned().collect::<FnvHashSet<Point>>())
+            .reduce(|a, b| a.intersection(&b).copied().collect::<FnvHashSet<Point>>())
             .unwrap()
     } else {
         FnvHashSet::<Point>::default()
@@ -85,7 +85,7 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
             threats_csq
                 .iter()
                 .map(|x| x.critical_sqs.to_owned())
-                .reduce(|a, b| a.intersection(&b).cloned().collect::<FnvHashSet<Point>>())
+                .reduce(|a, b| a.intersection(&b).copied().collect::<FnvHashSet<Point>>())
                 .unwrap()
         } else {
             FnvHashSet::<Point>::default()
