@@ -10,6 +10,7 @@ use crate::pattern::{
 };
 use ndarray::prelude::*;
 // use rayon::prelude::*;
+use crate::board::point_to_algebraic;
 use fnv::FnvHashSet;
 use reduce::Reduce;
 use std::thread;
@@ -225,6 +226,7 @@ pub fn animate_variation(
     for item in variation.iter() {
         set_sq(board, color, item.0);
 
+        println!("next_sq: {}", point_to_algebraic(item.0));
         println!("{}", board_to_str(board));
         thread::sleep(sleep_duration);
 
@@ -233,6 +235,16 @@ pub fn animate_variation(
         }
 
         if !item.1.is_empty() {
+            let mut csqs = item.1.iter().copied().collect::<Vec<Point>>();
+            csqs.sort();
+
+            let csqs_str = csqs
+                .iter()
+                .map(|&x| point_to_algebraic(x))
+                .reduce(|a, b| a + ", " + &b)
+                .unwrap();
+
+            println!("critical_sqs: {}", csqs_str);
             println!("{}", board_to_str(board));
             thread::sleep(sleep_duration);
         }

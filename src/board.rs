@@ -34,7 +34,7 @@ pub fn col_chr_to_idx(x: char) -> usize {
 pub fn point_to_algebraic(x: Point) -> String {
     let row_num = row_idx_to_num(x.0 as usize);
     let col_chr = col_idx_to_chr(x.1 as usize);
-    format!("{}{}", row_num, col_chr)
+    format!("{}{}", col_chr, row_num)
 }
 
 /// Get the point from its algebraic representation.
