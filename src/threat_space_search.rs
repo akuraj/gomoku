@@ -235,10 +235,8 @@ pub fn animate_variation(
         }
 
         if !item.1.is_empty() {
-            let mut csqs = item.1.iter().copied().collect::<Vec<Point>>();
-            csqs.sort();
-
-            let csqs_str = csqs
+            let csqs_str = item
+                .1
                 .iter()
                 .map(|&x| point_to_algebraic(x))
                 .reduce(|a, b| a + ", " + &b)
@@ -257,4 +255,18 @@ pub fn animate_variation(
             clear_sq(board, color ^ STONE, *csq);
         }
     }
+}
+
+pub fn variation_to_algebraic(
+    variation: &[(Point, FnvHashSet<Point>)],
+) -> Vec<(String, Vec<String>)> {
+    variation
+        .iter()
+        .map(|x| {
+            (
+                point_to_algebraic(x.0),
+                x.1.iter().map(|&y| point_to_algebraic(y)).collect(),
+            )
+        })
+        .collect()
 }

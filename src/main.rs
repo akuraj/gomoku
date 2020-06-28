@@ -11,7 +11,9 @@ pub mod todos;
 use consts::BLACK;
 use state::get_state;
 use std::time::Instant;
-use threat_space_search::{animate_variation, potential_win_variations, tss_board};
+use threat_space_search::{
+    animate_variation, potential_win_variations, tss_board, variation_to_algebraic,
+};
 
 fn main() {
     // let mut s = get_state(&["a1", "a2", "a3", "a13", "a14", "a15", "b1", "b15", "c1", "c15",
@@ -67,6 +69,7 @@ fn main() {
     let win_vars = potential_win_variations(&node);
     println!("{}", win_vars.len());
     // animate_variation(&mut s.board, s.turn, &win_vars[0]);
+    // println!("{:?}", variation_to_algebraic(&win_vars[0]));
 
     // testing::test_pattern_search_fns();
 }

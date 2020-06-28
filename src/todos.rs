@@ -3,7 +3,6 @@
 // TODO: &str instead of String?
 
 // *** TODO SOON ***
-// TODO: Add function to inspect or pretty print a variation in algebraic notation.
 // TODO: Too many garbage variations when using LowPri threats!
 //       0) Create a TSS which fully takes into account the opponent's threats.
 //          Handle different possible min_defcon combinations among the threats.
