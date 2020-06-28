@@ -13,6 +13,10 @@ pub type Match = (Point, Point);
 /// Represents a tuple of the next_sq and the corresponding total region/location of the corresponding pattern match.
 pub type NSQMatch = (Point, Match);
 
+// NOTE: If two threats have the same exact critical squares,
+//       then they can be handled by the same move(s).
+//       No need to dedupe them.
+
 /// Specialize a generic pattern for the given color.
 /// A generic pattern is specified from BLACK's POV.
 pub fn get_pattern(gen_pattern: &[u8], color: u8) -> Vec<u8> {

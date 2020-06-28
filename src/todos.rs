@@ -33,23 +33,18 @@
 // TODO: Need fn to search along direction at point?
 // TODO: Can we have a better way to input position?
 
-// *** TODO SOONISH ***
+// *** Miscellaneous ***
 // TODO: Take point as a tuple and not two separate arguments!
 
 // *** Patterns and Threats; Pattern Matching ***
-// TODO: If two threats have the same exact critical squares,
-//       then they can be handled by the same move(s).
-//       No need to dedupe them.
-// TODO: Implement function to calculate intersection of pattern matches.
-
-// *** Negamax Search ***
-// TODO: Implement an evaluation scale.
-// TODO: Use Positional Evaluation for quiet/positions not determined by FTSS.
+// TODO: Implement function to calculate intersection of pattern matches. What for though?
 
 // *** Position Evaluation (Static/Semi-Static) ***
-// TODO: Extend patterns to allow for non-threat patterns (2 in a row for example)?
+// TODO: Implement an evaluation scale.
 // TODO: Use all patterns to assign a value to the position (including P_2_D?).
 // TODO: null-move heuristic to see any short-term attacks?
+// TODO: Use Positional Evaluation for quiet/positions not determined by TSS.
+// TODO: Negamax Search?
 
 // *** Profiling and Testing ***
 // TODO: Create tests for algebraic related fns, state construction etc.
