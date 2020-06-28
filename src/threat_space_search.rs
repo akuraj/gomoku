@@ -36,6 +36,7 @@ pub struct SearchNode {
 }
 
 impl SearchNode {
+    #[inline(always)]
     pub fn new(
         next_sq: Option<Point>,
         threats: Vec<Threat>,
@@ -43,9 +44,6 @@ impl SearchNode {
         potential_win: bool,
         children: Vec<SearchNode>,
     ) -> Self {
-        //     # # Only keep potentially winning children.
-        //     # children = [x for x in children if x["potential_win"]]
-
         Self {
             next_sq,
             threats,

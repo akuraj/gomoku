@@ -12,14 +12,13 @@
 //       3) Stop searching and return False if opponent is winning via critical squares?
 //          Under what conditions do we assume that opponent is winning?
 //          Make a note in search node when we cut off variation due to opponent win!
-//       4) Only store winning variations to help save space!
-//       5) Sort win variations by length? Shorter is better.
-//       6) Implement a transposition table. How do we cope with having different last_sqs?
+//       4) Sort win variations by length? Shorter is better.
+//       5) Implement a transposition table. How do we cope with having different last_sqs?
 //          A Zobrit hash? Or just use a dict? What's the most efficient data structure?
 //          A hash that depends on position as well as latest move?
-//       7) Max-depth for certain/all kinds of TSS?
-//       8) Threats data and other data should be lean to reduce memory usage.
-//       9) We don't actually need critical sqs for NON_IMMEDIATE threats.
+//       6) Max-depth for certain/all kinds of TSS?
+//       7) Threats data and other data should be lean to reduce memory usage.
+//       8) We don't actually need critical sqs for NON_IMMEDIATE threats.
 //          Should we keep them as they are currently?
 // TODO: Use Yixin to check for best moves in test positions.
 //       Use it to guide the development effort and debugging.
