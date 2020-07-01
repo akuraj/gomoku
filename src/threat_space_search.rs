@@ -120,7 +120,7 @@ pub fn tss_next_sq(
         set_sq(board, color ^ STONE, *csq);
     }
 
-    // Update lists of all threats if we have any critical_sqs.
+    // If we have any critical_sqs, update lists of all threats.
     // Also check if we are potentially losing after the critical_sqs are covered by the opponent.
     if !critical_sqs.is_empty() {
         all_threats = all_threats

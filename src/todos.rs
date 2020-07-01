@@ -3,9 +3,10 @@
 // *** TODO SOON ***
 // TODO: Too many garbage variations when using LowPri threats!
 //       0) Check that the comprehensive threat handling is efficient.
-//       1) Make a note in search node when we cut off variation due to the opponent's potential win!
-//       2) Sort win variations by length? Shorter is better.
-//       3) Handling of win pattern in threat space search.
+//       1) Dedupe all_threats!
+//       2) Make a note in search node when we cut off variation due to the opponent's potential win!
+//       3) Sort win variations by length? Shorter is better.
+//       4) Handling of win pattern consistently in threat space search.
 // TODO: Implement a transposition table. How do we cope with having different last_sqs?
 //       A Zobrit hash? Or just use a dict? What's the most efficient data structure?
 //       A hash that depends on position as well as latest move?
