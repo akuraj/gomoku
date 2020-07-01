@@ -55,7 +55,7 @@ fn main() {
 
     println!("{}", s);
 
-    let n = 100;
+    let n = 1000;
 
     for _ in 0..n {
         tss_board(&mut s.board, s.turn);

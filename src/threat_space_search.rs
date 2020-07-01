@@ -20,7 +20,6 @@ use std::time::Duration;
 #[derive(Clone, Debug)]
 pub struct SearchNode {
     pub next_sq: Option<Point>,
-    pub threats: Vec<Threat>,
     pub critical_sqs: Option<FnvHashSet<Point>>,
     pub win: bool,
     pub children: Vec<SearchNode>,
@@ -30,14 +29,12 @@ impl SearchNode {
     #[inline(always)]
     pub fn new(
         next_sq: Option<Point>,
-        threats: Vec<Threat>,
         critical_sqs: Option<FnvHashSet<Point>>,
         win: bool,
         children: Vec<SearchNode>,
     ) -> Self {
         Self {
             next_sq,
-            threats,
             critical_sqs,
             win,
             children,
@@ -94,7 +91,6 @@ pub fn tss_next_sq(
         clear_sq(board, color, next_sq);
         return SearchNode::new(
             Some(next_sq),
-            Vec::<Threat>::new(),
             Some(FnvHashSet::<Point>::default()),
             false,
             Vec::<SearchNode>::new(),
@@ -164,7 +160,6 @@ pub fn tss_next_sq(
             clear_sq(board, color, next_sq);
             return SearchNode::new(
                 Some(next_sq),
-                Vec::<Threat>::new(),
                 Some(FnvHashSet::<Point>::default()),
                 false,
                 Vec::<SearchNode>::new(),
@@ -195,7 +190,6 @@ pub fn tss_next_sq(
             clear_sq(board, color, next_sq);
             return SearchNode::new(
                 Some(next_sq),
-                Vec::<Threat>::new(),
                 Some(FnvHashSet::<Point>::default()),
                 false,
                 Vec::<SearchNode>::new(),
@@ -231,7 +225,7 @@ pub fn tss_next_sq(
         clear_sq(board, color ^ STONE, *csq);
     }
     clear_sq(board, color, next_sq);
-    SearchNode::new(Some(next_sq), threats, Some(critical_sqs), win, children)
+    SearchNode::new(Some(next_sq), Some(critical_sqs), win, children)
 }
 
 // /// Thread safe version of tss_next_sq.
@@ -261,7 +255,7 @@ pub fn tss_board(board: &mut Array2<u8>, color: u8) -> SearchNode {
         win = children.iter().any(|x| x.win);
     }
 
-    SearchNode::new(None, threats, None, win, children)
+    SearchNode::new(None, None, win, children)
 }
 
 /// Extract all winning variations from SearchNode.
