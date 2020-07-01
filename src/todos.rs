@@ -6,19 +6,14 @@
 //          Handle different possible min_defcon combinations among the threats.
 //          Maintain, update, pass-down threats (both own and opp).
 //          Is this overall a good idea?
-//       1) Can play LowPri threat as long as the move also generates a HighPri threat!
-//       2) Only search LowPri threats a max number of ply in a given variation!
-//          We can control this via a LowPriMaxDepth(?) variable.
-//       3) Stop searching and return False if opponent is winning via critical squares?
+//       1) Stop searching and return False if opponent is winning via critical squares?
 //          Under what conditions do we assume that opponent is winning?
 //          Make a note in search node when we cut off variation due to opponent win!
-//       4) Sort win variations by length? Shorter is better.
-//       5) Implement a transposition table. How do we cope with having different last_sqs?
+//       2) Sort win variations by length? Shorter is better.
+//       3) Implement a transposition table. How do we cope with having different last_sqs?
 //          A Zobrit hash? Or just use a dict? What's the most efficient data structure?
 //          A hash that depends on position as well as latest move?
-//       6) Max-depth for certain/all kinds of TSS?
-//       7) Threats data and other data should be lean to reduce memory usage.
-//       8) We don't actually need critical sqs for NON_IMMEDIATE threats.
+//       4) We don't actually need critical sqs for NON_IMMEDIATE threats.
 //          Should we keep them as they are currently?
 // TODO: Use Yixin to check for best moves in test positions.
 //       Use it to guide the development effort and debugging.
