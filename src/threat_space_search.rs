@@ -98,10 +98,17 @@ pub fn tss_next_sq(
     }
 
     let threats = search_all_point_own(board, color, next_sq, ThreatPri::Immediate);
-    let critical_sqs: FnvHashSet<Point> = if !threats.is_empty() {
-        threats
+
+    // We will consider those of our threats which are more immediate than all of our opponent's threats.
+    let pressing_threats = threats
+        .iter()
+        .filter(|x| x.defcon < opp_min_defcon)
+        .cloned()
+        .collect::<Vec<Threat>>();
+
+    let critical_sqs: FnvHashSet<Point> = if !pressing_threats.is_empty() {
+        pressing_threats
             .iter()
-            .filter(|x| x.defcon < opp_min_defcon)
             .map(|x| x.critical_sqs.to_owned())
             .reduce(|a, b| a.intersection(&b).copied().collect::<FnvHashSet<Point>>())
             .unwrap()
@@ -166,7 +173,7 @@ pub fn tss_next_sq(
             );
         }
 
-        // We will consider those of the opponent's threats which are more immediate than all of ours.
+        // We will consider those of the opponent's threats which are more immediate than all of our threats.
         let opp_pressing_threats = opp_all_threats
             .iter()
             .filter(|x| x.defcon < min_defcon)
@@ -197,7 +204,7 @@ pub fn tss_next_sq(
         }
     }
 
-    let mut win = !threats.is_empty() && critical_sqs.is_empty();
+    let mut win = !pressing_threats.is_empty() && critical_sqs.is_empty();
     let mut children = Vec::<SearchNode>::new();
 
     // If next_sq produces no threats or we've found a win, we won't go any deeper.
@@ -332,6 +339,7 @@ pub fn animate_variation(
     }
 }
 
+/// Output a variation in algebraic notation.
 pub fn variation_to_algebraic(
     variation: &[(Point, FnvHashSet<Point>)],
 ) -> Vec<(String, Vec<String>)> {
