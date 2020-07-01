@@ -2,14 +2,12 @@
 
 // *** TODO SOON ***
 // TODO: Too many garbage variations when using LowPri threats!
-//       0) Create a TSS which fully takes into account the opponent's threats.
-//          Handle different possible min_defcon combinations among the threats.
-//          Maintain, update, pass-down threats (both own and opp).
+//       0) Check that the comprehensive threat handling is efficient.
 //       1) Make a note in search node when we cut off variation due to the opponent's potential win!
 //       2) Sort win variations by length? Shorter is better.
-// TODO: Remove "threats" and "critical_sqs" from SearchNode?
-//       They are only useful for debugging purposes, right?
-//       Or maybe we can change the threats etc. data that we store?
+// TODO: Remove "threats" from SearchNode?
+//       It's only useful for debugging purposes, right?
+//       Or maybe we can change the threats data that we store?
 // TODO: Implement a transposition table. How do we cope with having different last_sqs?
 //       A Zobrit hash? Or just use a dict? What's the most efficient data structure?
 //       A hash that depends on position as well as latest move?
