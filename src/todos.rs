@@ -5,16 +5,16 @@
 //       0) Create a TSS which fully takes into account the opponent's threats.
 //          Handle different possible min_defcon combinations among the threats.
 //          Maintain, update, pass-down threats (both own and opp).
-//          Is this overall a good idea?
-//       1) Stop searching and return False if opponent is winning via critical squares?
-//          Under what conditions do we assume that opponent is winning?
-//          Make a note in search node when we cut off variation due to opponent win!
+//       1) Make a note in search node when we cut off variation due to the opponent's potential win!
 //       2) Sort win variations by length? Shorter is better.
-//       3) Implement a transposition table. How do we cope with having different last_sqs?
-//          A Zobrit hash? Or just use a dict? What's the most efficient data structure?
-//          A hash that depends on position as well as latest move?
-//       4) We don't actually need critical sqs for NON_IMMEDIATE threats.
-//          Should we keep them as they are currently?
+// TODO: Remove "threats" and "critical_sqs" from SearchNode?
+//       They are only useful for debugging purposes, right?
+//       Or maybe we can change the threats etc. data that we store?
+// TODO: Implement a transposition table. How do we cope with having different last_sqs?
+//       A Zobrit hash? Or just use a dict? What's the most efficient data structure?
+//       A hash that depends on position as well as latest move?
+// TODO: We don't actually need critical sqs for NON_IMMEDIATE threats.
+//       Should we keep them as they are currently?
 // TODO: Use Yixin to check for best moves in test positions.
 //       Use it to guide the development effort and debugging.
 // TODO: Check all test positions in paper. Implement regtests based on them.

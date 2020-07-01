@@ -1,11 +1,11 @@
 //! Implements Threat Space Search.
 
 use crate::board::{board_to_str, clear_sq, set_sq};
-use crate::consts::{ANIMATION_TIMESTEP_SECS, STONE};
-use crate::geometry::Point;
+use crate::consts::{ANIMATION_TIMESTEP_SECS, MAX_DEFCON, STONE};
+use crate::geometry::{point_is_on_line, Point};
 use crate::pattern::Threat;
 use crate::pattern::{
-    search_all_board, search_all_board_get_next_sqs, search_all_point_own,
+    search_all_board, search_all_board_get_next_sqs, search_all_point, search_all_point_own,
     search_all_point_own_get_next_sqs, ThreatPri,
 };
 use ndarray::prelude::*;
@@ -16,22 +16,13 @@ use reduce::Reduce;
 use std::thread;
 use std::time::Duration;
 
-// @unique
-// class SearchStatus(IntEnum):
-//     """Enum to represent the status of threat space search."""
-
-//     QUIET = auto()
-//     UNQUIET = auto()
-//     WIN = auto()
-//     LOSS = auto()
-
 /// A tree that represents the result of a Threat Space Search.
 #[derive(Clone, Debug)]
 pub struct SearchNode {
     pub next_sq: Option<Point>,
     pub threats: Vec<Threat>,
     pub critical_sqs: Option<FnvHashSet<Point>>,
-    pub potential_win: bool,
+    pub win: bool,
     pub children: Vec<SearchNode>,
 }
 
@@ -41,28 +32,80 @@ impl SearchNode {
         next_sq: Option<Point>,
         threats: Vec<Threat>,
         critical_sqs: Option<FnvHashSet<Point>>,
-        potential_win: bool,
+        win: bool,
         children: Vec<SearchNode>,
     ) -> Self {
         Self {
             next_sq,
             threats,
             critical_sqs,
-            potential_win,
+            win,
             children,
         }
     }
 }
 
 /// Threat Space Search for a given next_sq.
-pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchNode {
+pub fn tss_next_sq(
+    board: &mut Array2<u8>,
+    color: u8,
+    next_sq: Point,
+    all_threats_init: &[Threat],
+    opp_all_threats_init: &[Threat],
+) -> SearchNode {
     set_sq(board, color, next_sq);
 
+    // Create all_threats for self and opponent, and update them.
+    // 1. Remove threats including next_sq.
+    // 2. Compute new threats including next_sq.
+    let mut all_threats = all_threats_init
+        .iter()
+        .filter(|x| !point_is_on_line(next_sq, x.m.0, x.m.1, true))
+        .cloned()
+        .collect::<Vec<Threat>>();
+    all_threats.extend(search_all_point(
+        board,
+        color,
+        next_sq,
+        ThreatPri::Immediate,
+    ));
+
+    let mut opp_all_threats = opp_all_threats_init
+        .iter()
+        .filter(|x| !point_is_on_line(next_sq, x.m.0, x.m.1, true))
+        .cloned()
+        .collect::<Vec<Threat>>();
+    opp_all_threats.extend(search_all_point(
+        board,
+        color ^ STONE,
+        next_sq,
+        ThreatPri::Immediate,
+    ));
+
+    // NOTE: If we are potentially losing, we will early return.
+
+    // Check if we are potentially losing, by looking at the updated lists of all threats.
+    let mut min_defcon = all_threats.iter().fold(MAX_DEFCON, |a, b| a.min(b.defcon));
+    let mut opp_min_defcon = opp_all_threats
+        .iter()
+        .fold(MAX_DEFCON, |a, b| a.min(b.defcon));
+    let mut potential_loss = !opp_all_threats.is_empty() && opp_min_defcon <= min_defcon;
+    if potential_loss {
+        clear_sq(board, color, next_sq);
+        return SearchNode::new(
+            Some(next_sq),
+            Vec::<Threat>::new(),
+            Some(FnvHashSet::<Point>::default()),
+            false,
+            Vec::<SearchNode>::new(),
+        );
+    }
+
     let threats = search_all_point_own(board, color, next_sq, ThreatPri::Immediate);
-    let num_threats = threats.len();
-    let critical_sqs: FnvHashSet<Point> = if num_threats > 0 {
+    let critical_sqs: FnvHashSet<Point> = if !threats.is_empty() {
         threats
             .iter()
+            .filter(|x| x.defcon < opp_min_defcon)
             .map(|x| x.critical_sqs.to_owned())
             .reduce(|a, b| a.intersection(&b).copied().collect::<FnvHashSet<Point>>())
             .unwrap()
@@ -70,18 +113,72 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
         FnvHashSet::<Point>::default()
     };
 
-    let mut potential_win = num_threats > 0 && critical_sqs.is_empty();
-    let mut children = Vec::<SearchNode>::new();
-
-    // If the opponent is potentially winning by playing at one of the critical_sqs,
-    // then this variation is assumed to not be winning.
     for csq in critical_sqs.iter() {
         set_sq(board, color ^ STONE, *csq);
+    }
 
-        let threats_csq = search_all_point_own(board, color ^ STONE, *csq, ThreatPri::Immediate);
-        let num_threats_csq = threats_csq.len();
-        let critical_sqs_csq: FnvHashSet<Point> = if num_threats_csq > 0 {
-            threats_csq
+    // Update lists of all threats if we have any critical_sqs.
+    // Also check if we are potentially losing after the critical_sqs are covered by the opponent.
+    if !critical_sqs.is_empty() {
+        all_threats = all_threats
+            .iter()
+            .filter(|x| {
+                !critical_sqs
+                    .iter()
+                    .any(|p| point_is_on_line(*p, x.m.0, x.m.1, true))
+            })
+            .cloned()
+            .collect::<Vec<Threat>>();
+
+        opp_all_threats = opp_all_threats
+            .iter()
+            .filter(|x| {
+                !critical_sqs
+                    .iter()
+                    .any(|p| point_is_on_line(*p, x.m.0, x.m.1, true))
+            })
+            .cloned()
+            .collect::<Vec<Threat>>();
+
+        for csq in critical_sqs.iter() {
+            all_threats.extend(search_all_point(board, color, *csq, ThreatPri::Immediate));
+            opp_all_threats.extend(search_all_point(
+                board,
+                color ^ STONE,
+                *csq,
+                ThreatPri::Immediate,
+            ));
+        }
+
+        min_defcon = all_threats.iter().fold(MAX_DEFCON, |a, b| a.min(b.defcon));
+        opp_min_defcon = opp_all_threats
+            .iter()
+            .fold(MAX_DEFCON, |a, b| a.min(b.defcon));
+
+        // If opp_min_defcon is 0, then the opponent has potentially won!
+        potential_loss = opp_min_defcon == 0;
+        if potential_loss {
+            for csq in critical_sqs.iter() {
+                clear_sq(board, color ^ STONE, *csq);
+            }
+            clear_sq(board, color, next_sq);
+            return SearchNode::new(
+                Some(next_sq),
+                Vec::<Threat>::new(),
+                Some(FnvHashSet::<Point>::default()),
+                false,
+                Vec::<SearchNode>::new(),
+            );
+        }
+
+        // We will consider those of the opponent's threats which are more immediate than all of ours.
+        let opp_pressing_threats = opp_all_threats
+            .iter()
+            .filter(|x| x.defcon < min_defcon)
+            .cloned()
+            .collect::<Vec<Threat>>();
+        let opp_critical_sqs: FnvHashSet<Point> = if !opp_pressing_threats.is_empty() {
+            opp_pressing_threats
                 .iter()
                 .map(|x| x.critical_sqs.to_owned())
                 .reduce(|a, b| a.intersection(&b).copied().collect::<FnvHashSet<Point>>())
@@ -90,74 +187,52 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
             FnvHashSet::<Point>::default()
         };
 
-        let potential_win_csq = num_threats_csq > 0 && critical_sqs_csq.is_empty();
-
-        clear_sq(board, color ^ STONE, *csq);
-
-        if potential_win_csq {
-            potential_win = false;
+        potential_loss = !opp_pressing_threats.is_empty() && opp_critical_sqs.is_empty();
+        if potential_loss {
+            for csq in critical_sqs.iter() {
+                clear_sq(board, color ^ STONE, *csq);
+            }
             clear_sq(board, color, next_sq);
             return SearchNode::new(
                 Some(next_sq),
-                threats,
-                Some(critical_sqs),
-                potential_win,
-                children,
+                Vec::<Threat>::new(),
+                Some(FnvHashSet::<Point>::default()),
+                false,
+                Vec::<SearchNode>::new(),
             );
         }
     }
 
-    // If next_sq produces no threats or we've found a potential win, we stop.
-    if num_threats > 0 && !potential_win {
-        for csq in critical_sqs.iter() {
-            set_sq(board, color ^ STONE, *csq);
-        }
+    let mut win = !threats.is_empty() && critical_sqs.is_empty();
+    let mut children = Vec::<SearchNode>::new();
 
+    // If next_sq produces no threats or we've found a win, we won't go any deeper.
+    if !threats.is_empty() && !win {
         let nsqs = search_all_point_own_get_next_sqs(board, color, next_sq, ThreatPri::Immediate);
-        children = nsqs.iter().map(|x| tss_next_sq(board, color, *x)).collect();
-        potential_win = children.iter().any(|x| x.potential_win);
+        children = nsqs
+            .iter()
+            .map(|x| tss_next_sq(board, color, *x, &all_threats, &opp_all_threats))
+            .collect();
+        win = children.iter().any(|x| x.win);
 
-        if !potential_win {
+        if !win {
             let nsqs_other =
                 search_all_point_own_get_next_sqs(board, color, next_sq, ThreatPri::NonImmediate);
             let children_other: Vec<SearchNode> = nsqs_other
                 .iter()
-                .map(|x| tss_next_sq(board, color, *x))
+                .map(|x| tss_next_sq(board, color, *x, &all_threats, &opp_all_threats))
                 .collect();
-            potential_win = children_other.iter().any(|x| x.potential_win);
+            win = children_other.iter().any(|x| x.win);
             children.extend(children_other);
-        }
-
-        for csq in critical_sqs.iter() {
-            clear_sq(board, color ^ STONE, *csq);
         }
     }
 
+    for csq in critical_sqs.iter() {
+        clear_sq(board, color ^ STONE, *csq);
+    }
     clear_sq(board, color, next_sq);
-    SearchNode::new(
-        Some(next_sq),
-        threats,
-        Some(critical_sqs),
-        potential_win,
-        children,
-    )
+    SearchNode::new(Some(next_sq), threats, Some(critical_sqs), win, children)
 }
-
-// # # TODO: Change name of fn.
-// # def search_status(threats_own, threats_opp):
-// #     md_own = reduce(min, [t["defcon"] for t in threats_own], MAX_DEFCON)
-// #     md_opp = reduce(min, [t["defcon"] for t in threats_opp], MAX_DEFCON)
-
-// #     if md_opp == MAX_DEFCON:
-// #         if md_own == MAX_DEFCON:
-// #             return (SearchStatus.QUIET, [])
-// #         else:
-// #             return (SearchStatus.WIN, [])
-// #     else:
-
-// #     elif md_own != MAX_DEFCON and md_opp == MAX_DEFCON:
-
-// #     pass
 
 // /// Thread safe version of tss_next_sq.
 // pub fn tss_next_sq_safe(board: &Array2<u8>, color: u8, next_sq: Point) -> SearchNode {
@@ -168,24 +243,32 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point) -> SearchN
 /// Threat Space Search for the whole board.
 pub fn tss_board(board: &mut Array2<u8>, color: u8) -> SearchNode {
     let threats = search_all_board(board, color, ThreatPri::Immediate);
-    let mut potential_win = !threats.is_empty();
+    let opp_threats = search_all_board(board, color ^ STONE, ThreatPri::Immediate);
+
+    let min_defcon = threats.iter().fold(MAX_DEFCON, |a, b| a.min(b.defcon));
+    let opp_min_defcon = opp_threats.iter().fold(MAX_DEFCON, |a, b| a.min(b.defcon));
+
+    let mut win = !threats.is_empty() && min_defcon <= opp_min_defcon;
     let mut children = Vec::<SearchNode>::new();
 
-    if !potential_win {
+    if !win {
         let nsqs = search_all_board_get_next_sqs(board, color, ThreatPri::Immediate);
         // children = nsqs.par_iter().map(|x| tss_next_sq_safe(board, color, *x)).collect();
-        children = nsqs.iter().map(|x| tss_next_sq(board, color, *x)).collect();
-        potential_win = children.iter().any(|x| x.potential_win);
+        children = nsqs
+            .iter()
+            .map(|x| tss_next_sq(board, color, *x, &threats, &opp_threats))
+            .collect();
+        win = children.iter().any(|x| x.win);
     }
 
-    SearchNode::new(None, threats, None, potential_win, children)
+    SearchNode::new(None, threats, None, win, children)
 }
 
-/// Extract all potential win variations from SearchNode.
-pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, FnvHashSet<Point>)>> {
+/// Extract all winning variations from SearchNode.
+pub fn winning_variations(node: &SearchNode) -> Vec<Vec<(Point, FnvHashSet<Point>)>> {
     let mut variations: Vec<Vec<(Point, FnvHashSet<Point>)>> = Vec::new();
 
-    if node.potential_win {
+    if node.win {
         let mut node_var: Vec<(Point, FnvHashSet<Point>)> = Vec::new();
         if node.next_sq.is_some() {
             node_var.push((node.next_sq.unwrap(), node.critical_sqs.to_owned().unwrap()));
@@ -193,8 +276,8 @@ pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, FnvHashSet
 
         if !node.children.is_empty() {
             for child in node.children.iter() {
-                if child.potential_win {
-                    let child_variations = potential_win_variations(child);
+                if child.win {
+                    let child_variations = winning_variations(child);
                     for child_var in child_variations {
                         let mut child_var_next = node_var.to_owned();
                         child_var_next.extend(child_var);
