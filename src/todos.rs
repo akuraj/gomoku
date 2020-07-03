@@ -7,6 +7,9 @@
 //       2) Make a note in search node when we cut off variation due to the opponent's potential win!
 //       3) Sort win variations by length? Shorter is better.
 //       4) Handling of win pattern consistently in threat space search.
+// TODO: Fix critical_sqs pattern in tss_next_sq.
+// TODO: Fix the line wrapping logic in cargo fmt to have longer lines.
+// TODO: Refactor potential loss code.
 // TODO: Implement a transposition table. How do we cope with having different last_sqs?
 //       A Zobrit hash? Or just use a dict? What's the most efficient data structure?
 //       A hash that depends on position as well as latest move?
