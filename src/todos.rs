@@ -8,6 +8,7 @@
 //       3) Sort win variations by length? Shorter is better.
 //       4) Handling of win pattern consistently in threat space search.
 //       5) Add "TSS" to the names of types in threat space search.
+// TODO: Update python impl!
 // TODO: Fix critical_sqs pattern in tss_next_sq.
 // TODO: Fix the line wrapping logic in cargo fmt to have longer lines.
 // TODO: Refactor potential loss code.
