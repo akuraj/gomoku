@@ -26,23 +26,23 @@ fn main() {
     //     false,
     // );
 
-    let mut s = get_state(
-        &[
-            "f5", "g5", "h5", "g6", "g7", "h7", "i7", "h8", "h9", "g9", "i9",
-        ],
-        &[
-            "g4", "e5", "f6", "h6", "j6", "f7", "j7", "f8", "g8", "i8", "f9",
-        ],
-        BLACK,
-        true,
-    );
-
     // let mut s = get_state(
-    //     &["g10", "h8", "i7", "j7", "j9"],
-    //     &["g7", "g8", "g9", "i9", "k8"],
+    //     &[
+    //         "f5", "g5", "h5", "g6", "g7", "h7", "i7", "h8", "h9", "g9", "i9",
+    //     ],
+    //     &[
+    //         "g4", "e5", "f6", "h6", "j6", "f7", "j7", "f8", "g8", "i8", "f9",
+    //     ],
     //     BLACK,
     //     true,
     // );
+
+    let mut s = get_state(
+        &["g10", "h8", "i7", "j7", "j9"],
+        &["g7", "g8", "g9", "i9", "k8"],
+        BLACK,
+        true,
+    );
 
     // let mut s = get_state(
     //     &["f6", "h6", "g7", "h7", "h8", "g11"],
@@ -50,8 +50,6 @@ fn main() {
     //     BLACK,
     //     true,
     // );
-
-    // let mut s = get_state(&["j5", "j6", "i10", "i11"], &[], BLACK, false);
 
     println!("{}", s);
 
@@ -75,7 +73,7 @@ fn main() {
     let node = tss_board(&mut s.board, s.turn);
     let win_vars = winning_variations(&node);
     println!("{}", win_vars.len());
-    // animate_variation(&mut s.board, s.turn, &win_vars[0]);
+    animate_variation(&mut s.board, s.turn, &win_vars[0]);
     // println!("{:?}", variation_to_algebraic(&win_vars[0]));
 
     // testing::test_pattern_search_fns();

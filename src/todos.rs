@@ -1,6 +1,10 @@
 //! A place for general FIXMEs and TODOs.
 
 // *** TODO SOON ***
+// TODO: "win" should probably be renamed to "potenial_win",
+//       as we are not looking at the opponent's counter attack possibilities?
+// TODO: Add Victoria's games as test positions.
+// TODO: Change Threat.m to Threat.match.
 // TODO: Too many garbage variations when using LowPri threats!
 //       0) Check that the comprehensive threat handling is efficient.
 //       1) Dedupe all_threats!
