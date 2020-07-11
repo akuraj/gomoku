@@ -82,8 +82,8 @@ fn main() {
     let node = tss_board(&mut s.board, s.turn);
     let potential_win_vars = potential_win_variations(&node);
     println!("{}", potential_win_vars.len());
-    // animate_variation(&mut s.board, s.turn, &potential_win_vars[0]);
     // println!("{:?}", variation_to_algebraic(&potential_win_vars[0]));
+    // animate_variation(&mut s.board, s.turn, &potential_win_vars[0]);
 
     // testing::test_pattern_search_fns();
 }

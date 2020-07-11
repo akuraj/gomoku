@@ -291,6 +291,7 @@ pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, FnvHashSet
         }
     }
 
+    variations.sort_by(|a, b| a.len().cmp(&b.len()));
     variations
 }
 
