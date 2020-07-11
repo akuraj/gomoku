@@ -21,7 +21,7 @@ use std::time::Duration;
 pub struct SearchNode {
     pub next_sq: Option<Point>,
     pub critical_sqs: Option<FnvHashSet<Point>>,
-    pub win: bool,
+    pub potential_win: bool,
     pub children: Vec<SearchNode>,
 }
 
@@ -30,13 +30,13 @@ impl SearchNode {
     pub fn new(
         next_sq: Option<Point>,
         critical_sqs: Option<FnvHashSet<Point>>,
-        win: bool,
+        potential_win: bool,
         children: Vec<SearchNode>,
     ) -> Self {
         Self {
             next_sq,
             critical_sqs,
-            win,
+            potential_win,
             children,
         }
     }
@@ -204,26 +204,26 @@ pub fn tss_next_sq(
         }
     }
 
-    let mut win = !pressing_threats.is_empty() && critical_sqs.is_empty();
+    let mut potential_win = !pressing_threats.is_empty() && critical_sqs.is_empty();
     let mut children = Vec::<SearchNode>::new();
 
-    // If next_sq produces no threats or we've found a win, we won't go any deeper.
-    if !threats.is_empty() && !win {
+    // If next_sq produces no threats or we've found a potential win, we won't go any deeper.
+    if !threats.is_empty() && !potential_win {
         let nsqs = search_all_point_own_get_next_sqs(board, color, next_sq, ThreatPri::Immediate);
         children = nsqs
             .iter()
             .map(|x| tss_next_sq(board, color, *x, &all_threats, &opp_all_threats))
             .collect();
-        win = children.iter().any(|x| x.win);
+        potential_win = children.iter().any(|x| x.potential_win);
 
-        if !win {
+        if !potential_win {
             let nsqs_other =
                 search_all_point_own_get_next_sqs(board, color, next_sq, ThreatPri::NonImmediate);
             let children_other: Vec<SearchNode> = nsqs_other
                 .iter()
                 .map(|x| tss_next_sq(board, color, *x, &all_threats, &opp_all_threats))
                 .collect();
-            win = children_other.iter().any(|x| x.win);
+            potential_win = children_other.iter().any(|x| x.potential_win);
             children.extend(children_other);
         }
     }
@@ -232,7 +232,7 @@ pub fn tss_next_sq(
         clear_sq(board, color ^ STONE, *csq);
     }
     clear_sq(board, color, next_sq);
-    SearchNode::new(Some(next_sq), Some(critical_sqs), win, children)
+    SearchNode::new(Some(next_sq), Some(critical_sqs), potential_win, children)
 }
 
 // /// Thread safe version of tss_next_sq.
@@ -249,27 +249,27 @@ pub fn tss_board(board: &mut Array2<u8>, color: u8) -> SearchNode {
     let min_defcon = threats.iter().fold(MAX_DEFCON, |a, b| a.min(b.defcon));
     let opp_min_defcon = opp_threats.iter().fold(MAX_DEFCON, |a, b| a.min(b.defcon));
 
-    let mut win = !threats.is_empty() && min_defcon <= opp_min_defcon;
+    let mut potential_win = !threats.is_empty() && min_defcon <= opp_min_defcon;
     let mut children = Vec::<SearchNode>::new();
 
-    if !win {
+    if !potential_win {
         let nsqs = search_all_board_get_next_sqs(board, color, ThreatPri::Immediate);
         // children = nsqs.par_iter().map(|x| tss_next_sq_safe(board, color, *x)).collect();
         children = nsqs
             .iter()
             .map(|x| tss_next_sq(board, color, *x, &threats, &opp_threats))
             .collect();
-        win = children.iter().any(|x| x.win);
+        potential_win = children.iter().any(|x| x.potential_win);
     }
 
-    SearchNode::new(None, None, win, children)
+    SearchNode::new(None, None, potential_win, children)
 }
 
-/// Extract all winning variations from SearchNode.
-pub fn winning_variations(node: &SearchNode) -> Vec<Vec<(Point, FnvHashSet<Point>)>> {
+/// Extract all potentially winning variations from SearchNode.
+pub fn potential_win_variations(node: &SearchNode) -> Vec<Vec<(Point, FnvHashSet<Point>)>> {
     let mut variations: Vec<Vec<(Point, FnvHashSet<Point>)>> = Vec::new();
 
-    if node.win {
+    if node.potential_win {
         let mut node_var: Vec<(Point, FnvHashSet<Point>)> = Vec::new();
         if node.next_sq.is_some() {
             node_var.push((node.next_sq.unwrap(), node.critical_sqs.to_owned().unwrap()));
@@ -277,8 +277,8 @@ pub fn winning_variations(node: &SearchNode) -> Vec<Vec<(Point, FnvHashSet<Point
 
         if !node.children.is_empty() {
             for child in node.children.iter() {
-                if child.win {
-                    let child_variations = winning_variations(child);
+                if child.potential_win {
+                    let child_variations = potential_win_variations(child);
                     for child_var in child_variations {
                         let mut child_var_next = node_var.to_owned();
                         child_var_next.extend(child_var);

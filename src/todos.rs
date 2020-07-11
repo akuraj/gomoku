@@ -1,15 +1,13 @@
 //! A place for general FIXMEs and TODOs.
 
 // *** TODO SOON ***
-// TODO: "win" should probably be renamed to "potenial_win",
-//       as we are not looking at the opponent's counter attack possibilities?
 // TODO: Add Victoria's games as test positions.
 // TODO: Change Threat.m to Threat.match.
 // TODO: Too many garbage variations when using LowPri threats!
 //       0) Check that the comprehensive threat handling is efficient.
 //       1) Dedupe all_threats!
 //       2) Make a note in search node when we cut off variation due to the opponent's potential win!
-//       3) Sort win variations by length? Shorter is better.
+//       3) Sort potential win variations by length? Shorter is better.
 //       4) Handling of win pattern consistently in threat space search.
 //       5) Add "TSS" to the names of types in threat space search.
 // TODO: Update python impl!

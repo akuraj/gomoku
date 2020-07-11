@@ -12,7 +12,7 @@ use consts::BLACK;
 use state::get_state;
 use std::time::Instant;
 use threat_space_search::{
-    animate_variation, tss_board, variation_to_algebraic, winning_variations,
+    animate_variation, tss_board, variation_to_algebraic, potential_win_variations,
 };
 
 fn main() {
@@ -37,12 +37,12 @@ fn main() {
     //     true,
     // );
 
-    let mut s = get_state(
-        &["g10", "h8", "i7", "j7", "j9"],
-        &["g7", "g8", "g9", "i9", "k8"],
-        BLACK,
-        true,
-    );
+    // let mut s = get_state(
+    //     &["g10", "h8", "i7", "j7", "j9"],
+    //     &["g7", "g8", "g9", "i9", "k8"],
+    //     BLACK,
+    //     true,
+    // );
 
     // let mut s = get_state(
     //     &["f6", "h6", "g7", "h7", "h8", "g11"],
@@ -50,6 +50,15 @@ fn main() {
     //     BLACK,
     //     true,
     // );
+
+    let mut s = get_state(
+        &["g9", "h9", "j10", "k11",
+          "a6", "o6"],
+        &["b5", "c4", "d3", "d2", "c2",
+          "n5", "m4", "l3", "l2", "m2"],
+        BLACK,
+        false,
+    );
 
     println!("{}", s);
 
@@ -71,10 +80,10 @@ fn main() {
     );
 
     let node = tss_board(&mut s.board, s.turn);
-    let win_vars = winning_variations(&node);
-    println!("{}", win_vars.len());
-    animate_variation(&mut s.board, s.turn, &win_vars[0]);
-    // println!("{:?}", variation_to_algebraic(&win_vars[0]));
+    let potential_win_vars = potential_win_variations(&node);
+    println!("{}", potential_win_vars.len());
+    // animate_variation(&mut s.board, s.turn, &potential_win_vars[0]);
+    // println!("{:?}", variation_to_algebraic(&potential_win_vars[0]));
 
     // testing::test_pattern_search_fns();
 }
