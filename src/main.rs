@@ -12,10 +12,19 @@ use consts::BLACK;
 use state::get_state;
 use std::time::Instant;
 use threat_space_search::{
-    animate_variation, tss_board, variation_to_algebraic, potential_win_variations,
+    animate_variation, potential_win_variations, tss_board, variation_to_algebraic,
 };
 
 fn main() {
+    // // NOTE: WHITE is clearly winning here, but TSS finds a win for black
+    // //       because it doesn't consider the threats that the opponent can make.
+    // let mut s = get_state(
+    //     &["g9", "h9", "j10", "k11", "a6", "o6"],
+    //     &["b5", "c4", "d3", "d2", "c2", "n5", "m4", "l3", "l2", "m2"],
+    //     BLACK,
+    //     false,
+    // );
+
     // let mut s = get_state(
     //     &[
     //         "a1", "a2", "a3", "a13", "a14", "a15", "b1", "b15", "c1", "c15", "f14", "g13", "i9",
@@ -44,20 +53,11 @@ fn main() {
     //     true,
     // );
 
-    // let mut s = get_state(
-    //     &["f6", "h6", "g7", "h7", "h8", "g11"],
-    //     &["e5", "h5", "g6", "l6", "f7", "g8"],
-    //     BLACK,
-    //     true,
-    // );
-
     let mut s = get_state(
-        &["g9", "h9", "j10", "k11",
-          "a6", "o6"],
-        &["b5", "c4", "d3", "d2", "c2",
-          "n5", "m4", "l3", "l2", "m2"],
+        &["f6", "h6", "g7", "h7", "h8", "g11"],
+        &["e5", "h5", "g6", "l6", "f7", "g8"],
         BLACK,
-        false,
+        true,
     );
 
     println!("{}", s);
