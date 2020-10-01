@@ -86,10 +86,7 @@ pub fn search_board(board: &Array2<u8>, gen_pattern: &[u8], color: u8) -> Vec<Ma
                 let mut found = true;
 
                 for k in 0..length {
-                    if pattern[k]
-                        & board[(idx(i, row_inc, k) as usize, idx(j, col_inc, k) as usize)]
-                        == 0
-                    {
+                    if pattern[k] & board[(idx(i, row_inc, k) as usize, idx(j, col_inc, k) as usize)] == 0 {
                         found = false;
                         break;
                     }
@@ -120,8 +117,7 @@ pub fn search_point(board: &Array2<u8>, gen_pattern: &[u8], color: u8, point: Po
     let mut matches: Vec<Match> = Vec::new();
     for d in 0..NUM_DIRECTIONS {
         let (row_inc, col_inc) = increments(d);
-        let (s_min, s_max) =
-            index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
+        let (s_min, s_max) = index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
 
         for h in s_min..s_max {
             let (i, j) = (x + row_inc * h, y + col_inc * h);
@@ -129,9 +125,7 @@ pub fn search_point(board: &Array2<u8>, gen_pattern: &[u8], color: u8, point: Po
             let mut found = true;
 
             for k in 0..length {
-                if pattern[k] & board[(idx(i, row_inc, k) as usize, idx(j, col_inc, k) as usize)]
-                    == 0
-                {
+                if pattern[k] & board[(idx(i, row_inc, k) as usize, idx(j, col_inc, k) as usize)] == 0 {
                     found = false;
                     break;
                 }
@@ -151,13 +145,7 @@ pub fn search_point(board: &Array2<u8>, gen_pattern: &[u8], color: u8, point: Po
 }
 
 /// Search for a 1d pattern on a 2d board including the given point as an own_sq.
-pub fn search_point_own(
-    board: &Array2<u8>,
-    gen_pattern: &[u8],
-    color: u8,
-    point: Point,
-    own_sqs: &[isize],
-) -> Vec<Match> {
+pub fn search_point_own(board: &Array2<u8>, gen_pattern: &[u8], color: u8, point: Point, own_sqs: &[isize]) -> Vec<Match> {
     let (x, y) = point;
 
     let side = board.shape()[0];
@@ -170,8 +158,7 @@ pub fn search_point_own(
     if board[(x as usize, y as usize)] == color {
         for d in 0..NUM_DIRECTIONS {
             let (row_inc, col_inc) = increments(d);
-            let (s_min, s_max) =
-                index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
+            let (s_min, s_max) = index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
 
             for own_sq in own_sqs.iter() {
                 if (s_min..s_max).contains(&(-*own_sq)) {
@@ -180,10 +167,7 @@ pub fn search_point_own(
                     let mut found = true;
 
                     for k in 0..length {
-                        if pattern[k]
-                            & board[(idx(i, row_inc, k) as usize, idx(j, col_inc, k) as usize)]
-                            == 0
-                        {
+                        if pattern[k] & board[(idx(i, row_inc, k) as usize, idx(j, col_inc, k) as usize)] == 0 {
                             found = false;
                             break;
                         }
@@ -290,12 +274,7 @@ pub fn search_board_next_sq(board: &Array2<u8>, gen_pattern: &[u8], color: u8) -
 ///
 /// In existing terminology, "point" is a "rest" square,
 /// and "next_sq" is the "gain" square.
-pub fn search_point_next_sq(
-    board: &Array2<u8>,
-    gen_pattern: &[u8],
-    color: u8,
-    point: Point,
-) -> Vec<NSQMatch> {
+pub fn search_point_next_sq(board: &Array2<u8>, gen_pattern: &[u8], color: u8, point: Point) -> Vec<NSQMatch> {
     let (x, y) = point;
 
     let side = board.shape()[0];
@@ -305,8 +284,7 @@ pub fn search_point_next_sq(
     let mut next_sq_match_pairs: Vec<NSQMatch> = Vec::new();
     for d in 0..NUM_DIRECTIONS {
         let (row_inc, col_inc) = increments(d);
-        let (s_min, s_max) =
-            index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
+        let (s_min, s_max) = index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
 
         for h in s_min..s_max {
             let (i, j) = (x + row_inc * h, y + col_inc * h);
@@ -351,13 +329,7 @@ pub fn search_point_next_sq(
 ///
 /// In existing terminology, "point" is a "rest" square,
 /// and "next_sq" is the "gain" square.
-pub fn search_point_own_next_sq(
-    board: &Array2<u8>,
-    gen_pattern: &[u8],
-    color: u8,
-    point: Point,
-    own_sqs: &[isize],
-) -> Vec<NSQMatch> {
+pub fn search_point_own_next_sq(board: &Array2<u8>, gen_pattern: &[u8], color: u8, point: Point, own_sqs: &[isize]) -> Vec<NSQMatch> {
     let (x, y) = point;
 
     let side = board.shape()[0];
@@ -370,8 +342,7 @@ pub fn search_point_own_next_sq(
     if board[(x as usize, y as usize)] == color {
         for d in 0..NUM_DIRECTIONS {
             let (row_inc, col_inc) = increments(d);
-            let (s_min, s_max) =
-                index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
+            let (s_min, s_max) = index_bounds_incl(side as isize, length as isize, x, y, row_inc, col_inc);
 
             for own_sq in own_sqs.iter() {
                 if (s_min..s_max).contains(&(-*own_sq)) {
@@ -383,8 +354,7 @@ pub fn search_point_own_next_sq(
 
                     for k in 0..length {
                         let p_val = pattern[k];
-                        let b_val =
-                            board[(idx(i, row_inc, k) as usize, idx(j, col_inc, k) as usize)];
+                        let b_val = board[(idx(i, row_inc, k) as usize, idx(j, col_inc, k) as usize)];
 
                         if p_val & b_val == 0 {
                             if !found_next_sq && p_val == color && b_val == EMPTY {

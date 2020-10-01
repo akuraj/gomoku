@@ -38,14 +38,7 @@ pub fn index_bounds(side: isize, length: isize, increment: isize) -> (isize, isi
 }
 
 /// Possible relative starting indices of the pattern.
-pub fn index_bounds_incl(
-    side: isize,
-    length: isize,
-    x: isize,
-    y: isize,
-    row_inc: isize,
-    col_inc: isize,
-) -> (isize, isize) {
+pub fn index_bounds_incl(side: isize, length: isize, x: isize, y: isize, row_inc: isize, col_inc: isize) -> (isize, isize) {
     let mut row_b = side;
     let mut row_f = side;
     match row_inc {
@@ -116,9 +109,7 @@ pub fn chebyshev_distance(start: Point, end: Point) -> isize {
 /// Set of points, as specified by idxs, on the line spanning start and end.
 /// See point_on_line for more info.
 pub fn point_set_on_line(start: Point, end: Point, idxs: &[isize]) -> FnvHashSet<Point> {
-    idxs.iter()
-        .map(|x| point_on_line(start, end, *x))
-        .collect::<FnvHashSet<Point>>()
+    idxs.iter().map(|x| point_on_line(start, end, *x)).collect::<FnvHashSet<Point>>()
 }
 
 /// Modified slope intercept form.

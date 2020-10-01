@@ -1,8 +1,6 @@
 //! Functions related to the board and its representation.
 
-use crate::consts::{
-    ACT_ELEMS_TO_CHRS, BLACK, EMPTY, RADIX, SIDE_LEN, SIDE_LEN_ACT, SPL_ELEM_CHR, WALL, WHITE,
-};
+use crate::consts::{ACT_ELEMS_TO_CHRS, BLACK, EMPTY, RADIX, SIDE_LEN, SIDE_LEN_ACT, SPL_ELEM_CHR, WALL, WHITE};
 use crate::geometry::Point;
 use fnv::FnvHashSet;
 use ndarray::prelude::*;
@@ -62,14 +60,8 @@ pub fn new_board() -> Array2<u8> {
 
 /// Get board from lists of points of blacks and whites.
 pub fn get_board(blacks: &[&str], whites: &[&str]) -> Array2<u8> {
-    let blacks_set = blacks
-        .iter()
-        .map(|&x| String::from(x))
-        .collect::<FnvHashSet<String>>();
-    let whites_set = whites
-        .iter()
-        .map(|&x| String::from(x))
-        .collect::<FnvHashSet<String>>();
+    let blacks_set = blacks.iter().map(|&x| String::from(x)).collect::<FnvHashSet<String>>();
+    let whites_set = whites.iter().map(|&x| String::from(x)).collect::<FnvHashSet<String>>();
     let common: FnvHashSet<String> = blacks_set.intersection(&whites_set).cloned().collect();
     assert!(common.is_empty());
 

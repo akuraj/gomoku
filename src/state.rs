@@ -50,10 +50,7 @@ impl State {
             match black_total - white_total {
                 1 => assert_eq!(turn, WHITE),
                 0 => assert_eq!(turn, BLACK),
-                _ => panic!(
-                    "Invalid number of stones: Black: {}, White: {}",
-                    black_total, white_total
-                ),
+                _ => panic!("Invalid number of stones: Black: {}, White: {}", black_total, white_total),
             }
         }
 
@@ -74,11 +71,7 @@ impl State {
             assert_eq!(turn, BLACK);
         }
 
-        Self {
-            board,
-            turn,
-            status,
-        }
+        Self { board, turn, status }
     }
 }
 
@@ -86,10 +79,7 @@ impl fmt::Display for State {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let mut output = String::new();
         output.push_str(&format!("\nboard:{}", board_to_str(&self.board)));
-        output.push_str(&format!(
-            "turn: {}\n",
-            ACT_ELEMS_TO_NAMES.get(&self.turn).unwrap()
-        ));
+        output.push_str(&format!("turn: {}\n", ACT_ELEMS_TO_NAMES.get(&self.turn).unwrap()));
         output.push_str(&format!("status: {:?}\n", self.status));
 
         write!(f, "{}", output)

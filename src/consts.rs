@@ -106,9 +106,7 @@ pub const WALL_ENEMY: u8 = WALL | ENEMY;
 
 /// Generic elements are specified from black's POV.
 /// Used to represent elements of a generic pattern.
-pub const GEN_ELEMS: [u8; 11] = [
-    EMPTY, WALL, OWN, ENEMY, STONE, ANY, NOT_EMPTY, NOT_WALL, NOT_STONE, NOT_OWN, WALL_ENEMY,
-];
+pub const GEN_ELEMS: [u8; 11] = [EMPTY, WALL, OWN, ENEMY, STONE, ANY, NOT_EMPTY, NOT_WALL, NOT_STONE, NOT_OWN, WALL_ENEMY];
 
 lazy_static! {
     /// Map from generic element to display name.

@@ -6,32 +6,19 @@ use crate::geometry::Point;
 use crate::geometry::{increments, point_is_on_line, point_on_line};
 use crate::pattern::PATTERNS;
 use crate::pattern_search::{
-    apply_pattern, get_pattern, idx, matches_are_equal, next_sq_matches_are_subset, search_board,
-    search_board_next_sq, search_point, search_point_next_sq, search_point_own,
-    search_point_own_next_sq, Match, NSQMatch,
+    apply_pattern, get_pattern, idx, matches_are_equal, next_sq_matches_are_subset, search_board, search_board_next_sq, search_point,
+    search_point_next_sq, search_point_own, search_point_own_next_sq, Match, NSQMatch,
 };
 use ndarray::prelude::*;
 use std::time::Instant;
 
-pub fn subtest_search_board(
-    board: &Array2<u8>,
-    gen_pattern: &[u8],
-    color: u8,
-    start: Point,
-    end: Point,
-) {
+pub fn subtest_search_board(board: &Array2<u8>, gen_pattern: &[u8], color: u8, start: Point, end: Point) {
     let expected_matches: Vec<Match> = Vec::from([(start, end)]);
     let matches = search_board(board, gen_pattern, color);
     assert!(matches_are_equal(&matches, &expected_matches));
 }
 
-pub fn subtest_search_point(
-    board: &Array2<u8>,
-    gen_pattern: &[u8],
-    color: u8,
-    start: Point,
-    end: Point,
-) {
+pub fn subtest_search_point(board: &Array2<u8>, gen_pattern: &[u8], color: u8, start: Point, end: Point) {
     let expected_matches: Vec<Match> = Vec::from([(start, end)]);
     for x in 0..SIDE_LEN {
         for y in 0..SIDE_LEN {
@@ -47,14 +34,7 @@ pub fn subtest_search_point(
     }
 }
 
-pub fn subtest_search_point_own(
-    board: &Array2<u8>,
-    gen_pattern: &[u8],
-    color: u8,
-    own_sqs: &[isize],
-    start: Point,
-    end: Point,
-) {
+pub fn subtest_search_point_own(board: &Array2<u8>, gen_pattern: &[u8], color: u8, own_sqs: &[isize], start: Point, end: Point) {
     let expected_matches: Vec<Match> = Vec::from([(start, end)]);
     for x in 0..SIDE_LEN {
         for y in 0..SIDE_LEN {
@@ -88,10 +68,7 @@ pub fn subtest_search_board_next_sq(
         board[(test_sq.0 as usize, test_sq.1 as usize)] = stored_val;
 
         // We can only assert that naively expected matches are a subset of actual.
-        assert!(next_sq_matches_are_subset(
-            &expected_ns_matches,
-            &ns_matches
-        ));
+        assert!(next_sq_matches_are_subset(&expected_ns_matches, &ns_matches));
 
         // All matches must lie on the same line as the pattern.
         // Doesn't apply to patterns having 2 or less OWN squares.
@@ -128,10 +105,7 @@ pub fn subtest_search_point_next_sq(
                 // We can only assert that naively expected matches are a subset of actual,
                 // if the point lies on the segment of the pattern.
                 if point_is_on_line(point, start, end, true) {
-                    assert!(next_sq_matches_are_subset(
-                        &expected_ns_matches,
-                        &ns_matches
-                    ));
+                    assert!(next_sq_matches_are_subset(&expected_ns_matches, &ns_matches));
                 } else if point_is_on_line(point, start, end, false) {
                 } else if WIN_LENGTH - defcon > 2 {
                     // Doesn't apply to patterns having 2 or less OWN squares.
@@ -169,18 +143,14 @@ pub fn subtest_search_point_own_next_sq(
 
                 let stored_val = board[(test_sq.0 as usize, test_sq.1 as usize)];
                 board[(test_sq.0 as usize, test_sq.1 as usize)] = EMPTY;
-                let ns_matches =
-                    search_point_own_next_sq(board, gen_pattern, color, point, own_sqs);
+                let ns_matches = search_point_own_next_sq(board, gen_pattern, color, point, own_sqs);
                 let point_is_own_sq = board[(x, y)] == color;
                 board[(test_sq.0 as usize, test_sq.1 as usize)] = stored_val;
 
                 // We can only assert that naively expected matches are a subset of actual,
                 // if the point lies on the segment of the pattern.
                 if point_is_own_sq && point_is_on_line(point, start, end, true) {
-                    assert!(next_sq_matches_are_subset(
-                        &expected_ns_matches,
-                        &ns_matches
-                    ));
+                    assert!(next_sq_matches_are_subset(&expected_ns_matches, &ns_matches));
                 } else if point_is_own_sq && point_is_on_line(point, start, end, false) {
                 } else if WIN_LENGTH - defcon > 2 {
                     // Doesn't apply to patterns having 2 or less OWN squares.
@@ -210,42 +180,15 @@ pub fn subtest_search_fns(gen_pattern: &[u8], color: u8, own_sqs: &[isize], defc
                 if apply_pattern(&mut board, &pattern, (i as isize, j as isize), d) {
                     let (row_inc, col_inc) = increments(d);
                     let start = (i as isize, j as isize);
-                    let end = (
-                        idx(i as isize, row_inc, length - 1),
-                        idx(j as isize, col_inc, length - 1),
-                    );
+                    let end = (idx(i as isize, row_inc, length - 1), idx(j as isize, col_inc, length - 1));
 
                     subtest_search_board(&board, gen_pattern, color, start, end);
                     subtest_search_point(&board, gen_pattern, color, start, end);
                     subtest_search_point_own(&board, gen_pattern, color, own_sqs, start, end);
 
-                    subtest_search_board_next_sq(
-                        &mut board,
-                        gen_pattern,
-                        color,
-                        own_sqs,
-                        defcon,
-                        start,
-                        end,
-                    );
-                    subtest_search_point_next_sq(
-                        &mut board,
-                        gen_pattern,
-                        color,
-                        own_sqs,
-                        defcon,
-                        start,
-                        end,
-                    );
-                    subtest_search_point_own_next_sq(
-                        &mut board,
-                        gen_pattern,
-                        color,
-                        own_sqs,
-                        defcon,
-                        start,
-                        end,
-                    );
+                    subtest_search_board_next_sq(&mut board, gen_pattern, color, own_sqs, defcon, start, end);
+                    subtest_search_point_next_sq(&mut board, gen_pattern, color, own_sqs, defcon, start, end);
+                    subtest_search_point_own_next_sq(&mut board, gen_pattern, color, own_sqs, defcon, start, end);
                 }
             }
         }
@@ -263,10 +206,7 @@ pub fn test_pattern_search_fns() {
         }
     }
 
-    println!(
-        "Time taken: {} seconds",
-        (start.elapsed().as_nanos() as f32) / 1e9
-    );
+    println!("Time taken: {} seconds", (start.elapsed().as_nanos() as f32) / 1e9);
 }
 
 #[test]

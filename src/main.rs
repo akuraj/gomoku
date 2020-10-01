@@ -11,9 +11,7 @@ pub mod todos;
 use consts::BLACK;
 use state::get_state;
 use std::time::Instant;
-use threat_space_search::{
-    animate_variation, potential_win_variations, tss_board, variation_to_algebraic,
-};
+use threat_space_search::{animate_variation, potential_win_variations, tss_board, variation_to_algebraic};
 
 fn main() {
     // // NOTE: WHITE is clearly winning here, but TSS finds a win for black
@@ -53,12 +51,7 @@ fn main() {
     //     true,
     // );
 
-    let mut s = get_state(
-        &["f6", "h6", "g7", "h7", "h8", "g11"],
-        &["e5", "h5", "g6", "l6", "f7", "g8"],
-        BLACK,
-        true,
-    );
+    let mut s = get_state(&["f6", "h6", "g7", "h7", "h8", "g11"], &["e5", "h5", "g6", "l6", "f7", "g8"], BLACK, true);
 
     println!("{}", s);
 
@@ -74,10 +67,7 @@ fn main() {
         tss_board(&mut s.board, s.turn);
     }
 
-    println!(
-        "Time taken: {} seconds",
-        (start.elapsed().as_nanos() as f32) / 1e9
-    );
+    println!("Time taken: {} seconds", (start.elapsed().as_nanos() as f32) / 1e9);
 
     let node = tss_board(&mut s.board, s.turn);
     let potential_win_vars = potential_win_variations(&node);

@@ -9,7 +9,6 @@
 //       3) Handling of win pattern consistently in threat space search.
 //       4) Add "TSS" to the names of types in threat space search.
 // TODO: Fix critical_sqs pattern in tss_next_sq.
-// TODO: Fix the line wrapping logic in cargo fmt to have longer lines.
 // TODO: Refactor potential loss code.
 // TODO: Implement a transposition table. How do we cope with having different last_sqs?
 //       A Zobrit hash? Or just use a dict? What's the most efficient data structure?
@@ -58,3 +57,6 @@
 
 // *** Swap2 Implementation ***
 // TODO: Implement Swap2 (and update state initialization, relevant checks, and code).
+
+// *** Code Editor Ergonomics ***
+// TODO: rustfmt customization!

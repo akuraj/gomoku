@@ -1,12 +1,10 @@
 //! Define struct to represent threat patterns, and related functions (search etc.).
 
-use crate::consts::{
-    EMPTY, GEN_ELEMS, GEN_ELEMS_TO_NAMES, MAX_DEFCON, MDFIT, NOT_OWN, OWN, SIDE_LEN, WALL_ENEMY,
-};
+use crate::consts::{EMPTY, GEN_ELEMS, GEN_ELEMS_TO_NAMES, MAX_DEFCON, MDFIT, NOT_OWN, OWN, SIDE_LEN, WALL_ENEMY};
 use crate::geometry::{point_set_on_line, Point};
 use crate::pattern_search::{
-    defcon_from_degree, degree, one_step_from_straight_threat, search_board, search_board_next_sq,
-    search_point, search_point_next_sq, search_point_own, search_point_own_next_sq, Match,
+    defcon_from_degree, degree, one_step_from_straight_threat, search_board, search_board_next_sq, search_point, search_point_next_sq,
+    search_point_own, search_point_own_next_sq, Match,
 };
 use fnv::FnvHashMap;
 use fnv::FnvHashSet;
@@ -90,19 +88,11 @@ impl Pattern {
             .collect::<Vec<isize>>();
 
         // Add entry for empty_sqs. critical_sqs appear first.
-        let empty_sqs = critical_sqs
-            .iter()
-            .chain(other_empty_sqs.iter())
-            .cloned()
-            .collect::<Vec<isize>>();
+        let empty_sqs = critical_sqs.iter().chain(other_empty_sqs.iter()).cloned().collect::<Vec<isize>>();
 
         let defcon = defcon_from_degree(degree(&pattern));
 
-        let immediate = if defcon < 2 {
-            true
-        } else {
-            one_step_from_straight_threat(&pattern)
-        };
+        let immediate = if defcon < 2 { true } else { one_step_from_straight_threat(&pattern) };
 
         // Checks on data fields.
         assert!(!pattern.is_empty());
@@ -387,12 +377,7 @@ pub fn search_all_board(board: &Array2<u8>, color: u8, pri: ThreatPri) -> Vec<Th
 }
 
 /// Get all pattern matches including the given point.
-pub fn search_all_point(
-    board: &Array2<u8>,
-    color: u8,
-    point: Point,
-    pri: ThreatPri,
-) -> Vec<Threat> {
+pub fn search_all_point(board: &Array2<u8>, color: u8, point: Point, pri: ThreatPri) -> Vec<Threat> {
     let mut threats: Vec<Threat> = Vec::new();
 
     for p in PATTERNS_BY_PRI[&pri] {
@@ -405,12 +390,7 @@ pub fn search_all_point(
 }
 
 /// Get all pattern matches including the given point as an own_sq.
-pub fn search_all_point_own(
-    board: &Array2<u8>,
-    color: u8,
-    point: Point,
-    pri: ThreatPri,
-) -> Vec<Threat> {
+pub fn search_all_point_own(board: &Array2<u8>, color: u8, point: Point, pri: ThreatPri) -> Vec<Threat> {
     let mut threats: Vec<Threat> = Vec::new();
 
     for p in PATTERNS_BY_PRI[&pri] {
@@ -423,11 +403,7 @@ pub fn search_all_point_own(
 }
 
 /// Get all next_sqs on the board.
-pub fn search_all_board_get_next_sqs(
-    board: &Array2<u8>,
-    color: u8,
-    pri: ThreatPri,
-) -> FnvHashSet<Point> {
+pub fn search_all_board_get_next_sqs(board: &Array2<u8>, color: u8, pri: ThreatPri) -> FnvHashSet<Point> {
     let mut nsqs: FnvHashSet<Point> = FnvHashSet::default();
 
     for p in PATTERNS_BY_PRI[&pri] {
@@ -440,12 +416,7 @@ pub fn search_all_board_get_next_sqs(
 }
 
 /// Get all next_sqs including the given point.
-pub fn search_all_point_get_next_sqs(
-    board: &Array2<u8>,
-    color: u8,
-    point: Point,
-    pri: ThreatPri,
-) -> FnvHashSet<Point> {
+pub fn search_all_point_get_next_sqs(board: &Array2<u8>, color: u8, point: Point, pri: ThreatPri) -> FnvHashSet<Point> {
     let mut nsqs: FnvHashSet<Point> = FnvHashSet::default();
 
     for p in PATTERNS_BY_PRI[&pri] {
@@ -458,12 +429,7 @@ pub fn search_all_point_get_next_sqs(
 }
 
 /// Get all next_sqs including the given point as an own_sq.
-pub fn search_all_point_own_get_next_sqs(
-    board: &Array2<u8>,
-    color: u8,
-    point: Point,
-    pri: ThreatPri,
-) -> FnvHashSet<Point> {
+pub fn search_all_point_own_get_next_sqs(board: &Array2<u8>, color: u8, point: Point, pri: ThreatPri) -> FnvHashSet<Point> {
     let mut nsqs: FnvHashSet<Point> = FnvHashSet::default();
 
     for p in PATTERNS_BY_PRI[&pri] {
