@@ -11,7 +11,6 @@ use ndarray::prelude::*;
 // use rayon::prelude::*;
 use crate::board::point_to_algebraic;
 use fnv::FnvHashSet;
-use reduce::Reduce;
 use std::thread;
 use std::time::Duration;
 
