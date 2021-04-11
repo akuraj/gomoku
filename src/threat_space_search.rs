@@ -8,7 +8,7 @@ use crate::pattern::{
     search_all_board, search_all_board_get_next_sqs, search_all_point, search_all_point_own, search_all_point_own_get_next_sqs, ThreatPri,
 };
 use ndarray::prelude::*;
-// use rayon::prelude::*;
+use rayon::prelude::*;
 use crate::board::point_to_algebraic;
 use fnv::FnvHashSet;
 use std::thread;
@@ -172,11 +172,11 @@ pub fn tss_next_sq(board: &mut Array2<u8>, color: u8, next_sq: Point, all_threat
     SearchNode::new(Some(next_sq), Some(critical_sqs), potential_win, children)
 }
 
-// /// Thread safe version of tss_next_sq.
-// pub fn tss_next_sq_safe(board: &Array2<u8>, color: u8, next_sq: Point) -> SearchNode {
-//     let mut board_clone = board.to_owned();
-//     tss_next_sq(&mut board_clone, color, next_sq)
-// }
+/// Thread safe version of tss_next_sq.
+pub fn tss_next_sq_safe(board: &Array2<u8>, color: u8, next_sq: Point, all_threats_init: &[Threat], opp_all_threats_init: &[Threat]) -> SearchNode {
+    let mut board_clone = board.to_owned();
+    tss_next_sq(&mut board_clone, color, next_sq, all_threats_init, opp_all_threats_init)
+}
 
 /// Threat Space Search for the whole board.
 pub fn tss_board(board: &mut Array2<u8>, color: u8) -> SearchNode {
@@ -191,8 +191,8 @@ pub fn tss_board(board: &mut Array2<u8>, color: u8) -> SearchNode {
 
     if !potential_win {
         let nsqs = search_all_board_get_next_sqs(board, color, ThreatPri::Immediate);
-        // children = nsqs.par_iter().map(|x| tss_next_sq_safe(board, color, *x)).collect();
-        children = nsqs.iter().map(|x| tss_next_sq(board, color, *x, &threats, &opp_threats)).collect();
+        children = nsqs.par_iter().map(|x| tss_next_sq_safe(board, color, *x, &threats, &opp_threats)).collect();
+        // children = nsqs.iter().map(|x| tss_next_sq(board, color, *x, &threats, &opp_threats)).collect();
         potential_win = children.iter().any(|x| x.potential_win);
     }
 

@@ -10,7 +10,7 @@ edition = "2018"
 lazy_static = "*"
 num = "*"
 ndarray = "*"
-# rayon = "*"
+rayon = "*"
 reduce = "*"
 fnv = "*"
 
