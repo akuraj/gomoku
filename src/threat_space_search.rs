@@ -1,5 +1,6 @@
 //! Implements Threat Space Search.
 
+use crate::board::point_to_algebraic;
 use crate::board::{board_to_str, clear_sq, set_sq};
 use crate::consts::{ANIMATION_TIMESTEP_SECS, MAX_DEFCON, STONE};
 use crate::geometry::{point_is_on_line, Point};
@@ -7,10 +8,9 @@ use crate::pattern::Threat;
 use crate::pattern::{
     search_all_board, search_all_board_get_next_sqs, search_all_point, search_all_point_own, search_all_point_own_get_next_sqs, ThreatPri,
 };
+use fnv::FnvHashSet;
 use ndarray::prelude::*;
 use rayon::prelude::*;
-use crate::board::point_to_algebraic;
-use fnv::FnvHashSet;
 use std::thread;
 use std::time::Duration;
 
@@ -191,7 +191,10 @@ pub fn tss_board(board: &mut Array2<u8>, color: u8) -> SearchNode {
 
     if !potential_win {
         let nsqs = search_all_board_get_next_sqs(board, color, ThreatPri::Immediate);
-        children = nsqs.par_iter().map(|x| tss_next_sq_safe(board, color, *x, &threats, &opp_threats)).collect();
+        children = nsqs
+            .par_iter()
+            .map(|x| tss_next_sq_safe(board, color, *x, &threats, &opp_threats))
+            .collect();
         // children = nsqs.iter().map(|x| tss_next_sq(board, color, *x, &threats, &opp_threats)).collect();
         potential_win = children.iter().any(|x| x.potential_win);
     }

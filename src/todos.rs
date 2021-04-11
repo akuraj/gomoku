@@ -2,6 +2,7 @@
 
 // *** TODO SOON ***
 // TODO: Add Victoria's games as test positions.
+// TODO: Remove or de-prioritize potential win variations of the form A + B, where B is another existing potential win variation.
 // TODO: Too many garbage variations when using LowPri threats!
 //       0) Check that the comprehensive threat handling is efficient.
 //       1) Dedupe all_threats!

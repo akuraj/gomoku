@@ -51,11 +51,19 @@ fn main() {
     //     true,
     // );
 
-    let mut s = get_state(&["f6", "h6", "g7", "h7", "h8", "g11"], &["e5", "h5", "g6", "l6", "f7", "g8"], BLACK, true);
+    // let mut s = get_state(&["f6", "h6", "g7", "h7", "h8", "g11"], &["e5", "h5", "g6", "l6", "f7", "g8"], BLACK, true);
+
+    // Working on adding Victoria's games from the 4th Computer Olympiad in London (5-11 August, 1992).
+    let mut s = get_state(
+        &["h8", "i7", "g9", "j6", "h6", "g6", "g8", "e8", "f7", "e6", "e5", "d6", "f4", "g4"],
+        &["i9", "h7", "f10", "k5", "j8", "i6", "g7", "f8", "d9", "d5", "e7", "f6", "g3", "i4"],
+        BLACK,
+        true,
+    );
 
     println!("{}", s);
 
-    let n = 1000;
+    let n = 1;
 
     for _ in 0..n {
         tss_board(&mut s.board, s.turn);
