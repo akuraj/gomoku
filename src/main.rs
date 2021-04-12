@@ -53,10 +53,28 @@ fn main() {
 
     // let mut s = get_state(&["f6", "h6", "g7", "h7", "h8", "g11"], &["e5", "h5", "g6", "l6", "f7", "g8"], BLACK, true);
 
-    // Working on adding Victoria's games from the 4th Computer Olympiad in London (5-11 August, 1992).
+    // *** Working on adding Victoria's games from the 4th Computer Olympiad in London (5-11 August, 1992). ***
+
+    // 1. Victoria (B) vs. Neuron (W)
+
+    // let mut s = get_state(
+    //     &["h8", "i7", "g9", "j6", "h6", "g6", "g8", "e8", "f7", "e6", "e5", "d6", "f4", "g4"],
+    //     &["i9", "h7", "f10", "k5", "j8", "i6", "g7", "f8", "d9", "d5", "e7", "f6", "g3", "i4"],
+    //     BLACK,
+    //     true,
+    // );
+
+    // Potential Win Vars:
+    // e4, e3
+    // f5, e4, e3
+    // e3, e4, d4
+    // e7, c6, b6, e3, e4, d4
+
+    // 2. Victoria (B) vs. Zero Club (W)
+    // WORKING HERE!
     let mut s = get_state(
-        &["h8", "i7", "g9", "j6", "h6", "g6", "g8", "e8", "f7", "e6", "e5", "d6", "f4", "g4"],
-        &["i9", "h7", "f10", "k5", "j8", "i6", "g7", "f8", "d9", "d5", "e7", "f6", "g3", "i4"],
+        &[],
+        &[],
         BLACK,
         true,
     );
@@ -80,7 +98,10 @@ fn main() {
     let node = tss_board(&mut s.board, s.turn);
     let potential_win_vars = potential_win_variations(&node);
     println!("{}", potential_win_vars.len());
-    // println!("{:?}", variation_to_algebraic(&potential_win_vars[0]));
+    for v in potential_win_vars.iter() {
+        println!("{:?}", variation_to_algebraic(v));
+    }
+
     // animate_variation(&mut s.board, s.turn, &potential_win_vars[0]);
 
     // testing::test_pattern_search_fns();
