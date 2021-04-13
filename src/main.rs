@@ -71,7 +71,63 @@ fn main() {
     // e7, c6, b6, e3, e4, d4
 
     // 2. Victoria (B) vs. Zero Club (W)
-    // WORKING HERE!
+
+    // let mut s = get_state(
+    //     &["h8", "g7", "f6", "g6", "i7", "f9"],
+    //     &["h7", "i8", "i9", "i6", "g8", "f7"],
+    //     BLACK,
+    //     true,
+    // );
+
+    // Potential Win Vars:
+    // e6, e5, e7, g5, g4, f5
+    // e5, e6, e7, g5, g4, f5
+
+    // 3. Victoria (B) vs. Xokk (W)
+
+    // let mut s = get_state(
+    //     &["h8", "g7", "i9", "h7", "h6", "i5"],
+    //     &["g9", "f6", "j10", "i7", "h9", "f8"],
+    //     BLACK,
+    //     true,
+    // );
+
+    // Potential Win Vars:
+    // h4, j6, i6, k4, j4
+    // j4, h4, k4, i6, j6
+    // j4, h4, j6, j5, k4
+    // j4, h4, j6, j5, i6
+    // j4, h4, j6, i6, k4
+    // j4, h4, j6, i6, j5
+
+    // 4. Neuron (B) vs. Victoria (W)
+
+    // let mut s = get_state(
+    //     &["h8", "g7", "i9", "i8", "f9", "i11", "h11", "h9", "j5"],
+    //     &["h7", "f6", "g8", "i6", "g9", "i10", "j11", "k4", "j7"],
+    //     BLACK,
+    //     true,
+    // );
+
+    // Potential Win Vars:
+    // j10, h12
+    // h12, j10
+    // i12, h12, j10
+    // h10, g11, f11, g10
+    // g10, f11, f12, h10
+    // g10, f11, f12, g11
+    // g10, f11, g11, f12
+    // g10, f11, g11, h10
+    // h10, f12, f11, g10, e8
+    // h10, f12, f11, g10, i12
+    // g10, f11, f10, g11, h12
+    // g10, f11, f10, h12, j10
+    // g10, f11, f10, h12, g11
+    // g10, f11, e11, f12, g13, h12
+    // g10, f11, e11, f12, g13, j10
+    // g10, f11, f10, h12, g13, g11 (FAILS!)
+    // g10, f11, g11, j8, l8, j10, k9
+
     let mut s = get_state(
         &[],
         &[],
