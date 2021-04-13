@@ -8,7 +8,7 @@ pub mod testing;
 pub mod threat_space_search;
 pub mod todos;
 
-use consts::BLACK;
+use consts::{BLACK, WHITE};
 use state::get_state;
 use std::time::Instant;
 use threat_space_search::{animate_variation, potential_win_variations, tss_board, variation_to_algebraic};
@@ -128,10 +128,35 @@ fn main() {
     // g10, f11, f10, h12, g13, g11 (FAILS!)
     // g10, f11, g11, j8, l8, j10, k9
 
+    // 5. Victoria (B) vs. Polygon (W)
+
+    // let mut s = get_state(
+    //     &["h8", "i7", "i6", "g6", "h6", "j8", "j7"],
+    //     &["g7", "g9", "h9", "i8", "f6", "k9", "i9"],
+    //     BLACK,
+    //     true,
+    // );
+
+    // Potential Win Vars:
+    // j9, k8, l7
+
+    // 6. Xokk (B) vs. Victoria (W)
+
+    // let mut s = get_state(
+    //     &["h8", "g7", "f8", "e9", "d10", "g6", "g9", "j8", "g8", "d8", "f10"],
+    //     &["h7", "f6", "i8", "h6", "c11", "g5", "i7", "f5", "g10", "e8"],
+    //     WHITE,
+    //     true,
+    // );
+
+    // Potential Win Vars:
+    // f4, f3
+
+    // WORKING HERE!
     let mut s = get_state(
-        &[],
-        &[],
-        BLACK,
+        &["h8", "g7", "f8", "e9", "d10", "g6", "g9", "j8", "g8", "d8", "f10"],
+        &["h7", "f6", "i8", "h6", "c11", "g5", "i7", "f5", "g10", "e8"],
+        WHITE,
         true,
     );
 

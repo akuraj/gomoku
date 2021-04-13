@@ -9,6 +9,7 @@
 //       2) Make a note in search node when we cut off variation due to the opponent's potential win!
 //       3) Handling of win pattern consistently in threat space search.
 //       4) Add "TSS" to the names of types in threat space search.
+// TODO: Add function to flip colors in a position and check that the code is agnostic to color by testing positions where win is known?
 // TODO: Parallelize TSS further? Right now it's only parallelized at the first level (depth = 1).
 // TODO: Fix critical_sqs pattern in tss_next_sq.
 // TODO: Refactor potential loss code.
